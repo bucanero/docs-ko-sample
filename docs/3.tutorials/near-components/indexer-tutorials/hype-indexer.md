@@ -1,7 +1,7 @@
 ---
 id: hype-indexer
-title: Hype Indexer
-sidebar_label: Hype Indexer
+title: Hype 인덱서
+sidebar_label: Hype 인덱서
 ---
 
 :::tip
@@ -10,9 +10,9 @@ This tutorial creates a blockchain indexer using [NEAR QueryAPI](../../../2.buil
 
 :::
 
-## Overview
+## 개요
 
-This indexer creates a new row in a pre-defined `posts` or `comments` table created by the user in the GraphQL database for every new post or comment found on the blockchain that contains either "PEPE" or "DOGE" in the contents. This is a simple example that shows how to specify two tables, filter blockchain transaction data for a specific type of transaction and its contents, and save the data to the database.
+이 인덱서는 컨텐츠에 "PEPE" 또는 "DOGE"가 포함된 블록체인에서 발견되는 모든 새 게시물 또는 댓글에 대해 GraphQL 데이터베이스에서 사용자가 생성한 사전 정의된 `posts` 또는 `comments` 테이블에 새 행을 만듭니다. 이것은 두 개의 테이블을 지정하고, 특정 트랜잭션 유형과 해당 내용에 대한 블록체인 트랜잭션 데이터를 필터링하고, 데이터를 데이터베이스에 저장하는 방법을 보여주는 간단한 예입니다.
 
 :::tip
 
@@ -20,9 +20,9 @@ This indexer can be found by [following this link](https://dev.near.org/#/datapl
 
 :::
 
-## Defining the Database Schema
+## 데이터베이스 스키마 정의
 
-The first step to creating an indexer is to define the database schema. This is done by editing the `schema.sql` file in the code editor. The schema for this indexer looks like this:
+인덱서를 만드는 첫 번째 단계는 데이터베이스 스키마를 정의하는 것입니다. 이 작업은 코드 에디터에서 `schema.sql` 파일을 편집하여 수행합니다. 이 인덱서의 스키마는 다음과 같습니다:
 
 ```sql
 CREATE TABLE
@@ -49,37 +49,37 @@ CREATE TABLE
   );
 ```
 
-This schema defines two tables: `posts` and `comments`. The `posts` table has columns:
+이 스키마는 `posts`와 `comments`의 두 테이블을 정의합니다. `posts` 테이블에는 다음과 같은 열이 있습니다:
 
 - `id`: a unique identifier for each row in the table
-- `account_id`: the account ID of the user who created the post
-- `block_height`: the height of the block in which the post was created
-- `block_timestamp`: the timestamp of the block in which the post was created
-- `receipt_id`: the receipt ID of the transaction that created the post
-- `content`: the content of the post
+- `account_id `: 게시물을 만든 사용자의 계정 ID
+- `block_height`: 게시물이 생성된 블록의 높이
+- `block_message`: 게시물이 생성된 블록의 타임스탬프
+- `recept_id `: 게시물을 생성한 트랜잭션의 receipt ID
+- `content`: 게시물의 내용
 
-The `comments` table has columns:
+`comments` 테이블에는 다음과 같은 열이 있습니다:
 
 - `id`: a unique identifier for each row in the table
-- `post_id`: the ID of the post that the comment was made on
-- `account_id`: the account ID of the user who created the comment
-- `block_height`: the height of the block in which the comment was created
-- `block_timestamp`: the timestamp of the block in which the comment was created
-- `receipt_id`: the receipt ID of the transaction that created the comment
-- `content`: the content of the comment
+- `post_id`: 댓글이 달린 게시물의 아이디
+- `account_id `: 댓글을 작성한 사용자의 계정 ID
+- `block_height`: 댓글이 생성된 블록의 높이
+- `block_message`: 댓글이 생성된 블록의 타임스탬프
+- `recept_id `: 댓글을 생성한 트랜잭션의 receipt ID
+- `content`: 댓글의 내용
 
 ## Defining the indexing logic
 
-The next step is to define the indexing logic. This is done by editing the `indexingLogic.js` file in the code editor. The logic for this indexer can be divided into two parts:
+다음은 인덱싱 로직을 정의할 차례입니다. 이 작업은 코드 에디터에서 `indexingLogic.js` 파일을 편집하여 수행합니다. 이 인덱서의 로직은 두 부분으로 나눌 수 있습니다:
 
-1. Filtering blockchain transactions for a specific type of transaction
-2. Saving the data from the filtered transactions to the database
+1. 특정 트랜잭션 유형에 대한 블록체인 트랜잭션 필터링
+2. 필터링된 트랜잭션의 데이터를 데이터베이스에 저장
 
 ### Filtering Blockchain transactions
 
-The first part of the logic is to filter blockchain transactions for a specific type of transaction. This is done by using the `getBlock` function. This function takes in a block and a context and returns a promise. The block is a Near Protocol block, and the context is a set of helper methods to retrieve and commit state. The `getBlock` function is called for every block on the blockchain.
+로직의 첫 번째 부분은 특정 유형의 트랜잭션에 대한 블록체인 트랜잭션을 필터링하는 것입니다. 이 작업은 `getBlock` 함수를 사용하여 수행됩니다. 이 함수는 블록과 컨텍스트를 사용하여 Promise를 반환합니다. 블록은 Near 프로토콜 블록이고, 컨텍스트는 상태를 검색하고 커밋하는 헬퍼 메서드 집합입니다. `getBlock` 함수는 블록체인의 모든 블록에 대해 호출됩니다.
 
-The `getBlock` function for this indexer looks like this:
+이 인덱서의 `getBlock` 함수는 다음과 같습니다:
 
 ```js
 import { Block } from "@near-lake/primitives";
@@ -126,13 +126,13 @@ async function getBlock(block: Block, context) {
 }
 ```
 
-Again, like with the [`posts-indexer`](./posts-indexer.md) or the [`feed-indexer`](./feed-indexer.md), this filter selects transactions that are of type `FunctionCall` to the `set` method on the contract `social.near` on the network. In addition, it searches for `post` or `index` string in the data for the call.
+다시, [`posts-indexer`](./posts-indexer.md) 또는 [`feed-indexer`](./feed-indexer.md)와 같이, 이 필터는 `FunctionCall` 유형의 트랜잭션을 네트워크 내 `social.near` 컨트랙트에 있는 `set` 메서드로 선택합니다. 또한 호출에 대한 데이터에서 `post` 또는 `index` 문자열을 검색합니다.
 
 ### Saving the data to the Database
 
-The second part of the logic is to save the data from the filtered transactions to the database. This section also performs the filtering of transactions for posts and comments that contain "PEPE" or "DOGE" in the contents.
+로직의 두 번째 부분은 필터링된 트랜잭션의 데이터를 데이터베이스에 저장하는 것입니다. 또한 내용에 "PEPE" 또는 "DOGE"가 포함된 게시물 및 댓글에 대한 트랜잭션 필터링을 수행합니다.
 
-The logic for this looks like:
+이에 대한 로직은 다음과 같습니다:
 
 ```js
   ... // Logic for filtering blockchain transactions is above
@@ -200,7 +200,8 @@ The logic for this looks like:
 ```
 
 #### `createPost`
-Creating a post is done by using the [`context.db.Posts.insert()`](../../../2.build/6.data-infrastructure/query-api/context.md#insert) function:
+
+Creating a post is done by using the [`context.db.Posts.insert()`](../../../2.build/6.data-infrastructure/query-api/context.md) function:
 
 ```js
   async function createPost(
@@ -230,7 +231,7 @@ Creating a post is done by using the [`context.db.Posts.insert()`](../../../2.bu
 
 #### `createComment`
 
-Creating a comment is done by using the [`context.db.Comments.insert()`](../../../2.build/6.data-infrastructure/query-api/context.md#insert) function:
+Creating a comment is done by using the [`context.db.Comments.insert()`](../../queryapi/context.md#insert) function:
 
 ```js
   async function createComment(
@@ -347,7 +348,6 @@ return (
   {renderedData}
 );
 ```
-
 
 :::tip
 

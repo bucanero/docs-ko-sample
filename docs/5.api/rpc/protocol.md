@@ -1,24 +1,24 @@
 ---
 id: protocol
-title: Protocol
+title: 프로토콜
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-The RPC API enables you to retrieve the current genesis and protocol configuration.
+RPC API를 사용하면 현재 제네시스 및 프로토콜 구성(config)을 검색할 수 있습니다.
 
 ---
 
-## Genesis Config {#genesis-config}
+## 제네시스 구성 {#genesis-config}
 
-> Returns current genesis configuration.
+> 현재 제네시스 구성을 반환합니다.
 
-- method: `EXPERIMENTAL_genesis_config`
-- params: _none_
+- 메서드: `EXPERIMENTAL_genesis_config`
+- 매개변수: _none_
 
-Example:
+예시:
 
 <Tabs>
 <TabItem value="json" label="JSON" default>
@@ -32,7 +32,7 @@ Example:
 ```
 
 </TabItem>
-<TabItem value="js" label="🌐 JavaScript" label="JavaScript">
+<TabItem value="js" label="JavaScript">
 
 ```js
 const response = await near.connection.provider.experimental_genesisConfig();
@@ -49,7 +49,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=EXPERIMENT
 </Tabs>
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -287,9 +287,9 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=EXPERIMENT
 </p>
 </details>
 
-#### What could go wrong? {#what-could-go-wrong}
+#### 무엇이 잘못될 수 있나요? {#what-could-go-wrong}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -309,11 +309,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `EXPERIMENTAL_genesis_config` method:
+다음은 `EXPERIMENTAL_genesis_config` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다.
 
 <table>
   <thead>
@@ -323,20 +323,20 @@ Here is the exhaustive list of the error variants that can be returned by `EXPER
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>INTERNAL_ERROR</td>
       <td>INTERNAL_ERROR</td>
-      <td>Something went wrong with the node itself or overloaded</td>
+      <td>노드 자체에 문제가 있거나 과부하가 걸렸습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
-          <li>Send a request to a different node</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>나중에 다시 시도하세요</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
@@ -345,15 +345,15 @@ Here is the exhaustive list of the error variants that can be returned by `EXPER
 
 ---
 
-## Protocol Config {#protocol-config}
+## 프로토콜 구성 {#protocol-config}
 
-> Returns most recent protocol configuration or a specific queried block. Useful for finding current storage and transaction costs.
+> 가장 최근의 프로토콜 구성 또는 특정 쿼리 블록을 반환합니다. 현재 스토리지 및 트랜잭션 비용을 찾는 데 유용합니다.
 
-- method: `EXPERIMENTAL_protocol_config`
-- params:
-  - [`finality`](/api/rpc/setup#using-finality-param) _OR_ [`block_id`](/api/rpc/setup#using-block_id-param)
+- 메서드: `EXPERIMENTAL_protocol_config`
+- 매개변수:
+  - [`finality`](/api/rpc/setup#using-finality-param) _또는_ [`block_id`](/api/rpc/setup#using-block_id-param)
 
-Example:
+예시:
 
 <Tabs>
 <TabItem value="json" label="JSON" default>
@@ -383,7 +383,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=EXPERIMENT
 </Tabs>
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -597,9 +597,9 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=EXPERIMENT
 </p>
 </details>
 
-#### What could go wrong? {#what-could-go-wrong-1}
+#### 무엇이 잘못될 수 있나요? {#what-could-go-wrong-1}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -619,11 +619,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `EXPERIMENTAL_protocol_config` method:
+다음은 `EXPERIMENTAL_protocol_config` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다.
 
 <table>
   <thead>
@@ -633,18 +633,18 @@ Here is the exhaustive list of the error variants that can be returned by `EXPER
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>HANDLER_ERROR</td>
       <td>UNKNOWN_BLOCK</td>
-      <td>The requested block has not been produced yet or it has been garbage-collected (cleaned up to save space on the RPC node)</td>
+      <td>요청된 블록이 아직 생성되지 않았거나 가비지 수집되었습니다(RPC 노드의 공간을 절약하기 위해 정리됨).</td>
       <td>
         <ul>
-          <li>Check that the requested block is legit</li>
+          <li>요청한 블록이 올바른지 확인하세요.</li>
           <li>If the block had been produced more than 5 epochs ago, try to send your request to <a href="https://near-nodes.io/intro/node-types#archival-node" target="_blank" rel="noopener noreferrer">an archival node</a></li>
         </ul>
       </td>
@@ -652,12 +652,12 @@ Here is the exhaustive list of the error variants that can be returned by `EXPER
     <tr>
       <td>INTERNAL_ERROR</td>
       <td>INTERNAL_ERROR</td>
-      <td>Something went wrong with the node itself or overloaded</td>
+      <td>노드 자체에 문제가 있거나 과부하가 걸렸습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
-          <li>Send a request to a different node</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>나중에 다시 시도하세요.</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>

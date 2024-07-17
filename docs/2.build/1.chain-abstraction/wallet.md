@@ -1,6 +1,6 @@
 ---
 id: wallet
-title: Wallet Chain Key Rules 
+title: Wallet Chain Key Rules
 ---
 
 ## Overview
@@ -10,7 +10,7 @@ You'll also learn how to ensure that a signature on one chain is not used to tak
 
 ### Key derivation
 
-When signing using [chain signatures](./chain-signatures.md) each account has an unlimited number of keys. Each key's public key is derived from the account name and the key extension which is an arbitrary string. 
+When signing using [chain signatures](./chain-signatures.md) each account has an unlimited number of keys. Each key's public key is derived from the account name and the key extension which is an arbitrary string.
 
 User's keys can be described as follow:
 
@@ -42,7 +42,6 @@ The user would approve the `SOL` transaction but the attacker would also get the
 
 This can be solved by having unique keys for different chains. That way, even if an attacker makes you sign a transaction that is also valid in a foreign chain, no assets will be compromised.
 
-
 ## Serialization format
 
 We're using the following format for our derivations paths.
@@ -63,7 +62,7 @@ If you are not using a field don't make it `null`, don't include the key instead
 
 ### User-defined fields
 
-For user-defined fields, the `meta` field can include any data you like. 
+For user-defined fields, the `meta` field can include any data you like.
 
 :::tip
 Do not add any extra fields at the top level, as that may clash with future versions of this specification. If needed, put them in the `meta` field instead.
@@ -80,11 +79,10 @@ For example, a simple way of selecting alternate keys will be using an object wi
 
 ### Examples
 
-| Key | Description |
-|-----|-------------|
-| `{chain: 0, domain: "near.org"}` |  A bitcoin key used on `near.org` |
-| `{chain: 0, meta: {id: 3}}`      |  Use the third bitcoin key |
-
+| Key                              | Description                      |
+| -------------------------------- | -------------------------------- |
+| `{chain: 0, domain: "near.org"}` | A bitcoin key used on `near.org` |
+| `{chain: 0, meta: {id: 3}}`      | Use the third bitcoin key        |
 
 ## Example user flows
 

@@ -1,32 +1,30 @@
 ---
 id: deploy
-title: NEAR CLI - Basics
-sidebar_label: Deploying and Using
+title: NEAR CLI - 기초
+sidebar_label: 배포 및 사용
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-After your contract is ready you can deploy it in the NEAR network for everyone to use it.
+컨트랙트가 준비되면, 모든 사람이 사용할 수 있도록 NEAR 네트워크에 배포할 수 있습니다.
 
-Let us guide you on how to use the [NEAR CLI](../../../4.tools/cli.md) to deploy your contract
-and call its methods.
+[NEAR CLI](../../../4.tools/cli.md)를 사용하여 컨트랙트를 배포하고, 컨트랙트 내 메서드를 호출하는 방법을 안내해 드립니다.
 
 :::info
-On this page, we will only cover the basics of NEAR CLI. For more information visit the
-[NEAR CLI documentation page](../../../4.tools/cli.md).
+:::info 이 페이지에서는 NEAR CLI의 기본 사항만 다룹니다. 자세한 내용은 [NEAR CLI 설명서 페이지](../../../4.tools/cli.md)를 참조하세요.
 :::
 
 ---
 
 ## Deploying the Contract
 
-Thanks to the `NEAR CLI` deploying a contract is as simple as:
+`NEAR CLI` 덕분에 컨트랙트 배포는 다음과 같이 간단하게 수행될 수 있습니다.
 
-1. Compiling the contract to wasm (done automatically through `yarn build` in our templates).
+1. 컨트랙트를 wasm으로 컴파일합니다(템플릿 내 `yarn build`를 통해 자동으로 수행됨).
 2. [Create an account](../../../4.tools/cli.md#near-create-account) and [deploy the contract](../../../4.tools/cli.md#near-deploy) into it using `NEAR CLI`.
 
-#### Create an Account and Deploy
-
+#### 계정 생성 및 배포
 
 <Tabs className="language-tabs" groupId="code-tabs">
   <TabItem value="near-cli">
@@ -55,8 +53,7 @@ near contract deploy <my-new-dev-account>.testnet use-file <route_to_wasm> witho
 
 </Tabs>
 
-
-#### Deploy in an Existing Account
+#### 기존 계정에 배포
 
 <Tabs className="language-tabs" groupId="code-tabs">
 <TabItem value="near-cli">
@@ -86,25 +83,23 @@ near contract deploy <accountId> use-file <route_to_wasm> without-init-call netw
 </Tabs>
 
 :::tip
-You can overwrite a contract by deploying another on top of it. In this case, the account's logic
-will change, but the state will persist
+You can overwrite a contract by deploying another on top of it. 이 경우 계정의 로직이 변경되지만, 상태는 유지됩니다.
 :::
 
 :::info
-By default `near-cli` uses the `testnet` network. Define `NEAR_ENV=mainnet` to deploy into `mainnet`.
+:::info 기본적으로 `near-cli`는 `testnet` 네트워크를 사용합니다. `mainnet`에 배포하려면, `NEAR_ENV=mainnet`를 정의하세요.
 :::
 
-:::info Naming Convention for Public-Facing Methods 
-Once the contract is deployed to the network, anyone and any other contract (i.e., any other account on NEAR) can interact with it by calling its methods. Furthermore, any transactions involving the contract will also be included in the network's data stream, which means its activity can also be visible to any who listens to particular events. 
+:::info Naming Convention for Public-Facing Methods
 
-Considering this, we advise to name methods using `snake_case` in all SDKs as this is compatible with the remainder of the NEAR ecosystem which is predominantly comprised of Rust contracts. 
+이를 고려하여, 대부분 Rust 컨트랙트로 구성된 나머지 NEAR 생태계와 호환되도록 모든 SDK에서 `snake_case`를 사용해 메서드의 이름을 정하는 것이 좋습니다.
 :::
 
 ---
 
 ## Initializing the Contract
-If your contract has an [initialization method](../anatomy/anatomy.md#initialization-functions) you can call it to
-initialize the state. This is not necessary if your contract implements `default` values for the state. 
+
+컨트랙트에 [초기화 메서드](../anatomy/anatomy.md#initialization-functions)가 있는 경우, 이를 호출하여 상태를 초기화할 수 있습니다. 컨트랙트가 상태에 대한 `default` 값을 구현하는 경우에는 필요하지 않습니다.
 
 <Tabs className="language-tabs" groupId="code-tabs">
 <TabItem value="near-cli">
@@ -128,19 +123,20 @@ near contract call-function as-transaction <contractId> <initMethod> json-args [
 </Tabs>
 
 :::info
-You can initialize your contract [during deployment](#deploying-the-contract) using the `--initFunction` & `--initArgs` arguments.
+:::info `--initFunction` 및 `--initArgs` 인자를 사용해서 [배포 중에](#컨트랙트-배포) 컨트랙트를 초기화할 수 있습니다.
 :::
 
 ---
 
 ## Calling the Contract
 
-Once your contract is deployed you can interact with it right away using [NEAR CLI](../../../4.tools/cli.md).
+컨트랙트가 배포되고 나면, [NEAR CLI](../../../4.tools/cli.md)를 통해 바로 컨트랙트와 상호 작용할 수 있습니다.
 
 <hr className="subsection" />
 
-### View methods
-View methods are those that perform **read-only** operations. Calling these methods is free, and do not require to specify which account is being used to make the call:
+### View 메서드
+
+View 메서드는 **읽기 전용** 작업을 수행하는 메서드입니다. 이러한 메서드를 호출하는 것은 무료이며, 호출에 사용되는 계정을 지정할 필요가 없습니다.
 
 <Tabs className="language-tabs" groupId="code-tabs">
 <TabItem value="near-cli">
@@ -156,20 +152,20 @@ near view <contractId> <methodName>
 ```bash
 near contract call-function as-read-only <contractId> <methodName> text-args '' network-config testnet now
 ```
+
 </TabItem>
 
 </Tabs>
 
 :::tip
-View methods have by default 200 TGAS for execution
+:::tip View 메서드는 실행에 기본적으로 200 TGAS를 소모합니다.
 :::
 
 <hr className="subsection" />
 
-### Change methods
+### 메서드 변경
 
-Change methods are those that perform both read and write operations. For these methods we do need to specify the account being used to make the call,
-since that account will expend GAS in the call.
+변경 방법은 읽기 및 쓰기 작업을 모두 수행하는 방법입니다. 이러한 방법의 경우, 호출에 사용되는 계정을 지정해야 합니다.
 
 <Tabs className="language-tabs" groupId="code-tabs">
 <TabItem value="near-cli">

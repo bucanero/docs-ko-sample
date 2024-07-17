@@ -23,7 +23,6 @@ const tokenData = Near.call(
 "299102:1"
 ```
 
-
 </TabItem>
 
 <TabItem value="Mintbase" label="Mintbase">
@@ -52,7 +51,6 @@ const tokenData = Near.call(
   }
 }
 ```
-
 
 </TabItem>
 

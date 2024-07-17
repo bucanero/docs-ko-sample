@@ -3,66 +3,62 @@ id: random
 title: Random Numbers
 ---
 
-When writing smart contracts in NEAR you have access to a `random seed` that enables you to create random numbers/strings
-within your contract.
+NEAR에서 스마트 컨트랙트를 작성할 때, 컨트랙트 내에서 임의의 숫자/문자열을 생성할 수 있는 `random seed`에 액세스할 수 있습니다.
 
-This `random seed` is **deterministic and verifiable**: it comes from the validator that produced the block signing the previous
-block-hash with their private key.
+이 `random seed`는 **결정론적이고 검증 가능합니다**: 이는 개인 키로 이전 블록 해시에 서명하는 블록을 생성한 밸리데이터로부터 가져옵니다.
 
-The way the random seed is created implies two things:
+랜덤 시드가 생성되는 방식은 다음 두 가지를 의미합니다.
 
-- Only the validator mining the transaction **can predict** which random number will come out. **No one else** could predict it because nobody knows the validator's private key (except the validator itself).
+- 트랜잭션을 채굴하는 밸리데이터만이 어떤 난수가 나올지 **예측할 수** 있습니다. 밸리데이터의 개인 키를 아는 사람이 아무도 없기 때문에, **누구도** 예측할 수 없습니다(밸리데이터 자체는 제외).
 
-- The validator **cannot interfere** with the random number being created. This is because they need to sign the previous block, over which (with a high probability) they had no control.
+- 밸리데이터는 난수 생성을 **방해할 수 없습니다**. 이는 그들이 이전 블록에 서명해야 하기 때문인데, 이는 (높은 확률로) 그들이 제어할 수 없는 것이기 때문입니다.
 
+그러나 이것은 여전히 ​밸리데이터에 의한 세 가지 유형의 공격에 대한 여지를 남겨 둡니다.
 
-However, notice that this still leaves room for three types of attacks from the validator:
-1. [Frontrunning](./frontrunning.md), which we cover in another page
+1. [프론트러닝](./frontrunning.md): 다른 페이지에서 다루겠습니다
 2. Gaming the input
-3. Refusing to mine the block. 
+3. 블록 채굴 거부
 
 ----
 
 ## Gaming the Input
-Imagine you have a method that takes an input and gives a reward based on it. For example, you ask the user to choose a number,
-and if it the same as your `random seed` you give them money.
 
-Since the validator knows which `random seed` will come out, it can create a transaction with that specific input and win the prize.
+입력을 받고 그에 따라 보상을 제공하는 메서드가 있다고 상상해 보세요. 예를 들어, 사용자에게 숫자를 선택하도록 요청하고 그것이 `random seed`와 같으면 돈을 주는 방식입니다.
+
+밸리데이터는 어떤 것이 `random seed`로 나올지 알고 있기 때문에, 특정 입력으로 트랜잭션을 생성하고 상금을 받을 수 있습니다.
 
 ----
 
-## Refusing to Mine the Block
-One way to fix the "gaming the input" problem is to force the user to send the input first, and then decide the result on a different block.
-Let's call these two stages: "bet" and "resolve".
+## 블록 채굴 거부
 
-In this way, a validator cannot game the input, since the `random` number against which it will be compared is computed in a different block.
+"입력 조작" 문제를 해결하는 한 가지 방법은, 사용자가 먼저 입력을 보낸 다음 다른 블록에서 결과를 결정하도록 하는 것입니다.
+이 두 단계를 "베팅"과 "결정"이라고 부르겠습니다.
 
-However, something that the validator can still do to increase their chance of winning is:
-1. Create a "bet" transaction with an account.
-2. When it's their turn to validate, decide if they want to "resolve" or not.
+이러한 방법으로, 밸리데이터는 입력값을 조작할 수 없습니다. `난수` 가 다른 블록에서 계산될 것이기 때문입니다.
 
-If the validator, on their turn, sees that generating a random number makes them win, they can add the transaction to the block. And if they
-see that they will not, they can skip the transaction.
+그러나 밸리데이터가 승리 확률을 높이기 위해 할 수 있는 작업은 여전히 존재하고, 이는 다음과 같습니다.
 
-While this does not ensure that the validator will win (other good validators could mine the transaction), it can improve their chance of winning.
+1. 계정으로 "베팅" 트랜잭션을 만듭니다.
+2. 블록 검증 차례가 되면 "결정"할지 여부를 결정합니다.
 
-Imagine a flip-coin game, where you choose `heads` or `tails` in the "bet" stage, and later resolve if you won or not. If you are a validator
+만약 밸리데이터가 자신의 차례에 난수를 생성하여 승리한 것으로 확인되면, 트랜잭션을 블록에 추가할 수 있습니다. 그렇지 않을 경우, 트랜잭션을 건너뛸 수 있습니다.
+
+이것은 밸리데이터가가 이길 것이라는 것을 보장하지는 않지만(다른 우수한 밸리데이터가 트랜잭션을 채굴할 수 있음), 승리할 가능성을 높일 수는 있습니다.
+
+"베팅" 단계에서 `heads` 또는 `tails`을 선택하고, 나중에 승패를 "결정"하는 동전 뒤집기 게임을 상상해 보세요. If you are a validator
 you can send a first transaction choosing either input.
 
-Then, on your turn to validate, you can check if your chosen input came out. If not, you can simply skip the transaction. This brings your
-probability of winning from `1/2` to `3/4`, that's a 25% increase!
+그런 다음 블록을 검증할 차례에 선택한 입력이 나왔는지 확인할 수 있습니다. 그렇지 않은 경우, 트랜잭션을 건너뛸 수 있습니다. 이것은 당신의 당첨 확률을 `1/2`에서 `3/4` 까지 올립니다.
 
-These odds, of course, dilute in games with more possible outcomes.
+물론 이러한 확률은 가능한 결과가 더 다양한 게임에서는 희석됩니다.
 
 <details>
-<summary>How does the math work here?</summary>
+<summary>여기서 수학이 어떻게 작동하나요?</summary>
 
-Imagine you always bet for `heads`.
+당신은 `heads`로만 베팅한다고 생각해봅시다.
 
-In a fair coin-flip game you have 50-50 percent chance of winning, this is because after the coin is flipped there are two possible outcomes:
-`H` and `T`, and you only win in one (`H`).
+이는 동전 던지기에서 나올 수 있는 결과가 `H`와 `T` 둘 밖에 없고, 둘 중 한 경우(`H`)에서만 이길 수 있기 때문입니다.
 
-However, if you can choose to flip again if `tails` comes out, now there are 4 scenarios: `H H` `T H` `H T` `T T`, and in 3 of those
-you win (all the ones including an `H`)!!!.
+그러나 `tails`가 나올 때 다시 뒤집기를 선택할 수 있다면, 이제  `H H` `T H` `H T` `T T` 의 4가지 시나리오가 있습니다.
 
 </details>

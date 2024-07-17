@@ -1,27 +1,26 @@
 ---
 sidebar_position: 6
-sidebar_label: "Base64 params, wrap up"
-title: "Using base64-encoded arguments when we create a new crossword puzzle"
+sidebar_label: "Base64 매개변수, 마무리"
+title: "새 십자말풀이 퍼즐 생성 시 Base64 인코딩된 인자 사용"
 ---
+
 import {Github} from "@site/src/components/codetabs"
 
-# Final modifications
+# 최종 수정
 
 import base64Encode from '/docs/assets/crosswords/boop-base64-encode.gif';
 
-Let's modify our `new_puzzle` method a bit, and demonstrate how a smart contract author might use base64-encoded arguments.
+`new_puzzle` 메서드를 약간 수정하고, 스마트 컨트랙트 작성자가 base64로 인코딩된 인자를 사용하는 방법을 보여드리겠습니다.
 
-In the previous chapter we had a fairly long NEAR CLI command that called the `new_puzzle`, providing it the parameters for all the clues. Having these lengthy parameters on the CLI might get cumbersome. There may be issues needing to escape single or double quotes, and each operating system may wish for a different format on the Terminal or Command Prompt.
+이전 챕터에서 우리는 모든 단서에 대한 매개 변수를 제공하는 `new_puzzle`을 호출하는 상당히 긴 NEAR CLI 명령을 사용했습니다. CLI에 이러한 긴 매개변수가 있으면 번거로울 수 있습니다. 작은따옴표나 큰따옴표를 이스케이프해야 하는 문제가 있을 수 있으며 각 운영 체제는 터미널 또는 명령 프롬프트에서 다른 형식을 원할 수 있습니다.
 
-We're going to send all the arguments as a base64-encoded string, and make this a bit simpler. For this, we're going to use [`Base64VecU8` from the SDK](https://docs.rs/near-sdk/latest/near_sdk/json_types/struct.Base64VecU8.html).
+우리는 모든 인수를 base64로 인코딩된 문자열로 보낼 것이며, 이를 좀 더 간단하게 만들 것입니다. 이를 위해 [SDK에서 `Base64VecU8`](https://docs.rs/near-sdk/latest/near_sdk/json_types/struct.Base64VecU8.html)를 사용할 것입니다
 
-:::note `Base64VecU8` is great for binary payloads
-What we're doing makes sense, but it's worth noting that it's perhaps more common to use `Base64VecU8` when sending binary parameters.
+:::note `Base64VecU8`는 바이너리 페이로드에 적합합니다. 우리가 하고 있는 것은 이치에 맞지만, `Base64VecU8` 바이너리 매개변수를 보낼 때 사용하는 것이 아마도 더 일반적이라는 점은 주목할 가치가 있습니다.
 
-Read more [about it here](../../../2.build/2.smart-contracts/anatomy/serialization-interface.md).
-:::
+Read more [about it here](../../../2.build/2.smart-contracts/anatomy/serialization-interface.md). :::
 
-First we'll set up a struct for the arguments we're expecting:
+먼저 예상되는 인자에 대한 구조체를 설정합니다.
 
 <Github language="rust" start="103" end="108" url="https://github.com/near-examples/crossword-tutorial-chapter-3/blob/master/contract/src/lib.rs" />
 
@@ -29,9 +28,9 @@ Then we modify our `new_puzzle` method like so:
 
 <Github language="rust" start="281" end="289" url="https://github.com/near-examples/crossword-tutorial-chapter-3/blob/master/contract/src/lib.rs" />
 
-We can take our original arguments and base64 encode them, using whatever method you prefer. There are plenty of online tool, Terminal commands, and open source applications like [Boop](https://boop.okat.best).
+우리는 원하는 방법을 사용하여 원래 인수를 가져와 base64로 인코딩할 수 있습니다. 많은 온라인 도구, 터미널 명령 및 [Boop](https://boop.okat.best)과 같은 오픈 소스 애플리케이션이 있습니다.
 
-We'll copy this:
+우리는 다음을 복사할 것입니다:
 
 ```js
 {
@@ -115,14 +114,15 @@ We'll copy this:
 }
 ```
 
-and base64 encode it:
+그리고 이를 base64로 인코딩합니다.
 
 <figure>
-    <img src={base64Encode} alt="Animated gif of parameters getting base64 encoded with the program Boop" width="600"/>
+    <img src={base64Encode} alt="Boop 프로그램으로 base64를 인코딩하는 매개 변수의 애니메이션 gif" width="600"/>
 </figure>
+
 <br/>
 
-Now we can build and run the new crossword puzzle contract as we have before:
+이제 이전과 마찬가지로 새로운 십자말풀이 퍼즐 컨트랙트를 구축하고 실행할 수 있습니다.
 
 ```bash
 cargo near build
@@ -141,20 +141,20 @@ near contract call-function as-transaction $NEAR_ACCT new_puzzle json-args '{
 }' prepaid-gas '100.0 Tgas' attached-deposit '0 NEAR' sign-as $NEAR_ACCT network-config testnet sign-with-legacy-keychain send
 ```
 
-Back at the project root (not in the `contract` directory) we can run our app and see the new crossword puzzle:
+프로젝트 루트(`contract` 디렉토리가 아님)로 돌아가서 앱을 실행하고, 새로운 십자말풀이 퍼즐을 볼 수 있습니다.
 
 ```bash
 CONTRACT_NAME=crossword.friend.testnet npm run start
 ```
 
-## Wrapping up
+## 마무리
 
-Once you understand cross-contract calls and callbacks and where the logic should go, you can build just about anything on NEAR.
+교차 컨트랙트 호출(Cross-contract call) 및 콜백과 로직이 어디로 가야 하는지 이해하면 NEAR에서 거의 모든 것을 구축할 수 있습니다.
 
-This might be a good time for a reminder that this crossword puzzle, which checks permissions to methods based on a public key, is a bit unusual. It's more common to have simple collections or mappings for allowed users, or utilize the `owner_id` field we set up. The account and access key system in NEAR is quite powerful, and hopefully this tutorial helps stretch the limits of what's possible, like the seamless onboarding we have with the crossword puzzle.
+공개 키를 기반으로 메서드에 대한 권한을 확인하는 이 십자말풀이 퍼즐은 약간 특이합니다. 원래라면, 허용된 사용자에 대한 간단한 컬렉션 또는 매핑이 있거나, 설정한 `owner_id` 필드를 활용하는 것이 더 일반적입니다. NEAR의 계정 및 액세스 키 시스템은 매우 강력하며, 이 튜토리얼이 십자말 풀이를 통한 원활한 온보딩과 같이 가능한 것의 한계를 확장하는 데 도움이 되기를 바랍니다.
 
-Again, the final code for this chapter:
+다시 말하지만 이 챕터의 최종 코드는 다음과 같습니다.
 
 https://github.com/near-examples/crossword-tutorial-chapter-3
 
-Happy hacking!
+즐거운 해킹 되세요!

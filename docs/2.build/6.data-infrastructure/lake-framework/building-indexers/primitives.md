@@ -39,7 +39,7 @@ export class Block {
 
 #### `streamerMessage`
 
-Low-level structure for backward compatibility. As implemented in previous versions of [`near-lake-framework`](https://www.npmjs.com/package/near-lake-framework). 
+Low-level structure for backward compatibility. As implemented in previous versions of [`near-lake-framework`](https://www.npmjs.com/package/near-lake-framework).
 
 #### `postponedReceipts`
 
@@ -137,7 +137,7 @@ Returns an Array of Events emitted by `ExecutionOutcome` for the given `account_
 
 ## `BlockHeader`
 
-Replacement for `BlockHeaderView` from `near-primitives`. Shrunken and simplified. 
+Replacement for `BlockHeaderView` from `near-primitives`. Shrunken and simplified.
 
 :::note
 The original `BlockHeaderView` is still accessible via the `.streamerMessage` attribute.
@@ -345,7 +345,7 @@ export class StateChange {
       readonly cause: StateChangeCause, 
       readonly value: StateChangeValue
     ) {}
-    
+
     get affectedAccountId(): string {}
 
     static fromStateChangeView(stateChangeView: StateChangeWithCauseView) {}

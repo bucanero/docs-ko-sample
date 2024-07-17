@@ -1,9 +1,8 @@
 ---
-sidebar_label: "Python tutorial"
+sidebar_label: Python 튜토리얼
 ---
 
-# NEAR Lake indexer basic tutorial
-
+# NEAR Lake 인덱서 기본 튜토리얼
 
 :::info Source code for the tutorial
 
@@ -15,8 +14,7 @@ Recently we have [published a Python version of the NEAR Lake Framework](https:/
 
 We want to empower you with a basic tutorial on how to use the Python Package. Let's get started!
 
-
-## Create a project
+## 프로젝트 생성
 
 Create an indexer project:
 
@@ -25,7 +23,7 @@ mkdir near-lake-raw-printer && cd near-lake-raw-printer
 touch main.py
 ```
 
-## Install dependencies
+## 의존성(dependency) 설치
 
 Install `near-lake-framework`
 
@@ -33,7 +31,7 @@ Install `near-lake-framework`
 pip3 install near-lake-framework
 ```
 
-## Import `near-lake-framework`
+## `near-lake-framework` 가져오기
 
 In the `main.py` file let's import the necessary dependencies:
 
@@ -43,7 +41,7 @@ from near_lake_framework import near_primitives, LakeConfig, streamer
 
 We've imported the main function `streamer`, which will be called to actually run the indexer, `near_primitives`, and `LakeConfig` type we need to construct.
 
-## Create a config
+## 구성(config) 생성
 
 Add the instantiation of `LakeConfig` below:
 
@@ -57,7 +55,7 @@ config.aws_secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
 Just a few words on the config, function `mainnet()` has set `s3_bucket_name`, `s3_region_name` for mainnet.
 You can go to [NEAR Explorer](https://nearblocks.io) and get **the most recent** block height to set `config.start_block_height`.
 
-## Starting the stream
+## 스트림 시작
 
 Let's call `streamer` function with the `config`:
 
@@ -75,7 +73,7 @@ loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
 ```
 
-## All together
+## 모두 합치기
 
 ```python title=main.py
 import asyncio
@@ -122,7 +120,7 @@ You can stop the indexer by pressing CTRL+C
 
 :::danger Credentials
 
-To be able to access the data from [NEAR Lake](/build/data-infrastructure/lake-framework/near-lake) you need to provide credentials. Please, see the [Credentials](../../lake-framework/running-near-lake/credentials.md) article
+To be able to access the data from [NEAR Lake](/build/data-infrastructure/lake-framework/near-lake) you need to provide credentials. Please, see the [Credentials](../running-near-lake/credentials.md) article
 
 :::
 

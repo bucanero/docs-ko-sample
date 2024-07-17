@@ -3,16 +3,16 @@ id: linkdrop
 title: Linkdrops
 hide_table_of_contents: false
 ---
+
 import {FeatureList, Column, Feature} from "@site/src/components/featurelist"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 Linkdrops allow users to distribute assets and onboard people to Web3 apps through a simple web link.
 
 ![Linkdrop](/docs/primitives/linkdrop.png)
 
-They work by storing assets and linking [AccessKeys](../../1.concepts/protocol/access-keys.md) to them. The `AccessKeys` are then distributed to users in the form of web links. These links take users to a website that automatically uses the keys to call the `claim` method in the `linkdrop` contract.
+They work by storing assets and linking [AccessKeys](../1.concepts/protocol/access-keys.md) to them. The `AccessKeys` are then distributed to users in the form of web links. These links take users to a website that automatically uses the keys to call the `claim` method in the `linkdrop` contract.
 
 In order for a contract to be considered a Linkdrop-contract it has to follow the [**NEP-452 standard**](https://github.com/near/NEPs/blob/master/neps/nep-0452.md). The **NEP-452** explains the **minimum interface** required to be implemented, as well as the expected functionality.
 
@@ -513,6 +513,7 @@ near call ft.primitives.near ft_transfer '{"receiver_id": "v2.keypom.near", "amo
 ---
 
 ## Function Call Drop
+
 Linkdrop contracts allow to create `function call` drops. These drops will execute one or more methods on a contract when the user claims the drop.
 
 :::tip

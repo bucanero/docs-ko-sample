@@ -3,21 +3,19 @@ id: near-cli
 title: NEAR CLI
 ---
 
-The NEAR [Command Line Interface](https://github.com/near/near-cli) (CLI) is a tool that enables to interact with the NEAR network directly from the shell. Among other things, the NEAR CLI enables you to:
+NEAR [명령줄(Command Line) 인터페이스](https://github.com/near/near-cli) (CLI)는 쉘에서 직접 NEAR 네트워크와 상호 작용할 수 있는 도구입니다. Among other things, the NEAR CLI enables you to:
 
-- Login with a NEAR account
-- Deploy a contract
-- Interact and query information from a deployed contract
+- NEAR 계정으로 로그인
+- 컨트랙트 배포
+- 배포된 컨트랙트에서 상호 작용 및 정보 쿼리
 
-:::tip
-Under the hood, NEAR CLI utilizes the [`NEAR JavaScript API`](https://github.com/near/near-api-js)
+:::tip 내부적으로 NEAR CLI는 [`NEAR JavaScript API`](https://github.com/near/near-api-js)를 활용합니다. :::
 :::
 ---
 
 :::info
 
-The NEAR CLI also comes with an implementation in Rust called [`near-cli-rs`](https://github.com/near/near-cli-rs).
-If you want to use `near-cli` while you have `near-cli-rs` installed, prefix the following commands with `npx`.
+The NEAR CLI also comes with an implementation in Rust called [`near-cli-rs`](https://github.com/near/near-cli-rs). If you want to use `near-cli` while you have `near-cli-rs` installed, prefix the following commands with `npx`.
 
 :::
 
@@ -25,43 +23,43 @@ If you want to use `near-cli` while you have `near-cli-rs` installed, prefix the
 
 _Click on a command for more information and examples._
 
-| Command                                         | Description                                                                               |
-|-------------------------------------------------|-------------------------------------------------------------------------------------------|
+| 명령                                              | 설명                                                                                        |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | **ACCESS KEYS**                                 |                                                                                           |
 | [`near add-credentials`](#near-add-credentials) | Stores credentials for an account locally                                                 |
-| [`near add-key`](#near-add-key)                 | adds a new access key to an account                                                       |
-| [`near delete-key`](#near-delete-key)           | deletes an access key from an account                                                     |
+| [`near add-key`](#near-add-key)                 | 계정에 새 액세스 키 추가                                                                            |
+| [`near delete-key`](#near-delete-key)           | 계정에서 액세스 키 삭제                                                                             |
 | [`near generate-key`](#near-generate-key)       | generates a key pair and **optionally** stores it locally as credentials for an accountId |
-| [`near list-keys`](#near-keys)                  | displays all access keys and their details for a given account                            |
+| [`near list-keys`](#near-keys)                  | 지정된 계정에 대한 모든 액세스 키 및 세부 정보 표시                                                            |
 | [`near login`](#near-login)                     | stores a full access key locally using [NEAR Wallet](https://wallet.testnet.near.org/)    |
 | **ACCOUNTS**                                    |                                                                                           |
 | [`near create-account`](#near-create-account)   | creates a new account, either using a faucet to fund it, or an account saved locally      |
-| [`near delete-account`](#near-delete)           | deletes an account and transfers remaining balance to a beneficiary account               |
-| [`near list-keys`](#near-keys)                  | displays all access keys for a given account                                              |
-| [`near send-near`](#near-send)                  | sends tokens from one account to another                                                  |
-| [`near state`](#near-state)                     | shows general details of an account                                                       |
+| [`near delete-account`](#near-delete)           | 계정을 삭제하고 남은 잔액을 수령자 계정으로 이체                                                               |
+| [`near list-keys`](#near-keys)                  | 주어진 계정에 대한 모든 액세스 키 표시                                                                    |
+| [`near send-near`](#near-send)                  | 한 계정에서 다른 계정으로 토큰 전송                                                                      |
+| [`near state`](#near-state)                     | 계정 내 세부 정보 확인                                                                             |
 | **CONTRACTS**                                   |                                                                                           |
-| [`near call`](#near-call)                       | makes a contract call which can invoke `change` _or_ `view` methods                       |
-| [`near deploy`](#near-deploy)                   | deploys a smart contract to the NEAR blockchain                                           |
+| [`near call`](#near-call)                       | `change` _또는_ `view` 메서드를 호출할 수 있는 컨트랙트 호출 생성                                             |
+| [`near deploy`](#near-deploy)                   | NEAR 블록체인에 스마트 컨트랙트 배포                                                                    |
 | [`near storage`](#near-storage)                 | Shows the storage state of a given contract, i.e. the data stored in a contract           |
-| [`near view`](#near-view)                       | makes a contract call which can **only** invoke a `view` method                           |
+| [`near view`](#near-view)                       | `view` 메서드**만** 호출할 수 있는 컨트랙트 호출 생성                                                       |
 | **TRANSACTIONS**                                |                                                                                           |
-| [`near tx-status`](#near-tx-status)             | queries a transaction's status by `txHash`                                                |
+| [`near tx-status`](#near-tx-status)             | `txHash`를 통해 트랜잭션 상태 조회                                                                   |
 
 
 ---
 
-## Setup
+## 설정
 
-### Installation
+### 설치
 
-> Make sure you have a current version of `npm` and `NodeJS` installed.
+> `npm`과 `NodeJS`의 최신 버전이 설치되었는지 확인하세요.
 
-#### Mac and Linux
+#### Mac / Linux
 
-1. Install `npm` and `node` using a package manager like `nvm` as sometimes there are issues using Ledger due to how OS X handles node packages related to USB devices. [[click here]](https://nodejs.org/en/download/package-manager/)
-2. Ensure you have installed Node version 12 or above.
-3. Install `near-cli` globally by running:
+1. OS X가 USB 장치와 관련된 노드 패키지를 처리하는 방식으로 인해 때때로 Ledger를 사용하는 데 문제가 있으므로, `nvm`과 같은 패키지 관리자를 사용하여 `npm` 및 `node`를 설치합니다. [여기를 클릭하세요](https://nodejs.org/en/download/package-manager/).
+2. Node 버전 12 이상을 설치했는지 확인하세요.
+3. 다음을 실행하여 `near-cli`를 전역적으로 설치합니다.
 
 ```bash
 npm install -g near-cli
@@ -85,14 +83,14 @@ near --help
 
 #### Windows
 
-> For Windows users, we recommend using Windows Subsystem for Linux (`WSL`).
+> Windows 사용자의 경우, Linux용 Windows 하위 시스템(`WSL`)을 사용하는 것이 좋습니다.
 
-1. Install `WSL` [[click here]](https://docs.microsoft.com/en-us/windows/wsl/install-manual#downloading-distros)
-2. Install `npm` [[click here]](https://www.npmjs.com/get-npm)
-3. Install ` Node.js` [ [ click here ]](https://nodejs.org/en/download/package-manager/)
-4. Change `npm` default directory [ [ click here ] ](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally#manually-change-npms-default-directory)
-    - This is to avoid any permission issues with `WSL`
-5. Open `WSL` and install `near-cli` globally by running:
+1. `WSL` 설치 [[여기를 클릭하세요]](https://docs.microsoft.com/en-us/windows/wsl/install-manual#downloading-distros)
+2. `npm` 설치 [[여기를 클릭하세요]](https://www.npmjs.com/get-npm)
+3. `Node.js` 설치 [[여기를 클릭하세요]](https://nodejs.org/en/download/package-manager/)
+4. `npm` 기본 디렉토리 변경 [[여기를 클릭하세요]](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally#manually-change-npms-default-directory)
+    - 이는 `WSL` 권한 문제를 피하기 위한 것입니다.
+5. 다음을 실행하여 `WSL`을 열고 `near-cli`를 전역적으로 설치
 
 ```bash
 npm install -g near-cli
@@ -100,17 +98,17 @@ npm install -g near-cli
 
 ---
 
-### Network selection
+### 네트워크 선택
 
-> The default network for `near-cli` is `testnet`.
+> `near-cli`의 기본 네트워크는 `testnet`입니다.
 
-- You can change the network by prepending an environment variable to your command.
+- 명령 앞에 환경 변수를 추가하여 네트워크를 변경할 수 있습니다.
 
 ```bash
 NEAR_NETWORK=testnet near send ...
 ```
 
-- Alternatively, you can set up a global environment variable by running:
+- 또는, 다음을 실행하여 전역 환경 변수를 설정할 수 있습니다.
 
 ```bash
 export NEAR_NETWORK=mainnet
@@ -141,7 +139,7 @@ export NEAR_TESTNET_RPC=<put_your_rpc_server_url_here>
 ```
 ---
 
-## Access Keys
+## 액세스 키
 
 All keys are stored locally at the root of your `HOME` directory:
   -   `~/.near-credentials` _(MAC / Linux)_
@@ -157,7 +155,7 @@ These network subdirectories contain `.JSON` objects with an:
 ### `near add-credentials <accountId>`
 > Stores credentials (full-access-key) locally for an already existing account.
 
--   arguments: `accountId`
+-   인수: `accountId`
 -   options: `--seedPhrase` or `--secretKey`
 
 **Examples:**
@@ -176,9 +174,9 @@ near add-credentials example-acct.testnet --seedPhrase "antique attitude say evo
 
 **Note:** You will use an _existing_ full access key for the account you would like to add a _new_ key to. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
-#### 1) add a `full access` key
+#### 1) `전체 액세스` 키 추가
 
-- arguments: `accountId` `publicKey`
+- 인자: `accountId` `publicKey`
 
 **Example:**
 
@@ -202,15 +200,15 @@ near add-key example-acct.testnet Cxg2wgFYrdLTEkMu6j5D6aEZqTb3kXbmJygS48ZKbo1S
 
 #### 2) add a `function call` key
 
--   arguments: `accountId` `publicKey` `--contract-id`
--   options: `--method-names` `--allowance`
+-   인자: `accountId` `publicKey` `--contract-id`
+-   옵션: `--method-names` `--allowance`
 
-> `accountId` is the account you are adding the key to
->
-> `--contract-id` is the contract you are allowing methods to be called on
->
-> `--method-names` are optional and if omitted, all methods of the `--contract-id` can be called.
->
+> `accountId`는 키를 추가할 계정입니다.
+> 
+> `--contract-id`는 메서드 호출을 허용하는 컨트랙트입니다.
+> 
+> `--method-names`는 선택 사항이며, 생략하면 `--contract-id`의 모든 메서드를 호출할 수 있습니다.
+> 
 > `--allowance` is the amount of Ⓝ the key is allowed to spend on gas fees _only_ (default: 0).
 
 **Note:** Each transaction made with this key will have gas fees deducted from the initial allowance and once it runs out a new key must be issued.
@@ -239,10 +237,9 @@ near add-key example-acct.testnet GkMNfc92fwM1AmwH1MTjF4b7UZuceamsq96XPkHsQ9vi -
 
 ### `near delete-key`
 
-> Deletes an existing key for a given account.
-> Optionally allows to sign with a Ledger: `--signWithLedger` `--ledgerPath`
+> 지정된 계정의 기존 키를 삭제합니다. Optionally allows to sign with a Ledger: `--signWithLedger` `--ledgerPath`
 
--   arguments: `accountId` `publicKey`
+-   인자: `accountId` `publicKey`
 -   options: `--networkId`, `force`
 
 **Note:** You will need separate full access key for the account you would like to delete a key from. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
@@ -271,7 +268,7 @@ near delete-key example-acct.testnet Cxg2wgFYrdLTEkMu6j5D6aEZqTb3kXbmJygS48ZKbo1
 
 > Displays a key-pair and seed-phrase and optionally stores it locally in `.near-credentials`.
 
--   arguments: `accountId` or `none`
+-   인자: `accountId` 또는 `none`
 -   options: `--fromSeedPhrase`, `--saveImplicit`, `--queryLedgerPK`
 
 **Note:** There are several ways to use `generate-key` that return very different results. Please reference the examples below for further details.
@@ -329,7 +326,7 @@ Saving key to '~/.near-credentials/testnet/9d6e4506ac06ab66a25f6720e400ae26bad40
 
 #### 2) `near generate-key accountId`
 
-> Creates a key pair locally in `.near-credentials` with an `accountId` that you specify.
+> 특정 `accountId`로 `.near-credentials` 내 로컬에서 키 쌍을 생성합니다.
 
 **Note:** This does NOT create an account with this name.
 
@@ -455,14 +452,13 @@ Implicit account: 42c320xc20739ASD9a6bqf2Dsaf289z61rd14efe5d3de23213789009afDsd5
 </p>
 </details>
 
-
 ---
 
 ### `near list-keys`
 
-> Displays all access keys for a given account.
+> 지정된 계정에 대한 모든 액세스 키를 표시합니다.
 
--   arguments: `accountId`
+-   인자: `accountId`
 
 **Example:**
 
@@ -507,7 +503,7 @@ Keys for account client.chainlink.testnet
 
 > locally stores a full access key of an account you created with [MyNEARWallet](https://testnet.mynearwallet.com/).
 
--   arguments: `none`
+-   인자: `none`
 -   options: `--networkId`
 
 **Example:**
@@ -527,7 +523,7 @@ near login
 
 ---
 
-## Accounts
+## 계정
 
 ### `near create-account`
 
@@ -592,9 +588,9 @@ near create-account sub-acct2.example-acct.testnet --useAccount example-acct.tes
 
 ### `near delete-account`
 
-> Deletes an account and transfers remaining balance to a beneficiary account.
+> 계정을 삭제하고 남은 잔액을 수령자 계정으로 이체합니다.
 
--   arguments: `accountId` `beneficiaryId`
+-   인자: `accountId` `beneficiaryId`
 -   options: `force`, `--signWithLedger`, `--ledgerPath`
 
 **Example:**
@@ -623,9 +619,9 @@ near delete-account sub-acct2.example-acct.testnet example-acct.testnet
 
 ### `near send-near`
 
-> Sends NEAR tokens (Ⓝ) from one account to another.
+> 한 계정에서 다른 계정으로 NEAR 토큰(Ⓝ)을 보냅니다.
 
-- arguments: `senderId` `receiverId` `amount`
+- 인자: `senderId` `receiverId` `amount`
 - options: `--signWithLedger`, `--ledgerPath`
 
 **Note:** You will need a full access key for the sending account. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
@@ -654,7 +650,7 @@ near send-near sender.testnet receiver.testnet 10
 
 ### `near state`
 
-> Shows details of an account's state.
+> 계정 상태의 세부 정보를 표시합니다.
 
 -   arguments: `accountId`
 
@@ -686,7 +682,7 @@ near state example.testnet
 
 ---
 
-## Contracts
+## 컨트랙트
 
 ### `near call`
 
@@ -694,7 +690,7 @@ near state example.testnet
 
 **Note:** Contract calls require a transaction fee (gas) so you will need an access key for the `--accountId` that will be charged. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
--   arguments: `contractName` `method_name` `{ args }` `--accountId`
+-   인자: `contractName` `method_name` `{ args }` `--accountId`
 -   options: `--gas` `--deposit` `--signWithLedger` `--ledgerPath`
 
 **Example:**
@@ -722,10 +718,10 @@ near call guest-book.testnet addMessage '{"text": "Aloha"}' --account-id example
 
 ### `near deploy`
 
-> Deploys a smart contract to a given accountId.
+> 지정된 accountId에 스마트 컨트랙트를 배포합니다.
 
--   arguments: `accountId` `.wasmFile`
--   options: `initFunction` `initArgs` `initGas` `initDeposit`
+-   인자: `accountId` `.wasmFile`
+-   옵션: `initFunction` `initArgs` `initGas` `initDeposit`
 
 **Note:** You will need a full access key for the account you are deploying the contract to. ([`near login`](http://docs.near.org/docs/tools/near-cli#near-login))
 
@@ -785,10 +781,10 @@ near storage hello.near-examples.testnet --finality optimistic --utf8
 
 ### `near view`
 
-> Makes a contract call which can **only** view state. _(Call is free of charge)_
+> 상태**만** 볼 수 있는 컨트랙트 호출을 만듭니다. _(호출 비용은 무료)_
 
--   arguments: `contractName` `method_name` `{ args }`
--   options: `default`
+-   인자: `contractName` `method_name` `{ args }`
+-   옵션: `default`
 
 **Example:**
 
@@ -826,14 +822,14 @@ near view guest-book.testnet getMessages '{}'
 
 ---
 
-## Transactions
+## 트랜잭션
 
 ### `near tx-status`
 
 > Queries transaction status by hash and accountId.
 
 -   arguments: `txHash` `--accountId`
--   options: `default`
+-   옵션: `default`
 
 **Example:**
 
@@ -922,8 +918,8 @@ Transaction guest-book.testnet:FY8hBam2iyQfdHkdR1dp6w5XEPJzJSosX1wUeVPyUvVK
 
 ## Global Options
 
-| Option                      | Description                                                                                     |
-|-----------------------------|-------------------------------------------------------------------------------------------------|
-| `--help`                    | Show help  [boolean]                                                                            |
-| `--version`                 | Show version number  [boolean]                                                                  |
-| `-v, --verbose`             | Prints out verbose output  [boolean] [default: false]                                           |
+| 옵션              | 설명                                                            |
+| --------------- | ------------------------------------------------------------- |
+| `--help`        | Show help  [boolean]                                          |
+| `--version`     | Show version number  [boolean]                                |
+| `-v, --verbose` | Prints out verbose output  \[boolean\] \[default: false\] |

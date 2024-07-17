@@ -1,20 +1,20 @@
 ---
 id: predeployed-contract
-title: Pre-deployed Contract
-sidebar_label: Pre-deployed Contract
+title: 사전 배포된 컨트랙트
+sidebar_label: 사전 배포된 컨트랙트
 ---
 
 Create your first non-fungible token by using a pre-deployed NFT smart contract which works exactly as the one you will build on this tutorial.
 
 ---
 
-## Prerequisites
+## 전제 조건
 
 To complete this tutorial successfully, you'll need [a NEAR Wallet](https://testnet.mynearwallet.com/create) and [NEAR CLI RS](../../4.tools/cli-rs.md#setup)
 
 ---
 
-## Using the NFT contract
+## NFT 컨트랙트 사용
 
 Minting an NFT token on NEAR is a simple process that involves calling a smart contract function.
 
@@ -22,15 +22,15 @@ To interact with the contract you will need to first login to your NEAR account 
 
 <hr class="subsection" />
 
-### Setup
+### 설정
 
-Log in to your newly created account with `near-cli` by running the following command in your terminal:
+터미널에서 다음 명령을 실행하여 새로 만든 계정에 `near-cli`로 로그인합니다.
 
 ```bash
 near account import-account using-web-wallet network-config testnet
 ```
 
-Set an environment variable for your account ID to make it easy to copy and paste commands from this tutorial:
+이 튜토리얼에서 명령을 쉽게 복사하고 붙여넣을 수 있도록 계정 ID에 대한 환경 변수를 설정합니다.
 
 ```bash
 export NEARID=YOUR_ACCOUNT_NAME
@@ -38,7 +38,7 @@ export NEARID=YOUR_ACCOUNT_NAME
 
 <hr class="subsection" />
 
-### Minting your NFTs
+### NFT 발행
 
 We have already deployed an NFT contract to `nft.examples.testnet` which allows users to freely mint tokens. Let's use it to mint our first token.
 
@@ -49,7 +49,7 @@ near contract call-function as-transaction nft.examples.testnet nft_mint json-ar
 ```
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -63,22 +63,20 @@ https://testnet.nearblocks.io/txns/8RFWrQvAsm2grEsd1UTASKpfvHKrjtBdEyXu7WqGBPUr
 </p>
 </details>
 
-:::tip
-You can also replace the `media` URL with a link to any image file hosted on your web server.
-:::
+:::tip `media` URL을 웹 서버에서 호스팅되는 이미지 파일에 대한 링크로 바꿀 수도 있습니다. :::
 
 <hr class="subsection" />
 
 ### Querying your NFT
 
-To view tokens owned by an account you can call the NFT contract with the following `near-cli` command:
+계정이 소유한 토큰을 보려면 다음 `near-cli` 명령을 사용하여 NFT 컨트랙트를 호출할 수 있습니다.
 
 ```bash
 near contract call-function as-read-only nft.examples.testnet nft_tokens_for_owner json-args '{"account_id": "'$NEARID'"}' network-config testnet now
 ```
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -114,17 +112,17 @@ Now try going to your [NEAR Wallet](https://testnet.mynearwallet.com) and view y
 
 ---
 
-## Final remarks
+## 끝맺는 말
 
-This basic example illustrates all the required steps to call an NFT smart contract on NEAR and start minting your own non-fungible tokens.
+이 기본 예제는 NEAR에서 NFT 스마트 컨트랙트를 호출하고 대체 불가능 토큰을 만들기 시작하는 데 필요한 모든 단계를 보여줍니다.
 
-Now that you're familiar with the process, you can jump to [Contract Architecture](/tutorials/nfts/skeleton) and learn more about the smart contract structure and how you can build your own NFT contract from the ground up.
+이제 프로세스에 익숙해졌으므로 [컨트랙트 아키텍처](/tutorials/nfts/skeleton)로 이동하여 스마트 컨트랙트 구조와 처음부터 자체 NFT 컨트랙트를 구축하는 방법에 대해 자세히 알아볼 수 있습니다.
 
-***Happy minting!*** 🪙
+***즐거운 민팅되세요!*** 🪙
 
-:::note Versioning for this article
+:::note 문서 버전 관리
 
-At the time of this writing, this example works with the following versions:
+이 글을 쓰는 시점에서 이 예제는 다음 버전에서 작동합니다.
 
 - near-cli-rs: `0.11.0`
 - NFT standard: [NEP171](https://nomicon.io/Standards/Tokens/NonFungibleToken/Core), version `1.0.0`

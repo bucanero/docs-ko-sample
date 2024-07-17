@@ -1,6 +1,6 @@
 ---
 id: sdk
-title: "NEAR SDK"
+title: NEAR SDK
 hide_table_of_contents: false
 ---
 
@@ -19,69 +19,70 @@ The best place to start learning is our [QuickStart Guide](../2.build/2.smart-co
 
 <FeatureList>
   <Column title="" size="6">
-    <Feature url="https://docs.rs/near-sdk/latest/near_sdk/" title="Rust SDK" subtitle="Rust SDK Reference docs" image="smartcontract-rust.png" />
-  </Column>
+    <Feature url="https://docs.rs/near-sdk/latest/near_sdk/" title="Rust SDK" subtitle="Rust SDK Reference docs" image="smartcontract-rust.png" /></Column>
   <Column title="" size="6">
-    <Feature url="https://near.github.io/near-sdk-js/" title="JavaScript SDK" subtitle="Javascript SDK Reference docs" image="smartcontract-js.png" />
-  </Column>
+    <Feature url="https://near.github.io/near-api-js/" title="JavaScript SDK" subtitle="Javascript SDK Reference docs" image="smartcontract-js.png" /></Column>
 </FeatureList>
 
 ---
 
 ## Smart Contracts on NEAR
 
-
 This is how a smart contract written in Rust and JavaScript using the NEAR SDK looks like:
 
 <Tabs groupId="code-tabs">
   <TabItem value="js" label="🌐 JavaScript">
 
-    ```js
-    @NearBindgen({})
-    class HelloNear {
-      greeting: string = 'Hello';
+````
+```js
+@NearBindgen({})
+class HelloNear {
+  greeting: string = 'Hello';
 
-      @view({}) // This method is read-only and can be called for free
-      get_greeting(): string {
-        return this.greeting;
-      }
+  @view({}) // This method is read-only and can be called for free
+  get_greeting(): string {
+    return this.greeting;
+  }
 
-      @call({}) // This method changes the state, for which it cost gas
-      set_greeting({ greeting }: { greeting: string }): void {
-        near.log(`Saving greeting ${greeting}`);
-        this.greeting = greeting;
-      }
-    }
-    
-    ```
+  @call({}) // This method changes the state, for which it cost gas
+  set_greeting({ greeting }: { greeting: string }): void {
+    near.log(`Saving greeting ${greeting}`);
+    this.greeting = greeting;
+  }
+}
+
+```
+````
 
   </TabItem>
 
   <TabItem value="rust" label="🦀 Rust">
 
-    ```rust
-    #[near(contract_state)]
-    pub struct Contract {
-        greeting: String,
+````
+```rust
+#[near(contract_state)]
+pub struct Contract {
+    greeting: String,
+}
+
+impl Default for Contract {
+    fn default() -> Self {
+        Self { greeting: "Hello".to_string(), }
+    }
+}
+
+#[near]
+impl Contract {
+    pub fn get_greeting(&self) -> String {
+        self.greeting.clone()
     }
 
-    impl Default for Contract {
-        fn default() -> Self {
-            Self { greeting: "Hello".to_string(), }
-        }
+    pub fn set_greeting(&mut self, greeting: String) {
+        self.greeting = greeting;
     }
-
-    #[near]
-    impl Contract {
-        pub fn get_greeting(&self) -> String {
-            self.greeting.clone()
-        }
-
-        pub fn set_greeting(&mut self, greeting: String) {
-            self.greeting = greeting;
-        }
-    }
-    ```
+}
+```
+````
 
   </TabItem>
 
@@ -118,7 +119,7 @@ If you are new to smart contracts, we recommend you start with our [Smart Contra
 If you need to find a specific function signature, or understand the SDK struct/classes, please visit the SDK specific pages:
 
 - [Rust SDK](https://docs.rs/near-sdk/latest/near_sdk/)
-- [JavaScript SDK](https://near.github.io/near-sdk-js/)
+- [JavaScript SDK](https://near.github.io/near-api-js/)
 
 :::tip
 

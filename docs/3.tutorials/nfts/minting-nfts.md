@@ -1,34 +1,33 @@
 ---
 id: minting-nfts
-title: Minting NFTs
-sidebar_label: Minting NFTs
+title: NFT 발행
+sidebar_label: NFT 발행
 ---
 
-In this tutorial you'll learn how to easily create your own NFTs without doing any software development by using a readily-available smart contract and a decentralized storage solution like [IPFS](https://ipfs.io/).
+이 튜토리얼에서는 쉽게 사용할 수 있는 스마트 컨트랙트와, [IPFS](https://ipfs.io/)와 같은 분산 스토리지 솔루션을 사용하여 소프트웨어 개발을 하지 않고도 자신만의 NFT를 쉽게 생성하는 방법을 배웁니다.
 
-## Overview {#overview}
+## 개요 {#overview}
 
-This article will guide you in setting up an [NFT smart contract](#non-fungible-token-contract), and show you [how to build](#building-the-contract), [test](#testing-the-contract) and [deploy](#deploying-the-contract) your NFT contract on NEAR.
-Once the contract is deployed, you'll learn [how to mint](#minting-your-nfts) non-fungible tokens from media files [stored on IPFS](#uploading-the-image) and view them in your Wallet.
+이 글은 [NFT 스마트 컨트랙트](#non-fungible-token-contract)를 설정하는 방법에 대해 안내하고, NEAR에서 NFT 컨트랙트를 [구축](#building-the-contract), [테스트](#testing-the-contract) 및 [배포](#deploying-the-contract)하는 방법에 대해 보여줍니다. 컨트랙트가 배포되면 [IPFS에 저장된](#uploading-the-image) 미디어 파일에서 대체 불가능한 토큰을 생성하고, 이를 지갑에서 보는 방법을 배우게 됩니다.
 
-## Prerequisites {#prerequisites}
+## 전제 조건 {#prerequisites}
 
-To complete this tutorial successfully, you'll need:
+이 튜토리얼을 성공적으로 완료하려면 다음이 필요합니다.
 
-- [Rust toolchain](/build/smart-contracts/quickstart#prerequisites)
-- [A NEAR account](#wallet)
-- [NEAR command-line interface](/tools/near-cli#setup) (`near-cli`)
+- [Rust 툴체인](/build/smart-contracts/quickstart#prerequisites)
+- [NEAR 계정](#wallet)
+- [NEAR 명령줄 인터페이스](/tools/near-cli#설정) (`near-cli`)
 
 ## Wallet {#wallet}
 
-To store your non-fungible tokens you'll need a [NEAR Wallet](https://testnet.mynearwallet.com//).
-If you don't have one yet, you can create one easily by following [these instructions](https://testnet.mynearwallet.com/create).
+To store your non-fungible tokens you'll need a [NEAR Wallet](https://testnet.mynearwallet.com//). If you don't have one yet, you can create one easily by following [these instructions](https://testnet.mynearwallet.com/create).
 
-> **Tip:** for this tutorial we'll use a `testnet` wallet account. The `testnet` network is free and there's no need to deposit funds.
+> **팁:** 이 튜토리얼에서는 `testnet` 지갑 계정을 사용합니다. `testnet` 네트워크는 무료이며, 자금을 예치할 필요가 없습니다.
 
 Once you have your Wallet account, you can click on the [Collectibles](https://testnet.mynearwallet.com//?tab=collectibles) tab where all your NFTs will be listed:
 
 ![Wallet](/docs/assets/nfts/nft-wallet.png)
+
 
 <!--
 Briefly talks about how the wallet listens for methods that start with `nft_` and then flags the contracts.
@@ -36,9 +35,9 @@ Briefly talks about how the wallet listens for methods that start with `nft_` an
 
 ## IPFS {#ipfs}
 
-The [InterPlanetary File System](https://ipfs.io/) (IPFS) is a protocol and peer-to-peer network for storing and sharing data in a distributed file system. IPFS uses content-addressing to uniquely identify each file in a global namespace connecting all computing devices.
+IPFS ([InterPlanetary File System](https://ipfs.io/))는 분산 파일 시스템에서 데이터를 저장하고 공유하기 위한 프로토콜 및 피어 투 피어 네트워크입니다. IPFS는 콘텐츠 주소를 지정하여 모든 컴퓨팅 장치를 연결하는 글로벌 네임스페이스에서 각 파일을 고유하게 식별합니다.
 
-### Uploading the image {#uploading-the-image}
+### 이미지 업로드 {#uploading-the-image}
 
 To upload the NFT image, you should use a [decentralized storage](/concepts/storage/storage-solutions) provider such as IPFS.
 
@@ -52,30 +51,27 @@ Once you have uploaded your file to IPFS, you'll get a unique `CID` for your con
 https://bafyreiabag3ztnhe5pg7js4bj6sxuvkz3sdf76cjvcuqjoidvnfjz7vwrq.ipfs.dweb.link/
 ```
 
-## Non-fungible Token contract {#non-fungible-token-contract}
+## 대체 불가능 토큰 컨트랙트 {#non-fungible-token-contract}
 
-[This repository](https://github.com/near-examples/NFT) includes an example implementation of a [non-fungible token] contract which uses [near-contract-standards] and simulation tests.
+[이 레퍼지토리](https://github.com/near-examples/NFT)에는 [컨트랙트 표준][] 및 시뮬레이션 테스트를 사용하는 [대체 불가능 토큰][] 컨트랙트의 구현 예시가 포함되어 있습니다.
 
-[non-fungible token]: https://nomicon.io/Standards/NonFungibleToken
-[near-contract-standards]: https://github.com/near/near-sdk-rs/tree/master/near-contract-standards
+### NFT 레퍼지토리 복제 {#clone-the-nft-repository}
 
-### Clone the NFT repository {#clone-the-nft-repository}
-
-In your terminal run the following command to clone the NFT repo:
+터미널에서 다음 명령을 실행하여 NFT 레퍼지토리를 복제합니다.
 
 ```
 git clone https://github.com/near-examples/NFT
 ```
 
-### Explore the smart contract {#explore-the-smart-contract}
+### 스마트 컨트랙트 알아보기 {#explore-the-smart-contract}
 
-The source code for this contract can be found in `nft/src/lib.rs`. This contract contains logic which follows the [NEP-171 standard][non-fungible token] (NEAR Enhancement Proposal) and the implementation of this standard which can be found [here](https://github.com/near/near-sdk-rs/blob/master/near-contract-standards/src/non_fungible_token/core/core_impl.rs).
+이 컨트랙트의 소스 코드는 `nft/src/lib.rs`에서 찾을 수 있습니다. 이 컨트랙트에는 [NEP-171 표준](https://nomicon.io/Standards/Tokens/NonFungibleToken)(NEAR Enhancement Proposal)을 따르는 로직과 [여기](https://github.com/near/near-sdk-rs/blob/master/near-contract-standards/src/non_fungible_token/core/core_impl.rs)에서 찾을 수 있는 표준의 구현이 포함되어 있습니다.
 
-At first, the code can be a bit overwhelming, but if we only consider the aspects involved with minting, we can break it down into 2 main categories - the contract struct and the minting process.
+처음에는 코드가 다소 복잡할 수 있지만, 발행과 관련된 측면만 고려하면 컨트랙트 구조와 발행 프로세스라는 두 가지 주요 범주로 나눌 수 있습니다.
 
-#### Contract Struct {#contract-struct}
+#### 컨트랙트 구조 {#contract-struct}
 
-The contract keeps track of two pieces of information - `tokens` and `metadata`. For the purpose of this tutorial we will only deal with the `tokens` field.
+컨트랙트는 `tokens`과 `metadata` 두 가지 정보를 추적합니다. 이 튜토리얼의 목적을 위해, 우리는 `tokens` 필드만 다룰 것입니다.
 
 ```rust
 #[near(contract_state)]
@@ -86,7 +82,7 @@ pub struct Contract {
 }
 ```
 
-The tokens are of type `NonFungibleToken` which come from the [core standards](https://github.com/near/near-sdk-rs/blob/master/near-contract-standards/src/non_fungible_token/core/core_impl.rs). There are several fields that make up the struct but for the purpose of this tutorial, we'll only be concerned with the `owner_by_id` field. This keeps track of the owner for any given token.
+이 토큰은 [핵심 표준](https://github.com/near/near-sdk-rs/blob/master/near-contract-standards/src/non_fungible_token/core/core_impl.rs) 내 `NonFungibleToken` 자료형입니다. 구조체를 구성하는 여러 필드가 있지만, 이 튜토리얼의 목적상 `owner_by_id` 필드에만 관심을 둘 것입니다. 이 필드는 주어진 토큰의 소유자를 추적합니다.
 
 ```rust
 pub struct NonFungibleToken {
@@ -100,17 +96,17 @@ pub struct NonFungibleToken {
 }
 ```
 
-Now that we've explored behind the scenes and where the data is being kept, let's move to the minting functionality.
+이제 뒤에서 데이터가 어디에 보관되는지 살펴보았으므로, 발행 기능으로 이동하겠습니다.
 
-#### Minting {#minting}
+#### 발행 {#minting}
 
-In order for a token to be minted you will need to call the `nft_mint` function. There are three arguments that are passed to this function:
+토큰을 발행하려면 `nft_mint` 함수를 호출해야 합니다. 이 함수에 전달되는 세 가지 인자는 다음과 같습니다.
 
 - `token_id`
 - `receiver_id`
 - `token_metadata`
 
-This function executes `self.tokens.mint` which calls the mint function in the [core standards](https://github.com/near/near-sdk-rs/blob/master/near-contract-standards/src/non_fungible_token/core/core_impl.rs) creating a record of the token with the owner being `receiver_id`.
+이 함수는 [핵심 표준](https://github.com/near/near-sdk-rs/blob/master/near-contract-standards/src/non_fungible_token/core/core_impl.rs)에서 발행 함수를 호출하는 `self.tokens.mint`를 실행하여, `receiver_id`인 소유자의 토큰 기록을 생성합니다.
 
 ```rust
 #[payable]
@@ -124,72 +120,70 @@ pub fn nft_mint(
 }
 ```
 
-This creates that record by inserting the token into the `owner_by_id` data structure that we mentioned in the previous section.
+이는 이전 섹션에서 언급한 `owner_by_id` 자료구조에 토큰을 삽입하여 해당 기록을 생성합니다.
 
 ```rust
 self.owner_by_id.insert(&token_id, &owner_id);
 ```
 
-### Building the contract {#building-the-contract}
+### 컨트랙트 구축 {#building-the-contract}
 
-To build your contract run the following command in your terminal which builds your contract using Rust's `cargo`.
+컨트랙트를 구축하려면, 터미널에서 다음 명령을 실행해 Rust의 `cargo`를 사용하는 컨트랙트를 구축하세요.
 
 ```bash
 ./scripts/build.sh
 ```
 
-This will generate WASM binaries into your `res/` directory. This WASM file is the smart contract we'll be deploying onto the NEAR blockchain.
+이렇게 하면 `res/` 디렉토리에 WASM 바이너리가 생성됩니다. 이 WASM 파일은 NEAR 블록체인에 배포할 스마트 컨트랙트입니다.
 
 > **Tip:** If you run into errors make sure you have [Rust installed](/build/smart-contracts/quickstart#prerequisites) and are in the root directory of the NFT example.
 
-### Testing the contract {#testing-the-contract}
+### 컨트랙트 테스트 {#testing-the-contract}
 
-Written in the smart contract there are pre-written tests that you can run. Run the following command in your terminal to perform these simple tests to verify that your contract code is working.
+스마트 컨트랙트에는, 실행할 수 있는 미리 작성된 테스트가 작성되어 있습니다. 터미널에서 다음 명령을 실행하여 간단한 테스트를 수행하고, 컨트랙트 코드가 작동하는지 확인하십시오.
 
 ```bash
 cargo test -- --nocapture
 ```
 
-> **Note:** the more complex simulation tests aren't performed with this command but you can find them in `tests/sim`.
+> **참고:** 더 복잡한 시뮬레이션 테스트는 이 명령으로 수행되지 않지만, `tests/sim`에서 찾을 수 있습니다.
 
-## Using the NFT contract {#using-the-nft-contract}
+## NFT 컨트랙트 사용 {#using-the-nft-contract}
 
-Now that you have successfully built and tested the NFT smart contract, you're ready to [deploy it](#deploying-the-contract)
-and start using it [mint your NFTs](#minting-your-nfts).
+NFT 스마트 컨트랙트를 성공적으로 구축하고 테스트했으므로, 이제 이를 [배포](#deploying-the-contract)하고,이를 사용해 [NFT를 발행](#minting-your-nfts)할 준비가 되었습니다.
 
-### Deploying the contract {#deploying-the-contract}
+### 컨트랙트 배포 {#deploying-the-contract}
 
-This smart contract will be deployed to your NEAR account. Because NEAR allows the ability to upgrade contracts on the same account, initialization functions must be cleared.
+이 스마트 컨트랙트는 NEAR 계정에 배포됩니다. NEAR는 동일한 계정에서 컨트랙트를 업그레이드할 수 있는 기능을 허용하므로, 초기화 함수를 클리어해야 합니다.
 
-> **Note:** If you'd like to run this example on a NEAR account that has had prior contracts deployed, please use the `near-cli` command `near delete` and then recreate it in Wallet. To create (or recreate) an account, please follow the directions in [Test Wallet](https://testnet.mynearwallet.com/) or ([NEAR Wallet](https://wallet.near.org/) if we're using `mainnet`).
+> **참고:** 이전에 컨트랙트가 배포되었던 NEAR 계정에서 이 예제를 실행하려면, `near delete`라는 `near-cli` 명령을 사용한 다음 지갑에서 이를 재생성하세요. To create (or recreate) an account, please follow the directions in [Test Wallet](https://testnet.mynearwallet.com/) or ([NEAR Wallet](https://wallet.near.org/) if we're using `mainnet`).
 
-Log in to your newly created account with `near-cli` by running the following command in your terminal.
+터미널에서 다음 명령을 실행하여 `near-cli`로 새로 만든 계정에 로그인하세요.
 
 ```bash
 near login
 ```
 
-To make this tutorial easier to copy/paste, we're going to set an environment variable for your account ID. In the command below, replace `YOUR_ACCOUNT_NAME` with the account name you just logged in with including the `.testnet` (or `.near` for `mainnet`):
+이 튜토리얼을 더 쉽게 복사/붙여넣기할 수 있도록, 계정 ID에 대한 환경 변수를 설정하겠습니다. 아래 명령에서 `YOUR_ACCOUNT_NAME`를 `.testnet` (또는`mainnet`을 쓰는 경우 `.near`)에서 방금 로그인한 계정 이름으로 바꿔 보세요.
 
 ```bash
 export ID=YOUR_ACCOUNT_NAME
 ```
 
-Test that the environment variable is set correctly by running:
+다음을 실행하여 환경 변수가 올바르게 설정되었는지 테스트합니다.
 
 ```bash
 echo $ID
 ```
 
-Verify that the correct account ID is printed in the terminal. If everything looks correct you can now deploy your contract.
-In the root of your NFT project run the following command to deploy your smart contract.
+터미널에 올바른 계정 ID가 표시되어 있는지 확인하십시오. 모든 것이 올바르게 보이면 이제 컨트랙트를 배포할 수 있습니다. NFT 프로젝트의 루트에서 다음 명령을 실행하여 스마트 컨트랙트를 배포합니다.
 
 ```bash
-near deploy $ID res/non_fungible_token.wasm
+near deploy --wasmFile res/non_fungible_token.wasm --accountId $ID
 ```
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```bash
@@ -203,30 +197,28 @@ Done deploying to ex-1.testnet
 </p>
 </details>
 
-> **Note:** For `mainnet` you will need to prepend your command with `NEAR_ENV=mainnet`. [See here](/tools/near-cli#network-selection) for more information.
+> **참고:** `mainnet`에서는 명령 앞에 `NEAR_ENV=mainnet`를 붙여야 합니다. 더 많은 정보는 [여기서 볼 수 있습니다](/tools/near-cli#네트워크-선택).
 
-### Minting your NFTs {#minting-your-nfts}
+### NFT 발행 {#minting-your-nfts}
 
-A smart contract can define an initialization method that can be used to set the contract's initial state.
-In our case, we need to initialize the NFT contract before usage. For now, we'll initialize it with the default metadata.
+스마트 컨트랙트는 컨트랙트의 초기 상태를 설정하는 데 사용할 수 있는 초기화 방법을 정의할 수 있습니다. 우리의 경우, 사용하기 전에 NFT 컨트랙트를 초기화해야 합니다. 지금은 기본 메타데이터로 초기화하겠습니다.
 
-> **Note:** each account has a data area called `storage`, which is persistent between function calls and transactions.
-> For example, when you initialize a contract, the initial state is saved in the persistent storage.
+> **참고:** 각 계정에는 함수 호출과 트랜잭션 간 지속되는 `storage`라는 데이터 영역이 있습니다. 예를 들어, 컨트랙트를 초기화하면 초기 상태가 영구 스토리지에 저장됩니다.
 
 ```bash
 near call $ID new_default_meta '{"owner_id": "'$ID'"}' --accountId $ID
 ```
 
-> **Tip:** you can find more info about the NFT metadata at [nomicon.io](https://nomicon.io/Standards/Tokens/NonFungibleToken/Metadata).
+> **팁:** [nomicon.io](https://nomicon.io/Standards/NonFungibleToken/Metadata.html)에서 NFT 메타데이터에 대한 자세한 정보를 찾을 수 있습니다.
 
-You can then view the metadata by running the following `view` call:
+그런 다음, `view` 호출을 실행하여 메타데이터를 볼 수 있습니다.
 
 ```bash
 near view $ID nft_metadata
 ```
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -244,14 +236,14 @@ near view $ID nft_metadata
 </p>
 </details>
 
-Now let's mint our first token! The following command will mint one copy of your NFT. Replace the `media` url with the one you [uploaded to IPFS](#uploading-the-image) earlier:
+이제 첫 번째 토큰을 발행해 봅시다! 다음 명령은 NFT의 사본 하나를 생성합니다. `media` URL을 이전에 [IPFS에 업로드](#uploading-the-image)한 URL로 바꿉니다.
 
 ```bash
 near call $ID nft_mint '{"token_id": "0", "receiver_id": "'$ID'", "token_metadata": { "title": "Some Art", "description": "My NFT media", "media": "https://bafkreiabag3ztnhe5pg7js4bj6sxuvkz3sdf76cjvcuqjoidvnfjz7vwrq.ipfs.dweb.link/", "copies": 1}}' --accountId $ID --deposit 0.1
 ```
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -279,14 +271,14 @@ near call $ID nft_mint '{"token_id": "0", "receiver_id": "'$ID'", "token_metadat
 </p>
 </details>
 
-To view tokens owned by an account you can call the NFT contract with the following `near-cli` command:
+계정이 소유한 토큰을 보려면, 다음과 같은 `near-cli` 명령을 사용하여 NFT 컨트랙트를 호출할 수 있습니다.
 
 ```bash
 near view $ID nft_tokens_for_owner '{"account_id": "'$ID'"}'
 ```
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -317,33 +309,34 @@ near view $ID nft_tokens_for_owner '{"account_id": "'$ID'"}'
 </details>
 
 > <br/>
->
+> 
 > **Tip:** after you mint your first non-fungible token, you can [view it in your Wallet](https://testnet.mynearwallet.com//?tab=collectibles):
->
+> 
 > ![Wallet with token](/docs/assets/nfts/nft-wallet-token.png)
->
+> 
 > <br/>
 
-**_Congratulations! You just minted your first NFT token on the NEAR blockchain!_** 🎉
+**_축하합니다! NEAR 블록체인에서 첫 번째 NFT 토큰을 발행했습니다!_** 🎉
 
-## Final remarks {#final-remarks}
+## 끝맺는 말 {#final-remarks}
 
-This basic example illustrates all the required steps to deploy an NFT smart contract, store media files on IPFS,
-and start minting your own non-fungible tokens.
+이 기본 예제는 NFT 스마트 컨트랙트를 배포하고, IPFS에 미디어 파일을 저장하며, 대체 불가능 토큰을 만들기 시작하는 데 필요한 모든 단계를 보여줍니다.
 
-Now that you're familiar with the process, you can check out our [NFT Example](https://examples.near.org/NFT) and learn more about the smart contract code and how you can transfer minted tokens to other accounts.
-Finally, if you are new to Rust and want to dive into smart contract development, our [Quick-start guide](../../2.build/2.smart-contracts/quickstart.md) is a great place to start.
+이제 프로세스에 익숙해졌으므로, [NFT 예제](https://examples.near.org/NFT)를 확인하고 스마트 컨트랙트 코드와 발행된 토큰을 다른 계정으로 전송하는 방법에 대해 자세히 알아볼 수 있습니다. Finally, if you are new to Rust and want to dive into smart contract development, our [Quick-start guide](../../2.build/2.smart-contracts/quickstart.md) is a great place to start.
 
-**_Happy minting!_** 🪙
+**_즐거운 민팅 되세요!_** 🪙
 
-## Blockcraft - a Practical Extension
+## Blockcraft - 실용적인 확장
 
-If you'd like to learn how to use Minecraft to mint NFTs and copy/paste builds across different worlds while storing all your data on-chain, be sure to check out our [Minecraft tutorial](/tutorials/nfts/minecraft-nfts)
+Minecraft를 사용하여 NFT를 생성하고 모든 데이터를 온체인에 저장하면서 여러 세계에서 빌드를 복사/붙여넣는 방법을 알아보려면 [Minecraft 튜토리얼](/tutorials/nfts/minecraft-nfts)을 확인하세요.
 
-## Versioning for this article {#versioning-for-this-article}
+## 문서 버전 관리 {#versioning-for-this-article}
 
-At the time of this writing, this example works with the following versions:
+이 글을 쓰는 시점에서 이 예제는 다음 버전에서 작동합니다.
 
 - cargo: `cargo 1.54.0 (5ae8d74b3 2021-06-22)`
 - rustc: `rustc 1.54.0 (a178d0322 2021-07-26)`
 - near-cli: `2.1.1`
+
+[대체 불가능 토큰]: https://nomicon.io/Standards/NonFungibleToken
+[컨트랙트 표준]: https://github.com/near/near-sdk-rs/tree/master/near-contract-standards

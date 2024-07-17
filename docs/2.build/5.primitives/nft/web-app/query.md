@@ -18,7 +18,7 @@ const response = await wallet.viewMethod({
 });
 ```
 
-_The `Wallet` object comes from our [quickstart template](https://github.com/near-examples/hello-near-examples/blob/main/frontend/near-wallet.js)_ 
+_The `Wallet` object comes from our [quickstart template](https://github.com/near-examples/hello-near-examples/blob/main/frontend/near-wallet.js)_
 
 <details>
 
@@ -44,6 +44,7 @@ _The `Wallet` object comes from our [quickstart template](https://github.com/nea
   }
 }
 ```
+
 </details>
 
 </TabItem>
@@ -54,7 +55,7 @@ _The `Wallet` object comes from our [quickstart template](https://github.com/nea
 const tokenData = fetch("https://api-v2-mainnet.paras.id/token?token_id=84686:1154");
 ```
 
-_The `Wallet` object comes from our [quickstart template](https://github.com/near-examples/hello-near-examples/blob/main/frontend/near-wallet.js)_ 
+_The `Wallet` object comes from our [quickstart template](https://github.com/near-examples/hello-near-examples/blob/main/frontend/near-wallet.js)_
 
 <details>
 

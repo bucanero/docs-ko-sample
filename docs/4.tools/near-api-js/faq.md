@@ -1,30 +1,28 @@
 ---
 id: faq
-title: FAQ for NEAR JavaScript API
+title: NEAR JavaScript API에 대한 FAQ
 sidebar_label: FAQ
 ---
 
-A collection of Frequently Asked Questions by the community.
+커뮤니티에서 자주 묻는 질문 모음입니다.
 
 
-## General {#general}
+## 일반 {#general}
 
-### Can I use `near-api-js` on a static html page? {#can-i-use-near-api-js-on-a-static-html-page}
+### `near-api-js`를 정적 html 페이지에서 사용할 수 있나요? {#can-i-use-near-api-js-on-a-static-html-page}
 
-You can load the script from a CDN.
+CDN에서 스크립트를 로드할 수 있습니다.
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/near-api-js@0.45.1/dist/near-api-js.min.js"></script>
 ```
 
-:::note
-Make sure you load the latest version.
+:::note 최신 버전을 로드했는지 확인하세요.
 
-Versions list is on [npmjs.com](https://www.npmjs.com/package/near-api-js)
-:::
+버전 목록은 [npmjs.com](https://www.npmjs.com/package/near-api-js)에 있습니다.
 
 <details>
-<summary>Example Implementation</summary>
+<summary>구현 예시</summary>
 <p>
 
 ```html
@@ -102,39 +100,39 @@ Versions list is on [npmjs.com](https://www.npmjs.com/package/near-api-js)
 
 ---
 
-### What front-end frameworks can I use the JavaScript API with?
+### 어떤 프론트엔드 프레임워크에서 JavaScript API를 사용할 수 있나요?
 
-The JavaScript API is framework-agnostic. You can include it in any front-end framework, such as React, Vue, Angular, and others.
+JavaScript API는 프레임워크에 구애받지 않습니다. React, Vue, Angular 등과 같은 모든 프론트엔드 프레임워크를 사용할 수 있습니다.
 
-You can use [`create-near-app`](https://github.com/near/create-near-app) to quickly bootstrap projects with different templates:
+[`create-near-app`](https://github.com/near/create-near-app)은 여러 템플릿으로 프로젝트를 빠르게 부트스트랩하는 데 사용될 수 있는 도구입니다.
 
     npx create-near-app
 
-### Can I use the JavaScript API with mobile JavaScript frameworks such as React Native?
+### React Native와 같은 모바일 JavaScript 프레임워크에서 JavaScript API를 사용할 수 있나요?
 
-The JavaScript API can be used in most JavaScript runtimes, and under the hood, it’s an abstraction over NEAR’s [RPC API](/api/rpc/introduction). However, notice that the Wallet can’t be used everywhere. For example, in React Native apps you’ll be able to use the Wallet in web versions of the apps, but it won’t work in the native app deployments.
+JavaScript API는 대부분의 JavaScript 런타임에서 사용할 수 있으며, 내부적으로는 NEAR의 [RPC API](/api/rpc/introduction)에 대한 추상화입니다. 그러나 지갑을 모든 곳에서 사용할 수는 없습니다. 예를 들어, React Native 앱에서는 앱의 웹 버전에서 지갑을 사용할 수 있지만, 기본 앱 배포에서는 작동하지 않습니다.
 
-You can use the Wallet in `WebView` components in iOS or Android, however be aware that it uses `LocalStorage` for `KeyStore`, and it’s your responsibility to persist the storage when you manage loading of `WebView` components.
+iOS 또는 Android 내 `WebView` 구성 요소에서 지갑을 사용할 수 있지만, 이는 `KeyStore`에 대해 `LocalStorage`를 사용하고, `WebView` 구성 요소 로딩를 관리할 때 스토리지를 유지하는 것은 사용자의 책임이라는 것을 기억하세요.
 
 ---
 
-## Transactions {#transactions}
+## 트랜잭션 {#transactions}
 
-### How to check the status of transaction
+### 트랜잭션 상태 확인 방법
 
-Please refer to examples about transactions in the [Cookbook](/tools/near-api-js/cookbook).
+[요리책](/tools/near-api-js/cookbook)에서 트랜잭션에 대한 예를 참조하세요.
 
-### How transactions are signed and sent by near-api-js
+### near-api-js에 의해 트랜잭션이 서명되고 전송되는 방법
 
-There are a few steps involved before transaction data is communicated to the network and eventually included in a block. The following steps are taken when creating, signing and ultimately a transaction from a user's account:
+트랜잭션 데이터가 네트워크에 전달되고 최종적으로 블록에 포함되기 전에 관련된 몇 가지 단계가 있습니다. 다음 단계는 사용자 계정에서 트랜잭션을 생성, 서명 및 최종적으로 수행할 때 수행됩니다.
 
-1. The user creates a transaction object using the [`account.signAndSendTransaction` method](https://github.com/near/near-api-js/blob/f78616480ba84c73f681211fe6266bd2ed2b9da1/packages/near-api-js/src/account.ts#L200). This method accepts an array of actions and returns an object for the outcome of the transaction.
-2. The transaction is signed using the [`account.signTransaction` method](https://github.com/near/near-api-js/blob/f78616480ba84c73f681211fe6266bd2ed2b9da1/packages/near-api-js/src/account.ts#L204). This method accepts an array of actions and returns a signed transaction object.
-3. The signed transaction object is sent to the network using the [`account.connection.provider.sendTransaction` method](https://github.com/near/near-api-js/blob/f78616480ba84c73f681211fe6266bd2ed2b9da1/packages/near-api-js/src/account.ts#L208). This method accepts a signed transaction object and returns a transaction hash. This step [performs the borsh serialization of the transaction object](https://github.com/near/near-api-js/blob/f78616480ba84c73f681211fe6266bd2ed2b9da1/packages/near-api-js/src/providers/json-rpc-provider.ts#L80) and calls the [`broadcast_tx_commit` JSON RPC method with the serialized transaction object encoded in base64](https://github.com/near/near-api-js/blob/f78616480ba84c73f681211fe6266bd2ed2b9da1/packages/near-api-js/src/providers/json-rpc-provider.ts#L81).
+1. 사용자는 [`account.signAndSendTransaction` 메서드를](https://github.com/near/near-api-js/blob/f78616480ba84c73f681211fe6266bd2ed2b9da1/packages/near-api-js/src/account.ts#L200)를 사용하여 트랜잭션 객체를 생성합니다. 이 메서드는 Action 배열을 수락하고 트랜잭션 결과에 대한 객체를 반환합니다.
+2. 트랜잭션은 [account.signTransaction 메서드](https://github.com/near/near-api-js/blob/f78616480ba84c73f681211fe6266bd2ed2b9da1/packages/near-api-js/src/account.ts#L204)를 사용하여 서명됩니다. 이 메서드는 Action 배열을 수락하고 서명된 트랜잭션 객체를 반환합니다.
+3. 서명된 트랜잭션 객체는 [`account.connection.provider.sendTransaction` 메서드](https://github.com/near/near-api-js/blob/f78616480ba84c73f681211fe6266bd2ed2b9da1/packages/near-api-js/src/account.ts#L208)를 통해 네트워크로 전송됩니다. 이 메서드는 서명된 트랜잭션 객체를 수락하고 트랜잭션 해시를 반환합니다. 이 단계는 [트랜잭션 객체에 대한 borsh 직렬화를 수행](https://github.com/near/near-api-js/blob/f78616480ba84c73f681211fe6266bd2ed2b9da1/packages/near-api-js/src/providers/json-rpc-provider.ts#L80)하고 [base64로 인코딩된 직렬화된 트랜잭션 개체로 JSON RPC 메서드 `broadcast_tx_commit`](https://github.com/near/near-api-js/blob/f78616480ba84c73f681211fe6266bd2ed2b9da1/packages/near-api-js/src/providers/json-rpc-provider.ts#L81)를 호출합니다.
 
-### How to send batch transactions
+### 배치(Batch) 트랜잭션 전송 방법
 
-You may batch send transactions by using the `signAndSendTransaction({})` method from `account`. This method takes an array of transaction actions, and if one fails, the entire operation will fail. Here's a simple example:
+`account`에서 `signAndSendTransaction({})` 메서드를 사용하여 트랜잭션을 일괄 전송할 수 있습니다. 이 메서드는 일련의 트랜잭션 작업을 수행하며, 하나가 실패하면 전체 작업이 실패합니다. 다음은 간단한 예입니다.
 
 ```js
 const { connect, transactions, keyStores } = require("near-api-js");
@@ -192,7 +190,7 @@ Balance before: {
   available: '45432488054959838200000000'
 }
 Receipts: 2PPueY6gnA4YmmQUzc8DytNBp4PUpgTDhmEjRSHHVHBd, 3isLCW9SBH1MrPjeEPAmG9saHLj9Z2g7HxzfBdHmaSaG
-	Failure [spf.idea404.testnet]: Error: {"index":1,"kind":{"ExecutionError":"Smart contract panicked: panicked at 'Failed to deserialize input from JSON.: Error(\"missing field `owner_id`\", line: 1, column: 40)', nft/src/lib.rs:47:1"}}
+    Failure [spf.idea404.testnet]: Error: {"index":1,"kind":{"ExecutionError":"Smart contract panicked: panicked at 'Failed to deserialize input from JSON.: Error(\"missing field `owner_id`\", line: 1, column: 40)', nft/src/lib.rs:47:1"}}
 Error: ServerTransactionError: {"index":1,"kind":{"ExecutionError":"Smart contract panicked: panicked at 'Failed to deserialize input from JSON.: Error(\"missing field `owner_id`\", line: 1, column: 40)', nft/src/lib.rs:47:1"}}
     at parseResultError (/Users/dennis/Code/naj-test/node_modules/near-api-js/lib/utils/rpc_errors.js:31:29)
     at Account.<anonymous> (/Users/dennis/Code/naj-test/node_modules/near-api-js/lib/account.js:156:61)
@@ -229,29 +227,27 @@ Balance after: {
 
 ```
 
-You may also find an example of batch transactions in the [Cookbook](/tools/near-api-js/cookbook).
+[요리책](/tools/near-api-js/cookbook)에서 배치 트랜잭션의 예를 찾을 수도 있습니다.
 
 ---
 
-## Accounts {#accounts}
+## 계정 {#accounts}
 
-### What’s the difference between `Account` and `ConnectedWalletAccount`?
+### `Account`와 `ConnectedWalletAccount`의 차이점은 무엇인가요?
 
-Interaction with the wallet is only possible in a web-browser environment because NEAR’s Wallet is web-based.
-The difference between `Account` and `ConnectedWalletAccount` is mostly about the way it signs transactions. The `ConnectedWalletAccount` uses the wallet to approve transactions.
-Under the hood the `ConnectedWalletAccount` inherits and overrides some methods of `Account`.
+NEAR의 지갑은 웹 기반이기 때문에 지갑과의 상호 작용은 웹 브라우저 환경에서만 가능합니다. `Account`와 `ConnectedWalletAccount`의 차이점은 주로 트랜잭션에 서명하는 방식에 관한 것입니다. `ConnectedWalletAccount`은 지갑을 사용하여 트랜잭션을 승인합니다. 내부적으로 `ConnectedWalletAccount`는 `Account` 내 몇 가지 메서드를 상속하고 덮어씁니다.
 
-### How to create implicit accounts?
+### 암시적 계정(Implicit Account)은 어떻게 생성하나요?
 
 You can read about it in the article about [Implicit Accounts](https://docs.near.org/integrations/implicit-accounts).
 
 ---
 
-## Contracts {#contracts}
+## 컨트랙트 {#contracts}
 
-### How do I attach gas / a deposit? {#how-do-i-attach-gas--a-deposit}
+### 가스/보증금은 어떻게 첨부하나요? {#how-do-i-attach-gas--a-deposit}
 
-After [contract is instantiated](/tools/near-api-js/quick-reference#load-contract) you can then call the contract and specify the amount of attached gas.
+[컨트랙트가 인스턴스화되면](/tools/near-api-js/quick-reference#load-contract), 컨트랙트를 호출하고 첨부된 가스의 양을 지정할 수 있습니다.
 
 ```js
 await contract.method_name(
@@ -265,26 +261,22 @@ await contract.method_name(
 
 ---
 
-## Common Errors {#common-errors}
+## 일반적인 에러 {#common-errors}
 
-### RPC Errors
+### RPC 에러
 
-Refer to the exhaustive [list of error messages](https://github.com/near/near-api-js/blob/16ba17251ff7d9c8454261001cd6b87e9a994789/packages/near-api-js/src/res/error_messages.json)
-that RPC endpoints throws and JavaScript API propagates.
+RPC 엔드포인트에서 발생하고 JavaScript API가 전파하는 전체 오류 메시지에 대해서는 [목록](https://github.com/near/near-api-js/blob/16ba17251ff7d9c8454261001cd6b87e9a994789/packages/near-api-js/src/res/error_messages.json)을 참조하십시오.
 
-### Missing contract methods {#missing-contract-method}
+### 누락된 컨트랙트 메서드 {#missing-contract-method}
 
-When constructing a `Contract` instance on the client-side, you need to specify
-the contract's methods. If you misspell, mismatch, or miss method names - you'll
-receive errors about missing methods.
+클라이언트 측에서 `Contract` 인스턴스를 구성할 때, 컨트랙트 메서드를 지정해야 합니다. 철자가 틀리거나 일치하지 않거나 메서드 이름이 누락된 경우 누락된 메서드에 대한 오류가 표시됩니다.
 
-There are a few cases of missing or wrong methods:
-- When you call a method you didn't specify in the constructor.
-- When you call a method that doesn't exist on the blockchain's contract (but you did specify it in the client-side constructor).
-- When you mismatch between `viewMethods` and `changeMethods`.
+다음은 메서드가 누락되거나 잘못된 몇 가지 경우를 나타낸 것입니다.
+- 생성자(constructor)에서 지정하지 않은 메서드를 호출할 때.
+- 블록체인의 컨트랙트에 존재하지 않는 메서드를 호출하는 경우(그러나 클라이언트 측 생성자(constructor)에서 지정한 경우).
+- `viewMethods`와 `changeMethods`가 일치하지 않을 때.
 
-For example, let's look at the following contract code.
-It contains one `view` and one `call` method:
+예를 들어, 다음 컨트랙트 코드를 살펴보겠습니다. 그것은 하나의 `view`와 하나의 `call` 메서드를 포함합니다:
 
 ```js
 @NearBindgen
@@ -301,11 +293,11 @@ class MyContract extends NearContract {
 }
 ```
 
-#### Client-side errors for missing methods
+#### 누락된 메세지에 대한 클라이언트 측 에러
 
 ##### `TypeError: contract.METHOD_NAME is not a function`
 
-The following contract constructor declares only `method_A_view`, it doesn't declare `method_B_call`
+다음 컨트랙트 생성자는 `method_A_view`만 선언하고, `method_B_call`를 선언하지 않았습니다.
 ```js
 const contract = await new nearAPI.Contract(
   walletConnection.account(), 'guest-book.testnet',
@@ -330,83 +322,85 @@ await contract.method_B_call();
 await contract.method_C();
 ```
 
-#### RPC errors for missing methods
+#### 누락된 메서드에 대한 RPC 에러
 
 ##### `wasm execution failed with error: FunctionCallError(MethodResolveError(MethodNotFound))`
 
-In this example we specify and call a method, but this method doesn't exist on the blockchain:
+이 예제에서 메서드를 지정하고 호출하였지만, 이 메서드는 블록체인에 존재하지 않습니다.
 ```js
-const contract = await new nearAPI.Contract(
-  // ...
-  {
-    viewMethods: ["method_C"], // <=== method_C doesn't exist on the contract above
-    changeMethods: [],
-    // ...
-  }
+}
 );
 // We did specify `method_C` name in constructor, so this function exists on client-side `contract` instance,
 // but a method with this name does not exist on the actual contract on the blockchain.
+  const contract = await new nearAPI.Contract(
+  // ...
+  // Even though the method exists on the actual blockchain contract,
+// we didn't specify `method_A_view` in the contract's client-side constructor.
+await contract.method_A_view();
 // This will return an error from RPC call `FunctionCallError(MethodResolveError(MethodNotFound))`
 // and will throw it on the client-side
 await contract.method_C();
 
 // Notice: if we call `method_A_view` we get `TypeError: contract.method_A_view is not a function`.
-// Even though the method exists on the actual blockchain contract,
-// we didn't specify `method_A_view` in the contract's client-side constructor.
 await contract.method_A_view();
+// This will return an error from RPC call `FunctionCallError(MethodResolveError(MethodNotFound))`
+// and will throw it on the client-side
+await contract.method_C();
+
+// Notice: if we call `method_A_view` we get `TypeError: contract.method_A_view is not a function`.
 ```
 
 ##### `wasm execution failed with error: FunctionCallError(HostError(ProhibitedInView { method_name: "storage_write" }))`
 
-Last case is when you mismatch `viewMethods` and `changeMethods`.
+마지막 경우는 `viewMethods`와 `changeMethods`가 일치하지 않는 경우입니다.
 
-In the contract above we declared:
-- A `@view` method named `method_A_view`
-- A `@call` method named `method_B_call`
+위 컨트랙트에서 우리는 다음과 같이 선언했습니다.
+- `@view` 메서드 - `method_A_view`
+- `@call` 메서드 -`method_B_call`
 
-In a client-side constructor, the contract's `@view` method names must be specified under `viewMethods`,
-and the contract's `@call` method names must be specified under `changeMethods`.
-If we mismatch between the types we will receive errors.
+클라이언트 쪽 생성자에서 컨트랙트의 `@view` 메서드 이름은 `viewMethods` 아래에 지정되어야 하고, 컨트랙트의 `@call` 메서드 이름은 `changeMethods` 아래에 지정되어야 합니다. 자료형이 일치하지 않으면 오류가 발생합니다.
 
-For example:
+예를 들어:
 ```js
 const contract = await new nearAPI.Contract(
   // ...
-  {
-    viewMethods: ['method_B_call'], // <=== here should be `method_A_view`
-    changeMethods: ['method_A_view'], // <=== and here should be `method_B_call`
-    // ...
+  // `method_A_veiw` should be declared under `viewMethods` and in our example here we declare it under `changeMethods`.
   }
 );
 
 // This will return an error from RPC call and throw:
 // `wasm execution failed with error: FunctionCallError(HostError(ProhibitedInView { method_name: "storage_write" }))`
 // This error indicates that we are trying to call a state-changing method but declare it as a read-only method in client-side.
+await contract.method_A_view();
 await contract.method_B_call();
 
 // The following behavior is undefined and might not work as expected.
-// `method_A_veiw` should be declared under `viewMethods` and in our example here we declare it under `changeMethods`.
-await contract.method_A_view();
+await contract.method_B_call();
+
+// The following behavior is undefined and might not work as expected.
+{
+    viewMethods: ['method_B_call'], // <=== here should be `method_A_view`
+    changeMethods: ['method_A_view'], // <=== and here should be `method_B_call`
+    // ...
 ```
 
 ### Class `{X}` is missing in schema: publicKey
 
-There is currently a known issue with the JavaScript API library, when you `import` it more than once
-it might cause a namespace collision.
+현재 JavaScript API 라이브러리에는 `import`를 두 번 이상 사용하면 네임스페이스 충돌이 발생할 수 있다는 알려진 문제가 있습니다.
 
-A temporary workaround: make sure you don't re-import it, for example when running tests.
+임시 해결 방법: 예를 들자면, 테스트를 실행할 때 다시 가져오지 않도록 합니다.
 
 ---
 
-### `regeneratorRuntime` is not defined {#regeneratorruntime-is-not-defined}
+### `regeneratorRuntime` 가 정의되지 않음 {#regeneratorruntime-is-not-defined}
 
-You are probably using [Parcel](https://parceljs.org/) like we do in [other examples](https://github.com/near-examples). Please make sure you have this line at the top of your main JS file. (Most likely `index.js`):
+You are probably using [Parcel](https://parceljs.org/) like we do in [other examples](https://github.com/near-examples). 기본 JS 파일(아마도 `index.js`)의 맨 위에 아래와 같은 줄이 있는지 확인하세요. (대부분의 경우 `index.js`)
 
 ```js
 import "regenerator-runtime/runtime";
 ```
 
-- Also, ensure the dependencies for this are added to the project by checking the dev dependencies in your `package.json`. If not found you can install this by running the following in your terminal:
+- 또한 `package.json`에서 의존성(dependency) 확인을 통해, 이를 위한 의존성이 프로젝트 내에 모두 추가되어 있는지 확인하세요. 찾을 수 없는 경우 터미널에서 다음과 같은 명령어를 실행하여 설치할 수 있습니다.
 
 ```bash
 npm install regenerator-runtime --save-dev
@@ -414,18 +408,18 @@ npm install regenerator-runtime --save-dev
 
 ---
 
-### Window error using `Node.js` {#window-error-using-nodejs}
+### `Node.js` 사용했을 때 발생하는 창 오류 {#window-error-using-nodejs}
 
-You're maybe using a KeyStore that's for the browser. Instead, use a [filesystem key](/tools/near-api-js/quick-reference#key-store) or private key string.
+브라우저용 키 저장소(Key tore)를 사용하고 있을 수 있습니다. 대신 [파일시스템(filesystem) 키](/tools/near-api-js/quick-reference#key-store) 또는 개인 키 문자열을 사용하세요.
 
-**Browser KeyStore:**
+**브라우저 키 저장소**
 
 ```js
 const { keyStores } = require("near-api-js");
 const keyStore = new keyStores.BrowserLocalStorageKeyStore();
 ```
 
-**FileSystem KeyStore:**
+**브라우저 키 저장소:**
 
 ```js
 const { keyStores } = require("near-api-js");

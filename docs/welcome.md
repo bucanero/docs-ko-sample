@@ -72,8 +72,7 @@ Imagine a place were you can build Web3 apps with the simplicity of Web2. Imagin
             "QueryAPI": "/build/data-infrastructure/query-api/intro",
             "Lake Framework": "/concepts/advanced/near-lake-framework",
           }}
-    />
-</Container>
+    /></Container>
 
 ---
 

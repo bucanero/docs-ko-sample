@@ -3,6 +3,7 @@ id: relayer-gas-example
 title: Multichain Relayer and Gas Station example
 sidebar_label: Relayer + Gas Station
 ---
+
 import {CodeTabs, Language, Github} from "@site/src/components/codetabs"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -13,9 +14,9 @@ In this article you'll learn how to run end-to-end tests on the entire Multichai
 
 For this tutorial, you'll need to have installed:
 
- - [Multichain Relayer Server](https://github.com/near/multichain-relayer-server)
- - [Gas Station Event indexer](https://github.com/near/gas-station-event-indexer)
- - [NEAR CLI RS](https://github.com/near/near-cli-rs)
+- [Multichain Relayer Server](https://github.com/near/multichain-relayer-server)
+- [Gas Station Event indexer](https://github.com/near/gas-station-event-indexer)
+- [NEAR CLI RS](https://github.com/near/near-cli-rs)
 
 :::
 
@@ -54,6 +55,7 @@ The event indexer picks up events emitted from the [gas station contract](gas-st
 To run the [Gas Station indexer](https://github.com/near/gas-station-event-indexer):
 
 1. Ensure you have the [Multichain Relayer Server](#multichain-relayer-server) running on `localhost:3030`
+
 2. Create and activate a Python virtual environment:
    ```sh
    pip install requirements.txt
@@ -86,8 +88,9 @@ The gas station contract supports EIP-1559 transactions.
 :::note
 
 Python and Rust output different hex RLP encoded transactions.
- - If you're using Rust, use [`generate_eip1559_rlp_hex()`](https://github.com/near/multichain-relayer-server/blob/5b040611f2dc6c6b405b5ec00d5102e3cc27a65c/tests/tests.rs#L24).
- - If you're using Python, use [`generate_rlp_encoded_transaction(is_eip_1559=true)`](https://github.com/near/multichain-relayer-server/blob/5b040611f2dc6c6b405b5ec00d5102e3cc27a65c/integration_tests/generate_rlp_evm_txn.py#L7)
+
+- If you're using Rust, use [`generate_eip1559_rlp_hex()`](https://github.com/near/multichain-relayer-server/blob/5b040611f2dc6c6b405b5ec00d5102e3cc27a65c/tests/tests.rs#L24).
+- If you're using Python, use [`generate_rlp_encoded_transaction(is_eip_1559=true)`](https://github.com/near/multichain-relayer-server/blob/5b040611f2dc6c6b405b5ec00d5102e3cc27a65c/integration_tests/generate_rlp_evm_txn.py#L7)
 
 :::
 
@@ -95,13 +98,11 @@ Python and Rust output different hex RLP encoded transactions.
   <Language value="Python" language="python">
     <Github fname="generate_rlp_evm_txn.py"
         url="https://github.com/near/multichain-relayer-server/blob/5b040611f2dc6c6b405b5ec00d5102e3cc27a65c/integration_tests/generate_rlp_evm_txn.py"
-        start="7" end="13" />
-  </Language>
+        start="7" end="13" /></Language>
   <Language value="Rust" language="rust">
     <Github fname="test.rs"
         url="https://github.com/near/multichain-relayer-server/blob/5b040611f2dc6c6b405b5ec00d5102e3cc27a65c/tests/tests.rs"
-        start="24" end="38" />
-  </Language>
+        start="24" end="38" /></Language>
 </CodeTabs>
 
 2. Ensure the [Multichain Relayer server](#multichain-relayer-server) is configured correctly and running.
@@ -111,14 +112,16 @@ Python and Rust output different hex RLP encoded transactions.
 4. Construct the signed transaction using the [near-cli-rs](https://github.com/near/near-cli-rs).
    The receiver account ID should be the gas station contract.
    You will need 2 actions if you want the gas station to cover your gas cost on the foreign chain:
-    - 1 action to send the NEAR equivalent
-    - 1 function call to the gas station.
+
+   - 1 action to send the NEAR equivalent
+   - 1 function call to the gas station.
 
    You should transfer the amount of `NEAR` that's needed to cover gas both on NEAR and on the foreign chain.
    You also need to paste in the RLP generated hex for the EVM transaction you want on the other chain generated in step 1.
 
    When it asks you to _send_ or _display_, choose <kbd>send</kbd>.
    Example below:
+
    ```sh
    near contract call-function as-transaction canhazgas.testnet create_transaction json-args '{"transaction_rlp_hex":"eb80851bf08eb000825208947b965bdb7f0464843572eb2b8c17bdf27b720b14872386f26fc1000080808080","use_paymaster":true}' prepaid-gas '100.000 TeraGas' attached-deposit '0.5 NEAR' sign-as nomnomnom.testnet network-config testnet sign-with-keychain send
    ```
@@ -159,4 +162,3 @@ This will return something like the output below. Take an individual entry in th
   }
 ]
 ```
-

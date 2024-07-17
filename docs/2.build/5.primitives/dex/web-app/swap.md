@@ -22,6 +22,7 @@ await wallet.callMethod({
   deposit: 1
 });
 ```
+
 _The `Wallet` object comes from our [quickstart template](https://github.com/near-examples/hello-near-examples/blob/main/frontend/near-wallet.js)_
 
 <details>
@@ -30,4 +31,5 @@ _The `Wallet` object comes from our [quickstart template](https://github.com/nea
 ```json
 "5019606679394603179450"
 ```
+
 </details>

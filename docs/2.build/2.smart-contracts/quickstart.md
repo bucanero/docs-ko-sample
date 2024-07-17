@@ -21,7 +21,7 @@ Before starting, make sure to setup your development environment.
 <details>
 <summary>Working on Windows?</summary>
 
-  See our blog post [getting started on NEAR using Windows](/blog/getting-started-on-windows) for a step-by-step guide on how to setup WSL and your environment
+See our blog post [getting started on NEAR using Windows](/blog/getting-started-on-windows) for a step-by-step guide on how to setup WSL and your environment
 
 </details>
 
@@ -76,7 +76,6 @@ Create a smart contract by using one of the scaffolding tools and following thei
 <Tabs groupId="code-tabs">
   <TabItem value="js" label="🌐 JavaScript">
 
-
 ```bash
   npx create-near-app@latest
 ```
@@ -123,29 +122,33 @@ This will generate a project with the following structure:
 
 </Tabs>
 
-
 ---
 
 ## The Contract
 
 The `Hello World` smart contract stores a greeting on its state, and exposes two functions to interact with it:
+
 1. `set_greeting`: to change the greeting
-2. `get_greeting`: to fetch the greeting 
+2. `get_greeting`: to fetch the greeting
 
 <Tabs groupId="code-tabs">
   <TabItem value="js" label="🌐 JavaScript">
 
-    <Github fname="index.js" language="js"
-            url="https://github.com/near-examples/hello-near-examples/blob/main/contract-ts/src/contract.ts"
-            start="4" end="18" />
+```
+<Github fname="index.js" language="js"
+        url="https://github.com/near-examples/hello-near-examples/blob/main/contract-ts/src/contract.ts"
+        start="4" end="18" />
+```
 
   </TabItem>
 
   <TabItem value="rust" label="🦀 Rust">
 
-    <Github fname="lib.rs" language="rust"
-            url="https://github.com/near-examples/hello-near-examples/blob/main/contract-rs/src/lib.rs"
-            start="4" end="32" />
+```
+<Github fname="lib.rs" language="rust"
+        url="https://github.com/near-examples/hello-near-examples/blob/main/contract-rs/src/lib.rs"
+        start="4" end="32" />
+```
 
   </TabItem>
 
@@ -166,23 +169,25 @@ Building and testing the contract is as simple as running the `test` command. Th
 <Tabs groupId="code-tabs">
   <TabItem value="js" label="🌐 JavaScript">
 
-    ```bash
-    npm run test
-    ````
+`````
+```bash
+npm run test
+````
 
-    <details>
-    <summary> Failing tests? </summary>
+<details>
+<summary> Failing tests? </summary>
 
-    Make sure that you are using `node v18`, `v20` or `v22`. You can always use: `nvm use 18` to switch to `node v20`
+Make sure that you are using `node v18`, `v20` or `v22`. You can always use: `nvm use 18` to switch to `node v20`
 
-    </details>
+</details>
+`````
 
   </TabItem>
   <TabItem value="rust" label="🦀 Rust">
 
-  ```bash
-  cargo test
-  ```
+```bash
+cargo test
+```
 
   </TabItem>
 
@@ -203,45 +208,48 @@ Now that you know the contract is passing the tests, let's create a `testnet` ac
 <Tabs groupId="code-tabs">
   <TabItem value="js" label="🌐 JavaScript">
 
-    ```bash
-    # Replace <your-account-id.testnet> with a custom name
-    near create-account <your-account-id.testnet> --useFaucet
-    ```
+````
+```bash
+# Replace <your-account-id.testnet> with a custom name
+near create-account <your-account-id.testnet> --useFaucet
+```
 
-    <details>
-    <summary> Example Result </summary>
+<details>
+<summary> Example Result </summary>
 
-    ```bash
-    $> near create-account lovely-event.testnet --useFaucet
-    # New account "lovely-event.testnet" created successfully
-    ```
+```bash
+$> near create-account lovely-event.testnet --useFaucet
+# New account "lovely-event.testnet" created successfully
+```
 
-    </details>
+</details>
+````
 
   </TabItem>
 
   <TabItem value="rust" label="🦀 Rust">
 
-    ```bash
-    # Replace <your-account-id.testnet> with a custom name
-    near account create-account sponsor-by-faucet-service <your-account-id.testnet> autogenerate-new-keypair save-to-keychain network-config testnet create
-    ````
+`````
+```bash
+# Replace <your-account-id.testnet> with a custom name
+near account create-account sponsor-by-faucet-service <your-account-id.testnet> autogenerate-new-keypair save-to-keychain network-config testnet create
+````
 
-    <details>
-    <summary> Example Result </summary>
+<details>
+<summary> Example Result </summary>
 
-    ```bash
-    $> near account create-account sponsor-by-faucet-service lovely-event.testnet autogenerate-new-keypair save-to-keychain network-config testnet create
+```bash
+$> near account create-account sponsor-by-faucet-service lovely-event.testnet autogenerate-new-keypair save-to-keychain network-config testnet create
 
-    # New account "lovely-event.testnet" created successfully
-    ```
+# New account "lovely-event.testnet" created successfully
+```
 
-    </details>
+</details>
+`````
 
   </TabItem>
 
 </Tabs>
-
 
 :::tip
 
@@ -259,31 +267,31 @@ Having our account created, we can now build and deploy the contract:
 
   <TabItem value="js" label="🌐 JavaScript">
 
-  ```bash
-  npm run build
+```bash
+npm run build
 
-  near deploy <created-account> build/release/hello.wasm
-  ```
+near deploy <created-account> build/release/hello.wasm
+```
 
-  **Congrats**! your contract now lives in the NEAR testnet network.
+**Congrats**! your contract now lives in the NEAR testnet network.
 
   </TabItem>
 
   <TabItem value="rust" label="🦀 Rust">
 
-  ```bash
-  cargo near build
+```bash
+cargo near build
 
-  near contract deploy <created-account> use-file ./target/wasm32-unknown-unknown/release/<project-name>.wasm without-init-call network-config testnet sign-with-keychain send
-  ```
+near contract deploy <created-account> use-file ./target/wasm32-unknown-unknown/release/<project-name>.wasm without-init-call network-config testnet sign-with-keychain send
+```
 
-  **Congrats**! your contract now lives in the NEAR testnet network.
+**Congrats**! your contract now lives in the NEAR testnet network.
 
-  :::tip
+:::tip
 
-  You can also build the contract with `cargo build --release`. This will compile the contract, but without metadata or the Contract Application Binary Interface (ABI)
+You can also build the contract with `cargo build --release`. This will compile the contract, but without metadata or the Contract Application Binary Interface (ABI)
 
-  :::
+:::
 
   </TabItem>
 
@@ -305,19 +313,23 @@ The `get_greeting` function only reads from the contract's state, and can thus b
 
   <TabItem value="js" label="🌐 JavaScript">
 
-    ```bash
-    > near view <created-account> get_greeting
-    # "Hello"
-    ```
+````
+```bash
+> near view <created-account> get_greeting
+# "Hello"
+```
+````
 
   </TabItem>
 
   <TabItem value="rust" label="🦀 Rust">
 
-    ```bash
-    > near contract call-function as-read-only <created-account> get_greeting json-args {} network-config testnet now
-    # "Hello"
-    ```
+````
+```bash
+> near contract call-function as-read-only <created-account> get_greeting json-args {} network-config testnet now
+# "Hello"
+```
+````
 
   </TabItem>
 
@@ -333,20 +345,21 @@ The `set_greeting` method writes on the contract's [storage](./anatomy/storage.m
 
   <TabItem value="js" label="🌐 JavaScript">
 
-  ```bash
-  > near call <created-account> set_greeting '{"greeting": "Hola"}' --accountId <created-account>
-  # Log: Saving greeting "Hola"
-  ```
+```bash
+> near call <created-account> set_greeting '{"greeting": "Hola"}' --accountId <created-account>
+# Log: Saving greeting "Hola"
+```
 
   </TabItem>
 
   <TabItem value="rust" label="🦀 Rust">
 
-    ```bash
-    > near contract call-function as-transaction <created-account> set_greeting json-args '{"greeting": "Hola"}' prepaid-gas '100.0 Tgas' attached-deposit '0 NEAR' sign-as <created-account> network-config testnet sign-with-keychain send
-    #Log: Saving greeting "Hola"
-    ```
-
+````
+```bash
+> near contract call-function as-transaction <created-account> set_greeting json-args '{"greeting": "Hola"}' prepaid-gas '100.0 Tgas' attached-deposit '0 NEAR' sign-as <created-account> network-config testnet sign-with-keychain send
+#Log: Saving greeting "Hola"
+```
+````
 
   </TabItem>
 
@@ -357,7 +370,6 @@ The `set_greeting` method writes on the contract's [storage](./anatomy/storage.m
 Notice that we are signing the transaction using `<created-account>`, so in this case, we are asking the contract's account to call its own function
 
 :::
-
 
 ---
 

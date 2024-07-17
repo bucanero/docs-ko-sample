@@ -1,16 +1,16 @@
 ---
 id: guest-book
-title: Guest Book
+title: 방명록
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {CodeTabs, Language, Github} from "@site/src/components/codetabs"
 
-Our Guest Book example is a simple app composed by two main components:
+이 방명록 예제는 두 가지 주요 구성 요소로 이루어진 간단한 앱입니다.
 
-1. A smart contract that stores messages from users, allowing to attach money to them.
-2. A simple web-based frontend that displays the last 10 messages posted.
+1. 사용자의 메시지를 저장하고 돈을 첨부할 수 있는 스마트 컨트랙트
+2. 게시된 마지막 10개의 메시지를 표시하는 간단한 웹 기반 프론트엔드
 
 ![img](/docs/assets/examples/guest-book.png)
 
@@ -23,8 +23,8 @@ You have two options to start the Guest book Example.
 1. You can use the app through `GitHub Codespaces`, which will open a web-based interactive environment.
 2. Clone the repository locally and use it from your computer.
 
-| Codespaces                                                                                                                        | Clone locally                                             |
-| --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Codespaces                                                                                                                        | Clone locally                                            |
+| --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/near-examples/guest-book-examples) | 🌐 `https://github.com/near-examples/guest-book-examples` |
 
 ---
@@ -90,7 +90,7 @@ yarn
 yarn dev
 ```
 
-Go ahead and login with your NEAR account. If you don't have one, you will be able to create one in the moment. Once logged in, you will be able to sign a message in the guest book. You can further send some money alongside your message. If you attach more than 0.01Ⓝ then your message will be marked as "premium".
+NEAR 계정으로 로그인하세요. 계정이 없는 경우 즉시 만들 수 있습니다. Once logged in, you will be able to sign a message in the guest book. 메시지와 함께 돈을 더 보낼 수 있고, 메시지와 함께 돈을 더 보낼 수 있고, If you attach more than 0.01Ⓝ then your message will be marked as "premium".
 
 <hr class="subsection" />
 
@@ -152,9 +152,7 @@ yarn test
 
 </Tabs>
 
-:::tip
-The `integration tests` use a sandbox to create NEAR users and simulate interactions with the contract.
-:::
+:::tip The `integration tests` use a sandbox to create NEAR users and simulate interactions with the contract. :::
 
 <hr class="subsection" />
 
@@ -191,9 +189,7 @@ near deploy <accountId> ./target/wasm32-unknown-unknown/release/guestbook.wasm
   </TabItem>
 </Tabs>
 
-:::tip
-To interact with your contract from the [frontend](#frontend), simply replace the variable `CONTRACT_NAME` in the `index.js` file.
-:::
+:::tip To interact with your contract from the [frontend](#frontend), simply replace the variable `CONTRACT_NAME` in the `index.js` file. :::
 
 <hr class="subsection" />
 
@@ -215,9 +211,7 @@ near view guestbook.near-examples.testnet total_messages
 near call guestbook.near-examples.testnet add_message '{"text":"Hello Near"}' --accountId <accountId> --deposit 0.1
 ```
 
-:::tip
-If you're using your own account, replace `guestbook.near-examples.testnet` with your `accountId`.
-:::
+:::tip If you're using your own account, replace `guestbook.near-examples.testnet` with your `accountId`. :::
 
 ---
 

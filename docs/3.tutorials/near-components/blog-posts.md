@@ -2,6 +2,7 @@
 id: blog-posts
 title: Blog Posts
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {CodeTabs, Language, Github} from "@site/src/components/codetabs"
@@ -22,8 +23,8 @@ To set up the Blog post features on your [`near-discovery`](https://github.com/n
 - Edit your `bos-components.ts` configuration file:
 
 <Github fname="bos-components.ts" language="js" value="near-discovery"
-    url="https://github.com/near/near-discovery/blob/c275ab7d70a6ee7baf3a88ace1c2e02f605da644/src/data/bos-components.ts"
-    start="160" end="165" />
+ url="https://github.com/near/near-discovery/blob/c275ab7d70a6ee7baf3a88ace1c2e02f605da644/src/data/bos-components.ts"
+ start="160" end="165" />
 
 </TabItem>
 
@@ -56,8 +57,8 @@ To set a custom URL such as `/bosblog` for your Blog feed, and define which user
 2. Add this [`index.tsx`](https://github.com/near/near-discovery/blob/c275ab7d70a6ee7baf3a88ace1c2e02f605da644/src/pages/bosblog/index.tsx) file to `src/pages/bosblog/`:
 
 <Github fname="index.tsx" language="js" value="near-discovery"
-    url="https://github.com/near/near-discovery/blob/c275ab7d70a6ee7baf3a88ace1c2e02f605da644/src/pages/bosblog/index.tsx"
-    start="1" end="50" />
+ url="https://github.com/near/near-discovery/blob/c275ab7d70a6ee7baf3a88ace1c2e02f605da644/src/pages/bosblog/index.tsx"
+ start="1" end="50" />
 
 </TabItem>
 
@@ -195,7 +196,7 @@ const promoteToBlog = () => {
 
 :::tip
 
-Check the [`Posts.Menu`](https://near.org/near/widget/ComponentDetailsPage?src=near/widget/Posts.Menu&tab=source) component for a complete implementation that includes a drop-down menu and a button to promote a blog post.
+Check the [`Posts.Menu`](https://near.org/near/widget/ComponentDetailsPage?src=near/widget/Posts.Menu\&tab=source) component for a complete implementation that includes a drop-down menu and a button to promote a blog post.
 
 :::
 
@@ -207,6 +208,7 @@ When writing blog posts, you can format the content using standard [Markdown syn
 Markdown is an easy-to-read, easy-to-write language for formatting plain text.
 
 The only two special cases that you should keep in mind when writing a blog post are:
+
 - the blog post's title
 - an optional header image
 
@@ -237,6 +239,7 @@ If you're new to Markdown, you might want to check this page about [basic writin
 ## Writing a blog post
 
 Adding a new blog post is simple. To publish a new blog post, you only need to:
+
 1. Write a regular Near Social message
 
    <img src="/docs/bosblog/blog-promote1.png" width="60%" />
@@ -248,13 +251,12 @@ Adding a new blog post is simple. To publish a new blog post, you only need to:
 
    ![blog post](/docs/bosblog/blog-promote2.png)
 
-3. That's it, your blog post has been published, and you can find it under the `Blog` tab in your [social profile](https://dev.near.org/near/widget/ProfilePage?accountId=bucanero.near&tab=blog):
+3. That's it, your blog post has been published, and you can find it under the `Blog` tab in your [social profile](https://dev.near.org/near/widget/ProfilePage?accountId=bucanero.near\&tab=blog):
 
    ![blog post](/docs/bosblog/blog-promote3.png)
 
-
 :::note
 
-You can find the published blog post example in [this link](https://dev.near.org/near/widget/BlogPostPage?accountId=bucanero.near&blockHeight=117452680&returnLocation=/near/widget/ProfilePage?accountId=bucanero.near&tab=blog).
+You can find the published blog post example in [this link](https://dev.near.org/near/widget/BlogPostPage?accountId=bucanero.near\&blockHeight=117452680\&returnLocation=/near/widget/ProfilePage?accountId=bucanero.near\&tab=blog).
 
 :::

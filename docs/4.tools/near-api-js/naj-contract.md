@@ -1,15 +1,13 @@
 ---
 id: contract
-title: Contract
-sidebar_label: Contract
+title: 컨트랙트
+sidebar_label: 컨트랙트
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
 
-When you instantiate an instance of `Contract` you need to specify the names of the functions you have on your smart contract.
-Then the new instance of `Contract` will have methods with the same names as your smart contract functions.
-For example if you deployed a contract with `my_smart_contract_function` function on it, then this will work:
+`Contract`의 인스턴스를 초기화할 때, 스마트 컨트랙트에 있는 함수의 이름을 지정해야 합니다. 그러면 `Contract`의 새 인스턴스에는 스마트 컨트랙트 함수와 동일한 이름을 가진 메서드가 존재할 것입니다. 예를 들어, `my_smart_contract_function` 함수가 포함된 컨트랙트를 배포한 경우, 이는 다음과 같이 작동합니다.
 
 ```js
 const contract = new Contract(account, "example-contract.testnet", {
@@ -19,7 +17,7 @@ const contract = new Contract(account, "example-contract.testnet", {
 contract.my_smart_contract_function();
 ```
 
-### Load Contract {#load-contract}
+### 컨트랙트 가져오기 {#load-contract}
 
 <Tabs>
 <TabItem value="Standard" label="Standard" default>
@@ -62,7 +60,7 @@ const contract = new Contract(
 </TabItem>
 </Tabs>
 
-### Call Contract {#call-contract}
+### 컨트랙트 호출 {#call-contract}
 
 <Tabs>
 <TabItem value="method" label="Change Method" default>
@@ -121,8 +119,4 @@ const response = await contract.view_method_name({ arg_name: "arg_value" });
 </TabItem>
 </Tabs>
 
-[<span className="typedoc-icon typedoc-icon-class"></span> Class `Contract`](https://near.github.io/near-api-js/classes/_near_js_accounts.contract.Contract.html)
-
-[//]: # "## Transactions {#transactions}"
-[//]: # "A [Transaction](/concepts/protocol/transactions) is a collection of Actions, and there are few types of Actions."
-[//]: # "For every type of Action there is a function on Account that you can use to invoke the Action, but Account also exposes `signAndSendTransaction` function which you can use to build and invoke a batch transaction."
+[<span className="typedoc-icon typedoc-icon-class"></span> `Contract` 클래스](https://near.github.io/near-api-js/classes/_near_js_accounts.contract.Contract.html)

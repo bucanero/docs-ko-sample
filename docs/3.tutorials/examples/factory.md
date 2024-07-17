@@ -1,19 +1,18 @@
 ---
 id: factory
-title: Factory
+title: 팩토리
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {CodeTabs, Language, Github} from "@site/src/components/codetabs"
 
-A factory is a smart contract that stores a compiled contract on itself, and automatizes deploying it into
-sub-accounts.
+팩토리는 자체적으로 컴파일된 컨트랙트를 저장하고 하위 계정(sub-account)에 배포하는 것을 자동화하는 스마트 컨트랙트입니다.
 
-We have two factory examples:
+다음과 같은 두 가지의 팩토리의 예시가 있습니다.
 
-1. [**Token Factory**](https://github.com/near-examples/token-factory): A factory that creates [fungible tokens](../fts/0-intro.md) contracts.
-2. [**A Generic Factory**](https://github.com/near-examples/factory-rust): A factory that creates [donation contracts](./donation.md), but allows to change the contract it deploys.
+1. [**토큰 팩토리**](https://github.com/near-examples/token-factory): [대체 가능한 토큰](../fts/0-intro.md) 컨트랙트를 생성하는 팩토리입니다.
+2. . [**일반 팩토리**](https://github.com/near-examples/factory-rust): [기부 컨트랙트](./donation.md)를 생성하지만, 배포하는 컨트랙트를 변경할 수 있는 팩토리입니다.
 
 :::info
 In this page we will focus on the Donation factory, to learn more about the token factory visit its repository.
@@ -21,12 +20,12 @@ In this page we will focus on the Donation factory, to learn more about the toke
 
 ---
 
-## Generic Factory
+## 일반 팩토리
 
-The [Generic Factory](https://github.com/near-examples/factory-rust/) presents a contract factory that:
+[일반 팩토리](https://github.com/near-examples/factory-rust/)는 다음과 같은 컨트랙트 팩토리를 제공합니다.
 
-1. Creates sub-accounts of itself and deploys its contract on them (`create_factory_subaccount_and_deploy`).
-2. Can change the stored contract using the `update_stored_contract` method.
+1. 자신의 하위 계정을 생성하고 컨트랙트를 배포합니다 (`create_factory_subaccount_and_deploy`).
+2. `update_stored_contract` 메서드를 사용하여 저장된 컨트랙트를 변경할 수 있습니다.
 
 <CodeTabs>
   <Language value="rust" language="rust">
@@ -48,15 +47,15 @@ The [Generic Factory](https://github.com/near-examples/factory-rust/) presents a
 
 <hr className="subsection" />
 
-### Build and Deploy the Factory
+### 팩토리 구축 및 배포
 
-You can automatically compile and deploy the contract in the NEAR testnet by running:
+다음을 실행하여 NEAR 테스트넷에서 컨트랙트를 자동으로 컴파일하고 배포할 수 있습니다.
 
 ```bash
 ./deploy.sh
 ```
 
-Once finished, check the `neardev/dev-account` file to find the address in which the contract was deployed:
+완료되면 `neardev/dev-account` 파일을 확인하여 컨트랙트가 배포된 주소를 찾습니다.
 
 ```bash
 cat ./neardev/dev-account
@@ -65,16 +64,15 @@ cat ./neardev/dev-account
 
 <hr className="subsection" />
 
-### Deploy the Stored Contract Into a Sub-Account
+### 저장된 컨트랙트를 하위 게정에 배포
 
-`create_factory_subaccount_and_deploy` will create a sub-account of the factory and deploy the
-stored contract on it.
+`create_factory_subaccount_and_deploy`는 팩토리의 하위 계정을 만들고, 여기에 저장된 컨트랙트를 배포합니다.
 
 ```bash
 near call <factory-account> create_factory_subaccount_and_deploy '{ "name": "sub", "beneficiary": "<account-to-be-beneficiary>"}' --deposit 1.24 --accountId <account-id> --gas 300000000000000
 ```
 
-This will create the `sub.<factory-account>`, which will have a `donation` contract deployed on it:
+그러면 이는 `donation` 컨트랙트가 배포될 `sub.<factory-account>`를 생성할 것입니다.
 
 ```bash
 near view sub.<factory-account> get_beneficiary
@@ -83,15 +81,13 @@ near view sub.<factory-account> get_beneficiary
 
 <hr className="subsection" />
 
-### Update the Stored Contract
+### 저장된 컨트랙트 업데이트
 
-`update_stored_contract` enables to change the compiled contract that the factory stores.
+`update_stored_contract`를 통해 팩토리가 저장하는 컴파일된 컨트랙트을 변경할 수 있습니다.
 
-The method is interesting because it has no declared parameters, and yet it takes
-an input: the new contract to store as a stream of bytes.
+이 메서드의 흥미로운 점은, 선언된 매개 변수가 없지만 바이트 스트림으로 저장할 새 컨트랙트라는 입력을 받는다는 것입니다.
 
-To use it, we need to transform the contract we want to store into its `base64`
-representation, and pass the result as input to the method:
+이를 사용하려면 저장하려는 컨트랙트를 `base64` 표현으로 바꾸고, 결과를 메서드에 대한 입력으로 전달해야 합니다.
 
 ```bash
 # Use near-cli to update stored contract
@@ -99,36 +95,33 @@ export BYTES=`cat ./src/to/new-contract/contract.wasm | base64`
 near call <factory-account> update_stored_contract "$BYTES" --base64 --accountId <factory-account> --gas 30000000000000
 ```
 
-> This works because the arguments of a call can be either a `JSON` object or a `String Buffer`
+> 이는 호출의 인자가 `JSON` 객체이거나 `String Buffer`이기 때문에 작동 가능합니다.
 
 ---
 
-## Factories - Concepts & Limitations
+## 팩토리 - 개념 & 한계
 
-Factories are an interesting concept, here we further explain some of their implementation aspects,
-as well as their limitations.
-
-<hr className="subsection" />
-
-### Automatically Creating Accounts
-
-NEAR accounts can only create sub-accounts of itself, therefore, the `factory` can only create and
-deploy contracts on its own sub-accounts.
-
-This means that the factory:
-
-1. **Can** create `sub.factory.testnet` and deploy a contract on it.
-2. **Cannot** create sub-accounts of the `predecessor`.
-3. **Can** create new accounts (e.g. `account.testnet`), but **cannot** deploy contracts on them.
-
-It is important to remember that, while `factory.testnet` can create `sub.factory.testnet`, it has
-no control over it after its creation.
+팩토리는 흥미로운 개념입니다. 여기서는 구현 측면과 제한 사항에 대해 자세히 설명합니다.
 
 <hr className="subsection" />
 
-### The Update Method
+### 자동으로 계정 생성
 
-The `update_stored_contracts` has a very short implementation:
+NEAR 계정은 자신의 하위 계정만 만들 수 있으므로, `factory`는 자체 하위 계정에서만 컨트랙트를 만들고 배포할 수 있습니다.
+
+이는 다음을 의미합니다.
+
+1. 팩토리는 `sub.factory.testnet`를 생성하고, 여기에 컨트랙트를 배포할 수 **있습니다**.
+2. 팩토리는 **predecessor**의 하위 계정을 만들 수 `없습니다`.
+3. 새 계정(예: `account.testnet`)을 만들 수 **있지만**, 거기에 컨트랙트를 배포할 순 **없습니다**.
+
+`factory.testnet`은 `sub.factory.testnet`를 생성할 수 있지만, 생성 후에는 제어할 수 없다는 점을 기억하는 것이 중요합니다.
+
+<hr className="subsection" />
+
+### 업데이트 메서드
+
+`update_stored_contracts`는 매우 짧게 구현되어 있습니다.
 
 ```rust
 #[private]
@@ -137,18 +130,14 @@ pub fn update_stored_contract(&mut self) {
 }
 ```
 
-On first sight it looks like the method takes no input parameters, but we can see that its only
-line of code reads from `env::input()`. What is happening here is that `update_stored_contract`
-**bypasses** the step of **deserializing the input**.
+처음 볼 때 메서드는 입력 매개 변수를 사용하지 않는 것처럼 보이지만,코드의 유일한 행이 `env::input()`에서 읽히는 것을 볼 수 있습니다. 여기에서는, `update_stored_contract`가 **입력 역직렬화** 단계를 **우회**하는 일이 발생합니다.
 
-You could implement `update_stored_contract(&mut self, new_code: Vec<u8>)`,
-which takes the compiled code to store as a `Vec<u8>`, but that would trigger the contract to:
+`update_stored_contract(&mut self, new_code: Vec<u8>)`를 구현해서, 컴파일된 코드를 `Vec<u8>`로 저장할 수도 있지만, 그러면 컨트랙트에서 다음과 같은 일이 발생합니다.
 
-1. Deserialize the `new_code` variable from the input.
-2. Sanitize it, making sure it is correctly built.
+1. 입력에서 `new_code` 변수가 역직렬화됩니다.
+2. 이를 필터링하여, 정확하게 구축되었는지 확인합니다.
 
-When dealing with big streams of input data (as is the compiled `wasm` file to be stored), this process
-of deserializing/checking the input ends up **consuming the whole GAS** for the transaction.
+입력 데이터의 큰 스트림을 처리할 때(저장할 컴파일된 파일과 마찬가지로 `wasm`) 입력을 역직렬화/확인하는 이 프로세스는 트랜잭션에 대해 **전체 가스를 소모합니다**.
 
 :::note Versioning for this article
 

@@ -6,6 +6,7 @@ title: Web Browser Methods
 import {WidgetEditor} from "@site/src/components/widget-editor"
 
 NEAR Components have access to classic web methods that enable them to:
+
 - [Fetch](#fetch) data from external sources.
 - [Cache](#cache) values to avoid redundant computations.
 - Use [LocalStorage](#localstorage) to store data in the web browser.
@@ -15,9 +16,10 @@ NEAR Components have access to classic web methods that enable them to:
 
 ## Fetch
 
-`fetch` allows to fetch data from the URL. It acts like a hook. It's a wrapper around the `fetch` function from the browser behind the caching layer. 
+`fetch` allows to fetch data from the URL. It acts like a hook. It's a wrapper around the `fetch` function from the browser behind the caching layer.
 
 The possible returned values are:
+
 - If the data is not cached, it returns `null` and fetches the data in the background.
 - If the data is cached, it returns the cached value and then revalidates it.
 
@@ -68,11 +70,12 @@ In contrast with `fetch`, `asyncFetch` does **not** cache the resulting value, s
 
 The `useCache` hook takes a promise through a generator function, fetches the data and caches it. It can be used to easily use and cache data from async data sources.
 
-The cache is global for the VM, but each cached element is identified by a unique `dataKey` within each component. 
+The cache is global for the VM, but each cached element is identified by a unique `dataKey` within each component.
 
 The possible values returned are:
+
 - `null` if the cache is cold and data is fetching
-- the `cached value` while the data is being fetched 
+- the `cached value` while the data is being fetched
 - A new `value` if new data is fetched.
 
 <WidgetEditor>
@@ -93,11 +96,11 @@ return status;
 <details markdown="1">
 <summary> Parameters </summary>
 
-| param              | required     | type   | description                                                          |
-|--------------------|--------------|--------|----------------------------------------------------------------------|
-| `promiseGenerator` | **required** | object | a function that returns a promise, which generates data.             |
+| param              | required     | type   | description                                                                                             |
+| ------------------ | ------------ | ------ | ------------------------------------------------------------------------------------------------------- |
+| `promiseGenerator` | **required** | object | a function that returns a promise, which generates data.                                |
 | `dataKey`          | **required** | object | the unique name (within the current component) to identify the data. |
-| `options`          | _optional_   | object | optional argument.                                                   |
+| `options`          | _optional_   | object | optional argument.                                                                      |
 
 :::info options object
 
@@ -106,11 +109,14 @@ return status;
 :::
 
 :::note
+
 - `promiseGenerator`: you don't return the promise directly, because it should only be fired once.
-:::
+  :::
 
 </details>
 
+:::tip
+:::tip
 :::tip
 The [fetch](#fetch) method is built on top of the `useCache` hook.
 :::
@@ -156,10 +162,10 @@ return <>
 
 `Storage.get(key, widgetSrc?)` - returns the public value for a given key under the given widgetSrc or the current component if `widgetSrc` is omitted. Can only read public values.
 
- | param       | required     | type   | description              |
- |-------------|--------------|--------|--------------------------|
- | `key`       | **required** | object | a user-defined key       |
- | `widgetSrc` | _optional_   | object | a user-defined component |
+| param       | required     | type   | description              |
+| ----------- | ------------ | ------ | ------------------------ |
+| `key`       | **required** | object | a user-defined key       |
+| `widgetSrc` | _optional_   | object | a user-defined component |
 
 ---
 
@@ -167,10 +173,10 @@ return <>
 
 `Storage.set(key, value)` - sets the public value for a given key under the current widget. The value will be public, so other widgets can read it.
 
- | param   | required     | type   | description          |
- |---------|--------------|--------|----------------------|
- | `key`   | **required** | object | a user-defined key   |
- | `value` | **required** | object | a user-defined value |
+| param   | required     | type   | description          |
+| ------- | ------------ | ------ | -------------------- |
+| `key`   | **required** | object | a user-defined key   |
+| `value` | **required** | object | a user-defined value |
 
 ---
 
@@ -178,9 +184,9 @@ return <>
 
 `Storage.privateGet(key)` - returns the private value for a given key under the current component.
 
- | param | required     | type   | description                                    |
- |-------|--------------|--------|------------------------------------------------|
- | `key` | **required** | object | a user-defined key under the current component |
+| param | required     | type   | description                                    |
+| ----- | ------------ | ------ | ---------------------------------------------- |
+| `key` | **required** | object | a user-defined key under the current component |
 
 ---
 
@@ -192,10 +198,10 @@ return <>
 Private and public values can share the same key and don't conflict.
 :::
 
- | param   | required     | type   | description                                    |
- |---------|--------------|--------|------------------------------------------------|
- | `key`   | **required** | object | a user-defined key under the current component |
- | `value` | **required** | object | a user-defined value                           |
+| param   | required     | type   | description                                    |
+| ------- | ------------ | ------ | ---------------------------------------------- |
+| `key`   | **required** | object | a user-defined key under the current component |
+| `value` | **required** | object | a user-defined value                           |
 
 </details>
 

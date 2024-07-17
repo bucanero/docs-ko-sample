@@ -154,13 +154,14 @@ return (
 
 The OverlayTrigger component has several props that allow you to customize its behavior:
 
-| Prop        | Description                                                                                                                                                                                                                                                                  |
-|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `show`      | A boolean value that determines whether the overlay is currently visible or not.                                                                                                                                                                                             |
+| Prop        | Description                                                                                                                                                                                                                                                                                                  |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `show`      | A boolean value that determines whether the overlay is currently visible or not.                                                                                                                                                                                                             |
 | `trigger`   | An array of events that trigger the display of the overlay. In this example, the `trigger` prop is set to `["hover", "focus"]`, which means that the overlay will be displayed when the user hovers over or focuses on the element.                                          |
 | `delay`     | An object that specifies the delay before the overlay is displayed or hidden. In this example, the `delay` prop is set to `{ show: 250, hide: 300 }`, which means that the overlay will be displayed after a 250-millisecond delay and hidden after a 300-millisecond delay. |
 | `placement` | A string that specifies the position of the overlay relative to the trigger element. In this example, the `placement` prop is set to `"auto"`, which means that the position will be automatically determined based on available space.                                      |
 | `overlay`   | The content that will be displayed in the overlay. In this example, the `overlay` prop is set to a `<div>` element containing the message "This is the overlay message.                                                                                                      |
+
 </details>
 
 ---

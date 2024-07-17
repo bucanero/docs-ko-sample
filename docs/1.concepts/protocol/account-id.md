@@ -4,6 +4,7 @@ title: Address (Account ID)
 ---
 
 NEAR accounts are identified by a unique address, which take one of two forms:
+
 1. [**Implicit addresses**](#implicit-address), which are 64 characters long (e.g. `fb9243ce...`)
 2. [**Named addresses**](#named-address), which are simpler to remember and act as domains (e.g. `alice.near`)
 
@@ -14,14 +15,16 @@ You have multiple ways to create an account, you can [sign-up using your email](
 ---
 
 ## Implicit Address
+
 Implicit accounts are denoted by a 64 character address, which corresponds to a unique public/private key-pair. Who controls the [private key](./access-keys.md) of the implicit account controls the account.
 
 For example:
+
 - The private key: `ed25519:4x1xiJ6u3sZF3NgrwPUCnHqup2o...`
 - Corresponds to the public key: `ed25519:CQLP1o1F3Jbdttek3GoRJYhzfT...`
 - And controls the account: `a96ad3cb539b653e4b869bd7cf26590690e8971...`
 
-Implicit accounts always *exist*, and thus do not need to be created. However, in order to use the account you will still need to fund it with NEAR tokens (or get somebody to pay the gas for your transaction).
+Implicit accounts always _exist_, and thus do not need to be created. However, in order to use the account you will still need to fund it with NEAR tokens (or get somebody to pay the gas for your transaction).
 
 <details>
 
@@ -43,6 +46,7 @@ near generate-key
 ---
 
 ## Named Address
+
 In NEAR, users can register **named accounts** (e.g. `bob.near`) which are simpler to share and remember.
 
 Another advantage of named accounts is that they can create **sub-accounts** of themselves, effectively working as domains:
@@ -51,8 +55,8 @@ Another advantage of named accounts is that they can create **sub-accounts** of 
 2. The `near` account can create sub-accounts such as `bob.near` or `alice.near`
 3. `bob.near` can create sub-accounts of itself, such as `app.bob.near`
 4. Accounts cannot create sub-accounts of other accounts
-    - `near` **cannot** create `app.bob.near`
-    - `account.near` **cannot** create `sub.another-account.near`
+   - `near` **cannot** create `app.bob.near`
+   - `account.near` **cannot** create `sub.another-account.near`
 5. Accounts have **no control** over their sub-account, they are different entities
 
 Anyone can create a `.near` or `.testnet` account, you just to call the `create_account` method of the corresponding top-level account - `testnet` on testnet, and `near` on mainnet.
@@ -61,7 +65,7 @@ Anyone can create a `.near` or `.testnet` account, you just to call the `create_
 
 <summary> 🧑‍💻 Technical: How to create a named account  </summary>
 
-Named accounts are created by calling the `create_account` method of the network's top-level account - `testnet` on testnet, and `near` on mainnet. 
+Named accounts are created by calling the `create_account` method of the network's top-level account - `testnet` on testnet, and `near` on mainnet.
 
 ```bash
 near call testnet create_account '{"new_account_id": "new-acc.testnet", "new_public_key": "ed25519:<data>"}' --deposit 0.00182 --accountId funding-account.testnet

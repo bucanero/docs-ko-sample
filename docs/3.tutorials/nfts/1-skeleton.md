@@ -1,33 +1,30 @@
 ---
 id: skeleton
-title: Skeleton and Rust Architecture
-sidebar_label: Contract Architecture
+title: 뼈대 및 Rust 아키텍처
+sidebar_label: 컨트랙트 아키텍처
 ---
+
 import {Github} from "@site/src/components/codetabs"
 
 In this article, you'll learn about the basic architecture behind the NFT contract that you'll develop while following this _"Zero to Hero"_ series.
 
 You'll discover the contract's layout and you'll see how the Rust files are structured in order to build a feature-complete smart contract.
 
-:::info Skeleton Contract
-You can find the skeleton contract in our [GitHub repository](https://github.com/near-examples/nft-tutorial/tree/main/nft-contract-skeleton)
-:::
+:::info Skeleton Contract You can find the skeleton contract in our [GitHub repository](https://github.com/near-examples/nft-tutorial/tree/main/nft-contract-skeleton) :::
 
-:::info New to Rust?
-If you are new to Rust and want to dive into smart contract development, our [Quick-start guide](../../2.build/2.smart-contracts/quickstart.md) is a great place to start.
-:::
+:::info Rust가 처음이신가요? If you are new to Rust and want to dive into smart contract development, our [Quick-start guide](../../2.build/2.smart-contracts/quickstart.md) is a great place to start. :::
 
 ---
 
-## Introduction
+## 소개
 
-This tutorial presents the code skeleton for the NFT smart contract and its file structure.
+이 튜토리얼은 NFT 스마트 컨트랙트의 코드 뼈대와 파일 구조를 보여줍니다.
 
 Once every file and functions have been covered, we will guide you through the process of building the mock-up contract to confirm that your Rust setup works.
 
 ---
 
-## File structure
+## 파일 구조
 
 Following a regular [Rust](https://www.rust-lang.org/) project, the file structure for this smart contract has:
 
@@ -52,40 +49,38 @@ nft-contract
 
 <hr class="subsection" />
 
-### Source files
+### 소스 파일
 
 Here is a brief description of what each source file is responsible for:
 
-| File                             | Description                                                                     |
-|----------------------------------|---------------------------------------------------------------------------------|
+| 파일                               | 설명                                                                              |
+| -------------------------------- | ------------------------------------------------------------------------------- |
 | [approval.rs](#approvalrs)       | Has the functions that controls the access and transfers of non-fungible tokens |
 | [enumeration.rs](#enumerationrs) | Contains the methods to list NFT tokens and their owners                        |
 | [lib.rs](#librs)                 | Holds the smart contract initialization functions                               |
 | [metadata.rs](#metadatars)       | Defines the token and metadata structure                                        |
 | [mint.rs](#mintrs)               | Contains token minting logic                                                    |
-| [nft_core.rs](#nft_corers)       | Core logic that allows you to transfer NFTs between users.                      |
+| [nft_core.rs](#nft_corers)       | 사용자 간에 NFT를 전송할 수 있는 내부 핵심 로직을 포함합니다.                                           |
 | [royalty.rs](#royaltyrs)         | Contains payout-related functions                                               |
 | [events.rs](#events)             | Contains events related structures                                              |
 
-:::tip
-Explore the code in our [GitHub repository](https://github.com/near-examples/nft-tutorial/).
-:::
+:::tip Explore the code in our [GitHub repository](https://github.com/near-examples/nft-tutorial/). :::
 
 ---
 
 ## `approval.rs`
 
-> This allows people to approve other accounts to transfer NFTs on their behalf.
+> 이를 통해 사람들은 다른 계정을 NFT를 대신 전송할 수 있게끔 승인할 수 있습니다.
 
-This file contains the logic that complies with the standard's [approvals management](https://nomicon.io/Standards/Tokens/NonFungibleToken/ApprovalManagement) extension. Here is a breakdown of the methods and their functions:
+이 파일에는 표준의 [승인 관리](https://nomicon.io/Standards/NonFungibleToken/ApprovalManagement.html) 확장을 준수하는 내부 로직이 포함되어 있습니다. 다음은 메서드 및 함수에 대한 분석입니다.
 
-| Method              | Description                                                                                               |
-|---------------------|-----------------------------------------------------------------------------------------------------------|
-| **nft_approve**     | Approves an account ID to transfer a token on your behalf.                                                |
-| **nft_is_approved** | Checks if the input account has access to approve the token ID.                                           |
-| **nft_revoke**      | Revokes a specific account from transferring the token on your behalf.                                    |
-| **nft_revoke_all**  | Revokes all accounts from transferring the token on your behalf.                                          |
-| **nft_on_approve**  | This callback function, initiated during `nft_approve`, is a cross contract call to an external contract. |
+| 메서드                   | 설명                                                            |
+| --------------------- | ------------------------------------------------------------- |
+| **nft_approve**       | 사용자를 대신하여 토큰을 전송할 계정 ID를 승인합니다.                               |
+| **nft_is_approved** | 입력 계정에 토큰 ID를 승인할 수 있는 액세스 권한이 있는지 확인합니다.                     |
+| **nft_revoke**        | 사용자를 대신하여 토큰을 전송하는 특정 계정을 취소합니다.                              |
+| **nft_revoke_all**  | 사용자를 대신하여 토큰을 전송하는 모든 계정을 취소합니다.                              |
+| **nft_on_approve**  | 이 콜백 함수는 `nft_approve`에 의해 시작되어, 외부 컨트랙트로의 교차 컨트랙트 호출을 실행합니다. |
 
 <Github language="rust" start="4" end="33" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-basic/src/approval.rs" />
 
@@ -95,55 +90,52 @@ You'll learn more about these functions in the [approvals section](/tutorials/nf
 
 ## `enumeration.rs`
 
-> This file provides the functions needed to view information about NFTs, and follows the standard's [enumeration](https://nomicon.io/Standards/Tokens/NonFungibleToken/Enumeration) extension.
+> 이 파일은 NFT에 대한 정보를 보는 데 필요한 내부 함수들을 제공하며 표준의 [열거(Enumeration)](https://nomicon.io/Standards/Tokens/NonFungibleToken/Enumeration) 확장자를 따릅니다.
 
-| Method                   | Description                                                                        |
-|--------------------------|------------------------------------------------------------------------------------|
-| **nft_total_supply**     | Returns the total amount of NFTs stored on the contract                           |
-| **nft_tokens**           | Returns a paginated list of NFTs stored on the contract regardless of their owner. |
-| **nft_supply_for_owner** | Allows you view the total number of NFTs owned by any given user                  |
-| **nft_tokens_for_owner** | Returns a paginated list of NFTs owned by any given user                          |
+| 메서드                        | 설명                                                               |
+| -------------------------- | ---------------------------------------------------------------- |
+| **nft_total_supply**     | Returns the total amount of NFTs stored on the contract          |
+| **nft_tokens**             | 소유자와 관계없이 컨트랙트에 저장된 페이지가 매겨진 NFT 목록을 반환합니다.                      |
+| **nft_supply_for_owner** | Allows you view the total number of NFTs owned by any given user |
+| **nft_tokens_for_owner** | Returns a paginated list of NFTs owned by any given user         |
 
 <Github language="rust" start="4" end="44" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-skeleton/src/enumeration.rs" />
 
-You'll learn more about these functions in the [enumeration section](/tutorials/nfts/enumeration) of the tutorial series.
+튜토리얼 시리즈의 [열거 섹션](/tutorials/nfts/enumeration)에서 이러한 함수에 대해 자세히 알아볼 수 있습니다.
 
 ---
 
 ## `lib.rs`
 
-> This file outlines what information the contract stores and keeps track of.
+> 이 파일은 컨트랙트가 저장하고 추적하는 정보를 간략하게 설명합니다.
 
-| Method               | Description                                                                                     |
-|----------------------|-------------------------------------------------------------------------------------------------|
-| **new_default_meta** | Initializes the contract with default `metadata` so the user doesn't have to provide any input. |
-| **new**              | Initializes the contract with the user-provided `metadata`.                                     |
+| 메서드                    | 설명                                                         |
+| ---------------------- | ---------------------------------------------------------- |
+| **new_default_meta** | 기본 `metadata`를 이용해 컨트랙트를 초기화해, 사용자가 입력값을 제공하지 않아도 되도록 합니다. |
+| **new**                | 사용자가 제공한 `metadata`로 컨트랙트를 초기화합니다.                         |
 
-:::info Keep in mind
-The initialization functions (`new`, `new_default_meta`) can only be called once.
-:::
+:::info 기억해 두세요 초기화 함수(`new`, `new_default_meta`) 한 번만 호출될 수 있습니다. :::
 
 <Github language="rust" start="47" end="73" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-skeleton/src/lib.rs" />
 
-You'll learn more about these functions in the [minting section](/tutorials/nfts/minting) of the tutorial series.
+튜토리얼 시리즈의 [발행 섹션](/tutorials/nfts/minting)에서 이러한 기능에 대해 자세히 알아볼 것입니다.
 
 ---
 
 ## `metadata.rs`
 
-> This file is used to keep track of the information to be stored for tokens, and metadata.
-> In addition, you can define a function to view the contract's metadata which is part of the standard's [metadata](https://nomicon.io/Standards/Tokens/NonFungibleToken/Metadata) extension.
+> 이 파일은 토큰 및 메타데이터에 대해 저장할 정보를 추적하는 데 사용됩니다. 또한 표준 메타데이터 확장의 일부인 컨트랙트의 [메타데이터](https://nomicon.io/Standards/Tokens/NonFungibleToken/Metadata)를 보는 기능을 정의할 수 있습니다.
 
-| Name              | Description                                                                                                   |
-|-------------------|---------------------------------------------------------------------------------------------------------------|
-| **TokenMetadata** | This structure defines the metadata that can be stored for each token (title, description, media, etc.).      |
-| **Token**         | This structure outlines what information will be stored on the contract for each token.                       |
-| **JsonToken**     | When querying information about NFTs through view calls, the return information is stored in this JSON token. |
-| **nft_metadata**  | This function allows users to query for the contact's internal metadata.                                      |
+| 이름                | 설명                                                                                                       |
+| ----------------- | -------------------------------------------------------------------------------------------------------- |
+| **TokenMetadata** | This structure defines the metadata that can be stored for each token (title, description, media, etc.). |
+| **Token**         | 이 구조는 각 토큰에 대한 컨트랙트에 어떤 정보가 저장될 것인지를 설명합니다.                                                              |
+| **JsonToken**     | View 호출을 통해 NFT에 대한 정보를 조회할 때, 반환된 정보는 이 JSON 토큰에 저장됩니다.                                                 |
+| **nft_metadata**  | 이 함수를 통해 사용자는 컨트랙트의 내부 메타데이터를 쿼리할 수 있습니다.                                                                |
 
 <Github language="rust" start="12" end="60" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-skeleton/src/metadata.rs" />
 
-You'll learn more about these functions in the [minting section](/tutorials/nfts/minting) of the tutorial series.
+튜토리얼 시리즈 내 [발행 섹션](/tutorials/nfts/minting)에서 이러한 함수에 대해 더 많이 배울 수 있습니다.
 
 ---
 
@@ -151,9 +143,9 @@ You'll learn more about these functions in the [minting section](/tutorials/nfts
 
 > Contains the logic to mint the non-fungible tokens
 
-| Method       | Description                               |
-|--------------|-------------------------------------------|
-| **nft_mint** | This function mints a non-fungible token. |
+| 메서드          | 설명                      |
+| ------------ | ----------------------- |
+| **nft_mint** | 이 함수는 대체 불가능 토큰을 생성합니다. |
 
 <Github language="rust" start="4" end="16" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-skeleton/src/mint.rs" />
 
@@ -163,13 +155,13 @@ You'll learn more about these functions in the [minting section](/tutorials/nfts
 
 > Core logic that allows to transfer NFTs between users.
 
-| Method                   | Description                                                                                                                                                                                                                                                                                   |
-|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **nft_transfer**         | Transfers an NFT to a receiver ID.                                                                                                                                                                                                                                                            |
-| **nft_transfer_call**    | Transfers an NFT to a receiver and calls a function on the receiver ID's contract. The function returns `true` if the token was transferred from the sender's account.                                                                                                                        |
-| **nft_token**            | Allows users to query for the information about a specific NFT.                                                                                                                                                                                                                               |
-| **nft_on_transfer**      | Called by other contracts when an NFT is transferred to your contract account via the `nft_transfer_call` method. It returns `true` if the token should be returned back to the sender.                                                                                                       |
-| **nft_resolve_transfer** | When you start the `nft_transfer_call` and transfer an NFT, the standard also calls a method on the receiver's contract. If the receiver needs you to return the NFT to the sender (as per the return value of the `nft_on_transfer` method), this function allows you to execute that logic. |
+| 메서드                        | 설명                                                                                                                                                                    |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **nft_transfer**           | NFT를 수신자 ID로 전송합니다.                                                                                                                                                   |
+| **nft_transfer_call**    | NFT가 `nft_transfer_call` 메서드를 통해 컨트랙트 계정으로 전송될 때 다른 컨트랙트에 의해 호출됩니다. 토큰이 보낸 사람에게 다시 반환되어야 하면 `true`를 반환합니다.                                                            |
+| **nft_token**              | 사용자가 특정 NFT에 대한 정보를 쿼리할 수 있도록 합니다.                                                                                                                                    |
+| **nft_on_transfer**      | `nft_transfer_call`을 시작하고 NFT를 전송할 때 표준에 따르면 수신자의 컨트랙트에 있는 메서드도 호출해야 합니다. 수신자가 발신자에게 NFT를 반환해야 하는 경우(`nft_on_transfer` 메서드의 반환 값에 따라) 이 함수를 사용하면 해당 로직을 실행할 수 있습니다.   |
+| **nft_resolve_transfer** | `nft_transfer_call`을 시작하고 NFT를 전송할 때의 표준에 따르면, 수신자의 컨트랙트에 있는 메서드도 호출해야 합니다. 수신자가 발신자에게 NFT를 반환해야 하는 경우(`nft_on_transfer` 메서드의 반환 값에 따라) 이 함수를 사용하면 해당 로직을 실행할 수 있습니다. |
 
 <Github language="rust" start="7" end="56" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-skeleton/src/nft_core.rs" />
 
@@ -179,16 +171,16 @@ You'll learn more about these functions in the [core section](/tutorials/nfts/co
 
 ## `royalty.rs`
 
-> Contains payout-related functions.
+> 내부 지불 관련 함수를 포함합니다.
 
-| Method                  | Description                                                                                                   |
-|-------------------------|---------------------------------------------------------------------------------------------------------------|
-| **nft_payout**          | This view method calculates the payout for a given token.                                                     |
-| **nft_transfer_payout** | Transfers the token to the receiver ID and returns the payout object that should be paid for a given balance. |
+| 메서드                       | 설명                                                         |
+| ------------------------- | ---------------------------------------------------------- |
+| **nft_payout**            | 이 view 메서드는 주어진 토큰에 대한 지불금을 계산합니다.                         |
+| **nft_transfer_payout** | 토큰을 수신자 ID로 전송하고 주어진 잔고에 대해 지불해야 하는 지불 객체를 반환하는 내부 메서드입니다. |
 
 <Github language="rust" start="3" end="17" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-skeleton/src/royalty.rs" />
 
-You'll learn more about these functions in the [royalty section](/tutorials/nfts/royalty) of the tutorial series.
+튜토리얼 시리즈의 [로열티 섹션](/tutorials/nfts/royalty)에서 이러한 함수들에 대해 자세히 알아볼 수 있습니다.
 
 ---
 
@@ -197,7 +189,7 @@ You'll learn more about these functions in the [royalty section](/tutorials/nfts
 > Contains events-related structures.
 
 | Method              | Description                                         |
-|---------------------|-----------------------------------------------------|
+| ------------------- | --------------------------------------------------- |
 | **EventLogVariant** | This enum represents the data type of the EventLog. |
 | **EventLog**        | Interface to capture data about an event.           |
 | **NftMintLog**      | An event log to capture token minting.              |
@@ -209,9 +201,9 @@ You'll learn more about these functions in the [events section](/tutorials/nfts/
 
 ---
 
-## Building the skeleton
+## 뼈대 구축
 
-If you haven't cloned the main repository yet, open a terminal and run:
+아직 기본 레퍼지토리를 복제하지 않은 경우 터미널을 열고 다음을 실행합니다.
 
 ```sh
 git clone https://github.com/near-examples/nft-tutorial/
@@ -225,7 +217,7 @@ cd nft-contract-skeleton/
 cargo near build
 ```
 
-Since this source is just a skeleton you'll get many warnings about unused code, such as:
+이 소스는 뼈대일 뿐이므로 다음과 같이 사용하지 않는 코드에 대한 많은 경고를 받게 됩니다.
 
 ```
    Compiling nft_contract_skeleton v0.1.0 (/Users/near-examples/Documents/my/projects/near/examples/nft-tutorial/nft-contract-basic)
@@ -248,18 +240,15 @@ Since this source is just a skeleton you'll get many warnings about unused code,
  ✓ Contract successfully built!
 ```
 
-Don't worry about these warnings, you're not going to deploy this contract yet.
-Building the skeleton is useful to validate that your Rust toolchain works properly and that you'll be able to compile improved versions of this NFT contract in the upcoming tutorials.
+이러한 경고에 대해 걱정하지 마세요. 아직 이 컨트랙트를 배포하지 않을 것입니다. 뼈대 구축하는 것은 Rust 툴체인이 제대로 작동하는지 확인하는 것이고, 이는 다음 튜토리얼에서 이 NFT 컨트랙트의 개선된 버전을 컴파일할 수 있는지 확인하는 데 유용합니다.
 
 ---
 
-## Conclusion
+## 결론
 
-You've seen the layout of this NFT smart contract, and how all the functions are laid out across the different source files.
-Using `yarn`, you've been able to compile the contract, and you'll start fleshing out this skeleton in the next [Minting tutorial](2-minting.md).
+이 NFT 스마트 컨트랙트의 레이아웃과 다양한 소스 파일에 모든 함수가 어떻게 배치되어 있는지 확인했습니다. Using `yarn`, you've been able to compile the contract, and you'll start fleshing out this skeleton in the next [Minting tutorial](2-minting.md).
 
-:::note Versioning for this article
-At the time of this writing, this example works with the following versions:
+:::note 이 문서의 버전 관리 이 글을 쓰는 시점에서 이 예제는 다음 버전에서 작동합니다.
 
 - rustc: `1.76.0`
 - near-sdk-rs: `5.1.0`

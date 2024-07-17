@@ -20,8 +20,8 @@ Oracle contract's are not standardized. We will here list different providers an
 
 - Account: **priceoracle.near** | **priceoracle.testnet**
 - Creator: [NearDefi](https://github.com/NearDeFi)
-- Smart contract: https://github.com/NearDeFi/price-oracle
-- Bot to fill contract: https://github.com/NearDeFi/near-price-oracle-bot
+- Smart contract: https\://github.com/NearDeFi/price-oracle
+- Bot to fill contract: https\://github.com/NearDeFi/near-price-oracle-bot
 
 ---
 
@@ -32,7 +32,7 @@ Oracle contract's are not standardized. We will here list different providers an
 
 ```bash
 near view priceoracle.near get_assets
-``` 
+```
 
 </TabItem>
 

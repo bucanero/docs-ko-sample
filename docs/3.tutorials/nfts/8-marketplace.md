@@ -1,17 +1,18 @@
 ---
 id: marketplace
-title: Marketplace
-sidebar_label: Marketplace
+title: 마켓플레이스
+sidebar_label: 마켓플레이스
 ---
+
 import {Github} from "@site/src/components/codetabs"
 
-In this tutorial, you'll learn the basics of an NFT marketplace contract where you can buy and sell non-fungible tokens for $NEAR. In the previous tutorials, you went through and created a fully fledged NFT contract that incorporates all the standards found in the [NFT standard](https://nomicon.io/Standards/NonFungibleToken).
+이 튜토리얼에서는 $NEAR에 대해 대체 불가능 토큰(NFT)을 사고 팔 수 있는 NFT 마켓플레이스 컨트랙트의 기본 사항을 배웁니다. 이전 튜토리얼에서는 [NFT 표준](https://nomicon.io/Standards/NonFungibleToken)에 있는 모든 표준을 통합하는 완전한 NFT 컨트랙트를 작성했습니다.
 
 ---
 
-## Introduction
+## 소개
 
-Throughout this tutorial, you'll learn how a marketplace contract **could** work on NEAR. This is meant to be **an example** as there is no **canonical implementation**. Feel free to branch off and modify this contract to meet your specific needs.
+Throughout this tutorial, you'll learn how a marketplace contract **could** work on NEAR. This is meant to be **an example** as there is no **canonical implementation**. 당신의 기호에 맞게 이 컨트랙트를 자유롭게 나누고 수정하세요.
 
 ```bash
 cd market-contract/
@@ -35,27 +36,27 @@ market-contract
 
 ---
 
-## Understanding the contract
+## 컨트랙트 이해하기
 
-At first, the contract can be quite overwhelming but if you strip away all the fluff and dig into the core functionalities, it's actually quite simple. This contract was designed for only one thing - to allow people to buy and sell NFTs for NEAR. This includes the support for paying royalties, updating the price of your sales, removing sales and paying for storage.
+처음에는 컨트랙트가 상당히 버거울 수 있지만, 모든 부가 기능을 제외하고 핵심 기능만 파헤치면 실제로는 매우 간단합니다. 이 컨트랙트는 사람들이 NEAR를 위해 NFT를 사고 팔 수 있도록 한다는 단 한 가지를 위해 설계되었습니다. 여기에는 로열티 지불, 판매 가격 업데이트, 판매 제거 및 스토리지 비용 지불에 대한 지원이 포함됩니다.
 
-Let's go through the files and take note of some of the important functions and what they do.
+몇 가지 중요한 기능을 하는 파일과 함수들을 살펴 봅시다.
 
 ---
 
 ## lib.rs {#lib-rs}
 
-This file outlines what information is stored on the contract as well as some other crucial functions that you'll learn about below.
+이 파일은 컨트랙트에 저장되는 정보와 아래에서 배우게 될 몇 가지 주요 함수에 대해 설명합니다.
 
-### Initialization function {#initialization-function}
+### 초기화 함수 {#initialization-function}
 
-The first function you'll look at is the initialization function. This takes an `owner_id` as the only parameter and will default all the storage collections to their default values.
+처음으로 살펴볼 함수는 생성자 함수입니다. 이것은 유일한 매개변수로 `owner_id`를 사용하며, 모든 스토리지 컬렉션을 기본값으로 설정합니다.
 
 <Github language="rust" start="92" end="107" url="https://github.com/near-examples/nft-tutorial/blob/main/market-contract/src/lib.rs" />
 
 <hr className="subsection" />
 
-### Storage management model {#storage-management-model}
+### 스토리지 관리 모델 {#storage-management-model}
 
 Next, let's talk about the storage management model chosen for this contract. On the NFT contract, users attached $NEAR to the calls that needed storage paid for. For example, if someone was minting an NFT, they would need to attach `x` amount of NEAR to cover the cost of storing the data on the contract.
 
@@ -65,24 +66,24 @@ You might be thinking about the scenario when a sale is purchased. What happens 
 
 **Scenario A**
 
-- Benji wants to list his NFT on the marketplace but has never paid for storage.
-- He deposits exactly 0.01 NEAR using the `storage_deposit` method. This will cover 1 sale.
-- He lists his NFT on the marketplace and is now using up 1 out of his prepaid 1 sales and has no more storage left. If he were to call `storage_withdraw`, nothing would happen.
-- Dorian loves his NFT and quickly purchases it before anybody else can. This means that Benji's sale has now been taken down (since it was purchased) and Benji is using up 0 out of his prepaid 1 sales. In other words, he has an excess of 1 sale or 0.01 NEAR.
-- Benji can now call `storage_withdraw` and will be transferred his 0.01 NEAR back. On the contract's side, after withdrawing, he will have 0 sales paid for and will need to deposit storage before trying to list anymore NFTs.
+- Benji는 시장에 자신의 NFT를 리스팅하고 싶지만, 스토리지 비용을 지불한 적이 없습니다.
+- 그는 `storage_deposit` 메서드를 사용하여 정확히 0.01 NEAR를 예치합니다. 이것은 한 번의 판매를 커버할 것입니다.
+- 그는 마켓플레이스에 자신의 NFT를 리스팅하였고, 현재 선불 판매 1개 중 1개를 사용하고 있기 때문에 더 이상 스토리지 공간이 남아 있지 않습니다. 그가 `storage_withdraw`를 호출하면 아무 일도 일어나지 않을 것입니다.
+- Dorian은 Benji의 NFT를 좋아하고, 다른 사람보다 먼저 빠르게 구매했습니다. 이는 Benji의 판매가 이제 중단되었으며(구매한 이후) Benji는 선불 판매 1개 중 0개를 사용하고 있음을 의미합니다. 즉, 그는 1 판매 또는 0.01 NEAR가 남습니다.
+- Benji는 이제 `storage_withdraw` 호출을 할 수 있으며, 그의 0.01 NEAR를 다시 돌려받을 것입니다. 컨트랙트 측면에서, 그는 출금 후 판매 금액이 0이 되며, 이제 NFT를 리스팅하기 전에 스토리지 보증금을 예치해야 합니다.
 
 **Scenario B**
 
-- Dorian owns one hundred beautiful NFTs and knows that he wants to list all of them.
-- To avoid having to call `storage_deposit` everytime he wants to list an NFT, he calls it once. Since Dorian is a baller, he attaches 10 NEAR which is enough to cover 1000 sales. Then he lists his 100 NFTs and now he has an excess of 9 NEAR or 900 sales.
-- Dorian needs the 9 NEAR for something else but doesn't want to take down his 100 listings. Since he has an excess of 9 NEAR, he can easily withdraw and still have his 100 listings. After calling `storage_withdraw` and being transferred 9 NEAR, he will have an excess of 0 sales.
+- Dorian은 100개의 아름다운 NFT를 소유하고 있으며, 모든 NFT를 리스팅하고 싶습니다.
+- NFT를 나열할 때마다 `storage_deposit`를 호출할 필요가 없도록, 그는 한 번만 호출하였습니다. Dorian은 성공한 사람이기 때문에 1000개의 판매를 커버하기에 충분한 10개의 NEAR를 첨부하였습니다. Then he lists his 100 NFTs and now he has an excess of 9 NEAR or 900 sales.
+- Dorian은 다른 일을 위해 9 NEAR가 필요하지만, 100개의 리스팅을 삭제하고 싶지는 않습니다. 그는 9 NEAR가 남았기 때문에 쉽게 인출할 수 있고 여전히 100개의 목록을 보유할 수 있습니다. `storage_withdraw` 호출을 하고 9 NEAR를 받으면 그는 0개의 판매 가능 수량을 가지게 될 것입니다.
 
 With this behavior in mind, the following two functions outline the logic.
 
 <Github language="rust" start="111" end="139" url="https://github.com/near-examples/nft-tutorial/blob/main/market-contract/src/lib.rs" />
 <Github language="rust" start="144" end="175" url="https://github.com/near-examples/nft-tutorial/blob/main/market-contract/src/lib.rs" />
 
-In this contract, the storage required for each sale is 0.01 NEAR but you can query that information using the `storage_minimum_balance` function. In addition, if you wanted to check how much storage a given account has paid, you can query the `storage_balance_of` function.
+이 컨트랙트에서 각 판매에 필요한 스토리지는 0.01 NEAR이지만, `storage_minimum_balance` 함수를 사용하여 해당 정보를 쿼리할 수 있습니다. 또한, 해당 계정이 지불한 스토리지 공간을 확인하려면 `storage_balance_of` 함수로 쿼리할 수 있습니다.
 
 With that out of the way, it's time to move onto the `sale.rs` file where you'll look at how NFTs are put for sale.
 
@@ -92,7 +93,7 @@ With that out of the way, it's time to move onto the `sale.rs` file where you'll
 
 This file is responsible for the internal marketplace logic.
 
-### Listing logic {#listing-logic}
+### 리스팅 로직 {#listing-logic}
 
 In order to put an NFT on sale, a user should:
 
@@ -124,35 +125,35 @@ The `process_listing` function will receive if our marketplace is authorized to 
 
 <hr class="subsection" />
 
-### Sale object {#sale-object}
+### 판매 객체 {#sale-object}
 
-It's important to understand what information the contract is storing for each sale object. Since the marketplace has many NFTs listed that come from different NFT contracts, simply storing the token ID would not be enough to distinguish between different NFTs. This is why you need to keep track of both the token ID and the contract by which the NFT came from. In addition, for each listing, the contract must keep track of the approval ID it was given to transfer the NFT. Finally, the owner and sale conditions are needed.
+컨트랙트는 각 판매 객체에 대해 저장하는 정보를 이해하는 것이 중요합니다. 마켓플레이스에는 서로 다른 NFT 컨트랙트에서 나온 많은 NFT가 나열되어 있기 때문에, 단순히 토큰 ID를 저장하는 것만으로는 서로 다른 NFT를 구별하기에 충분하지 않습니다. 이것이 토큰 ID와 NFT가 발생한 컨트랙트를 모두 추적해야 하는 이유입니다. 또한 각 목록에 대해 컨트랙트는 NFT 전송을 위해 제공된 승인 ID를 추적해야 합니다. 마지막으로 소유자 및 판매 조건이 필요합니다.
 
 <Github language="rust" start="5" end="20" url="https://github.com/near-examples/nft-tutorial/blob/main/market-contract/src/sale.rs" />
 
 <hr className="subsection" />
 
-### Removing sales {#removing-sales}
+### 리스팅 제거 {#removing-sales}
 
-In order to remove a listing, the owner must call the `remove_sale` function and pass the NFT contract and token ID. Behind the scenes, this calls the `internal_remove_sale` function which you can find in the `internal.rs` file. This will assert one yoctoNEAR for security reasons.
+리스팅을 제거하려면, 소유자가 `remove_sale` 함수를 호출하고 NFT 컨트랙트 및 토큰 ID를 전달해야 합니다. 내부적으로, 이는 `internal.rs` 파일에서 찾을 수 있는 `internal_remove_sale` 함수를 호출합니다. 이것은 보안상의 이유로 1 yoctoNEAR를 요구합니다.
 
 <Github language="rust" start="76" end="87" url="https://github.com/near-examples/nft-tutorial/blob/main/market-contract/src/sale.rs" />
 
 <hr className="subsection" />
 
-### Updating price {#updating-price}
+### 가격 업데이트 {#updating-price}
 
-In order to update the list price of a token, the owner must call the `update_price` function and pass in the contract, token ID, and desired price. This will get the sale object, change the sale conditions, and insert it back. For security reasons, this function will assert one yoctoNEAR.
+토큰의 리스팅 가격을 업데이트하려면 소유자가 `update_price` 함수를 호출하고 컨트랙트, 토큰 ID 및 원하는 가격을 전달해야 합니다. 이렇게 하면 판매 객체를 가져오고 판매 조건을 변경한 다음 다시 삽입할 것입니다. 보안상의 이유로 이 함수는 1 yoctoNEAR를 요구합니다.
 
 <Github language="rust" start="90" end="118" url="https://github.com/near-examples/nft-tutorial/blob/main/market-contract/src/sale.rs" />
 
 <hr className="subsection" />
 
-### Purchasing NFTs {#purchasing-nfts}
+### NFT 구매 {#purchasing-nfts}
 
-For purchasing NFTs, you must call the `offer` function. It takes an `nft_contract_id` and `token_id` as parameters. You must attach the correct amount of NEAR to the call in order to purchase. Behind the scenes, this will make sure your deposit is greater than the list price and call a private method `process_purchase` which will perform a cross-contract call to the NFT contract to invoke the `nft_transfer_payout` function. This will transfer the NFT using the [approval management](https://nomicon.io/Standards/Tokens/NonFungibleToken/ApprovalManagement) standard that you learned about and it will return the `Payout` object which includes royalties.
+NFT를 구매하려면 `offer` 함수를 호출해야 합니다. 이는 매개변수로 `nft_contract_id`와 `token_id`를 사용합니다. 구매하고 싶다면, 정확한 양의 NEAR를 호출에 첨부해야 합니다. 내부적으로, 이는 당신의 금액이 정가보다 큰지 확인하고, `process_purchase` 함수를 호출합니다. 해당 함수는 NFT 컨트랙트에 대한 교차 컨트랙트 호출을 수행하여 `nft_transfer_payout` 함수를 호출합니다. 이렇게 하면, 이전에 배운 [승인 관리](https://nomicon.io/Standards/NonFungibleToken/ApprovalManagement.html) 표준을 사용하여 NFT를 전송하고, 로열티가 포함된 `Payout` 객체를 반환합니다.
 
-The marketplace will then call `resolve_purchase` where it will check for malicious payout objects and then if everything went well, it will pay the correct accounts.
+그런 다음 마켓플레이스는 `resolve_purchase`를 호출하여 악의적인 지불 객체를 확인하고, 모든 것이 잘 진행되면 올바른 계정에 지불합니다.
 
 <Github language="rust" start="121" end="151" url="https://github.com/near-examples/nft-tutorial/blob/main/market-contract/src/sale.rs" />
 
@@ -160,7 +161,7 @@ The marketplace will then call `resolve_purchase` where it will check for malici
 
 ## sale_view.rs {#sale_view-rs}
 
-The final file is [`sale_view.rs`](https://github.com/near-examples/nft-tutorial/blob/main/market-contract/src/sale_view.rs) file. This is where some of the enumeration methods are outlined. It allows users to query for important information regarding sales.
+The final file is [`sale_view.rs`](https://github.com/near-examples/nft-tutorial/blob/main/market-contract/src/sale_view.rs) file. 여기에 열거 메서드 중 일부가 설명되어 있습니다. 이를 통해 사용자는 판매에 관한 중요한 정보를 쿼리할 수 있습니다.
 
 ---
 
@@ -203,9 +204,9 @@ near contract call-function as-transaction $MARKETPLACE_CONTRACT_ID list_nft_for
 
 <hr className="subsection" />
 
-### Total supply {#total-supply}
+### 총 공급량 {#total-supply}
 
-To query for the total supply of NFTs listed on the marketplace, you can call the `get_supply_sales` function. An example can be seen below.
+마켓플레이스에 등록된 NFT의 총 공급량을 쿼리하려면 `get_supply_sales` 함수를 호출하면 됩니다. 아래에서 예를 볼 수 있습니다.
 
 ```bash
 near contract call-function as-read-only $MARKETPLACE_CONTRACT_ID get_supply_sales json-args {} network-config testnet now
@@ -213,9 +214,9 @@ near contract call-function as-read-only $MARKETPLACE_CONTRACT_ID get_supply_sal
 
 <hr className="subsection" />
 
-### Total supply by owner {#total-supply-by-owner}
+### 소유자가 가진 총 공급량 {#total-supply-by-owner}
 
-To query for the total supply of NFTs listed by a specific owner on the marketplace, you can call the `get_supply_by_owner_id` function. An example can be seen below.
+마켓플레이스의 특정 소유자가 나열한 NFT의 총 공급량을 쿼리하려면 `get_supply_by_owner_id` 함수를 호출하면 됩니다. 아래에서 예를 볼 수 있습니다.
 
 ```bash
 near contract call-function as-read-only $MARKETPLACE_CONTRACT_ID get_supply_by_owner_id json-args '{"account_id": "'$NFT_CONTRACT_ID'"}' network-config testnet now
@@ -223,9 +224,9 @@ near contract call-function as-read-only $MARKETPLACE_CONTRACT_ID get_supply_by_
 
 <hr className="subsection" />
 
-### Total supply by contract {#total-supply-by-contract}
+### 컨트랙트에 의한 총 공급량 {#total-supply-by-contract}
 
-To query for the total supply of NFTs that belong to a specific contract, you can call the `get_supply_by_nft_contract_id` function. An example can be seen below.
+특정 컨트랙트에 속하는 NFT의 총 공급량을 쿼리하려면 `get_supply_by_nft_contract_id` 함수를 호출하면 됩니다. 아래에서 예를 볼 수 있습니다.
 
 ```bash
 near contract call-function as-read-only $MARKETPLACE_CONTRACT_ID get_supply_by_nft_contract_id json-args '{"nft_contract_id": "'$NFT_CONTRACT_ID'"}' network-config testnet now
@@ -233,21 +234,21 @@ near contract call-function as-read-only $MARKETPLACE_CONTRACT_ID get_supply_by_
 
 <hr className="subsection" />
 
-### Query for listing information {#query-listing-information}
+### 리스팅 정보 쿼리 {#query-listing-information}
 
-To query for important information for a specific listing, you can call the `get_sale` function. This requires that you pass in the `nft_contract_token`. This is essentially the unique identifier for sales on the market contract as explained earlier. It consists of the NFT contract followed by a `DELIMITER` followed by the token ID. In this contract, the `DELIMITER` is simply a period: `.`.  An example of this query can be seen below.
+특정 리스팅에 대한 중요한 정보를 쿼리하기 위해 `get_sale` 함수를 호출할 수 있습니다. 이를 위해서 `nft_contract_token`을 통과해야 합니다. 이는 본질적으로 앞서 설명한 대로 마켓플레이스 컨트랙트 판매에 대한 고유 식별자입니다. 이는 NFT 컨트랙트와 `DELIMITER`, 토큰 ID로 구성됩니다. 이 컨트랙트에서, `DELIMITER`는 단순한 기간입니다: `.`.  이 쿼리의 예시는 아래에서 볼 수 있습니다.
 
 ```bash
 near contract call-function as-read-only $MARKETPLACE_CONTRACT_ID get_sale json-args '{"nft_contract_token": "'$NFT_CONTRACT_ID'.token-1"}' network-config testnet now
 ```
 
-In addition, you can query for paginated information about the listings for a given owner by calling the `get_sales_by_owner_id` function.
+또한 `get_sales_by_owner_id` 함수를 호출하여, 지정된 소유자의 목록에 대한 정보를 쿼리할 수 있습니다.
 
 ```bash
 near contract call-function as-read-only $MARKETPLACE_CONTRACT_ID get_sales_by_owner_id json-args '{"account_id": "'$NFT_CONTRACT_ID'", "from_index": "0", "limit": 5}' network-config testnet now
 ```
 
-Finally, you can query for paginated information about the listings that originate from a given NFT contract by calling the `get_sales_by_nft_contract_id` function.
+마지막으로 `get_sales_by_nft_contract_id` 함수를 호출하여 지정된 NFT 컨트랙트에서 발생한 리스팅에 대한 정보를 쿼리할 수 있습니다
 
 ```bash
 near contract call-function as-read-only $MARKETPLACE_CONTRACT_ID get_sales_by_nft_contract_id json-args '{"nft_contract_id": "'$NFT_CONTRACT_ID'", "from_index": "0", "limit": 5}' network-config testnet now
@@ -255,23 +256,23 @@ near contract call-function as-read-only $MARKETPLACE_CONTRACT_ID get_sales_by_n
 
 ---
 
-## Conclusion
+## 결론
 
-In this tutorial, you learned about the basics of a marketplace contract and how it works. You went through the [lib.rs](#lib-rs) file and learned about the [initialization function](#initialization-function) in addition to the [storage management](#storage-management-model) model.
+이 튜토리얼에서는 마켓플레이스 컨트랙트의 기본 사항과 작동 방식에 대해 배웠습니다. [lib.rs](#lib-rs) 파일을 훑어보며 [스토리지 관리](#storage-management-model) 모델 외에 [초기화 함수](#initialization-function)에 대해서도 배웠습니다.
 
-You went through the [NFTs listing process](#listing-logic). In addition, you went through some important functions needed after you've listed an NFT. This includes [removing sales](#removing-sales), [updating the price](#updating-price), and [purchasing NFTs](#purchasing-nfts).
+You went through the [NFTs listing process](#listing-logic). In addition, you went through some important functions needed after you've listed an NFT. 여기에는 [리스팅 제거](#removing-sales), [가격 업데이트](#updating-price) 및 [NFT 구매](#purchasing-nfts)가 포함됩니다.
 
-Finally, you went through the enumeration methods found in the [`sale_view`](#sale_view-rs) file. These allow you to query for important information found on the marketplace contract.
+마지막으로 [`sale_view`](#sale_view-rs) 파일에 있는 열거 메서드를 살펴보았습니다. 이를 통해 마켓플레이스 컨트랙트에 있는 중요한 정보를 쿼리할 수 있습니다.
 
-You should now have a solid understanding of NFTs and marketplaces on NEAR. Feel free to branch off and expand on these contracts to create whatever cool applications you'd like. In the [next tutorial](9-series.md), you'll learn how to take the existing NFT contract and optimize it to allow for:
-- Lazy Minting
-- Creating Collections
-- Allowlisting functionalities
-- Optimized Storage Models
+이제 NEAR의 NFT 및 마켓플레이스 대해 확실하게 이해하셨을 것입니다. 자유롭게 수정하고 이러한 컨트랙트를 확장하여 원하는 멋진 애플리케이션을 만들 수 있습니다. [다음 튜토리얼](9-series.md)에서는 기존 NFT 컨트랙트를 사용하여 다음을 허용하도록 최적화하는 방법을 배웁니다.
+- 게으른 발행(Lazy Minting)
+- 컬렉션 만들기
+- 허용 목록 기능
+- 최적화된 스토리지 모델
 
-:::note Versioning for this article
+:::note 문서 버전 관리
 
-At the time of this writing, this example works with the following versions:
+이 글을 쓰는 시점에서 이 예제는 다음 버전에서 작동합니다.
 
 - rustc: `1.77.1`
 - near-cli-rs: `0.11.0`

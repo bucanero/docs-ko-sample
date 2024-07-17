@@ -5,55 +5,53 @@ title: NEAR CLI RS
 
 # NEAR-CLI-RS
 
-## Quick Start Guide
+## 빠른 시작 가이드
 
-The `near-cli-rs` tool is a human-friendly companion that helps you interact with the [NEAR Protocol](https://near.org/) from the command line. This has a guided prompt interface to help you make your own commands built in Rust.
+`near-cli-rs` 도구는 명령줄(command line)에서 [NEAR 프로토콜](https://near.org/)과 상호 작용하는 데 도움이 되는 동반자입니다. 여기에는 Rust 기반으로 자신만의 명령을 만드는 데 도움이 되는 안내 프롬프트 인터페이스가 있습니다.
 
-:::info note
+:::info 메모
 
-This is a separate tool from [near-cli](https://docs.near.org/tools/near-cli), a CLI tool of similar functionality without the guided prompts.
+이는 유사한 기능을 하지만 프롬프트 가이드가 없는 CLI 도구 [near-cli](https://docs.near.org/tools/near-cli)와는 별도의 도구입니다.
 
 :::
 
-## Install
+## 설치
 
-Download the pre-compiled version of `near-cli-rs` for your OS from [GitHub Releases Page](https://github.com/near/near-cli-rs/releases/) or install it with [Cargo](https://doc.rust-lang.org/cargo/) (Rust's package manager tool) with the following command:
+[GitHub 릴리스 페이지](https://github.com/near/near-cli-rs/releases/)에서 OS용으로 미리 컴파일된 `near-cli-rs` 버전을 다운로드하거나 다음 명령을 통해 [Cargo](https://doc.rust-lang.org/cargo/)(Rust의 패키지 관리자 도구)로 설치합니다.
 
 ```
 $ cargo install near-cli-rs
 ```
 
-## Getting Started
+## 시작하기
 
-To utilize the commands that involve transactions, sending tokens, deploying contracts, etc., you'll have to store a full access key to a given account on your machine.
+트랜잭션, 토큰 전송, 컨트랙트 배포 등과 관련된 명령을 활용하려면, 컴퓨터의 지정된 계정에 대한 전체 액세스 키를 저장해야 합니다.
 
-Run...
+다음을 실행하세요...
 
 ```
 near
 ```
 
-Using the arrow keys navigate to...
+화살표 키를 사용하여 탐색합니다...
 
 ```
 account  -Manage accounts
 ```
 
-Navigate to...
+다음으로 이동하세요...
 
 ```
 import-account -Import existing account (a.k.a. "sign-in")
 ```
 
-choose any of the preferred sign-in methods. For this example, we'll choose the...
+원하는 로그인 방법을 선택하세요. 이 예제에서는 다음을 선택합니다...
 
 ```
 using-web-wallet -Import existing account using NEAR Wallet (a.k.a. "sign in")
-### Account
-- Gives you information on a specified account, near balance, storage, list of access keys, etc.
 ```
 
-For this tutorial select `testnet`
+이 튜토리얼의 경우 `testnet`을 선택합니다.
 
 ```
 What is the name of the network?
@@ -62,85 +60,84 @@ mainnet
 shardnet
 ```
 
-You'll get redirected to `wallet.testnet.near.org`. Once there, grant authorization. Then in your terminal, you'll be asked to enter your account ID. Give it the name of the account you just authorized access to and a full access key.
+`wallet.testnet.near.org`로 리디렉션될 것입니다. 그곳에서 권한을 부여하세요. 그런 다음, 터미널에서 계정 ID를 입력하라는 메시지가 표시됩니다. 방금 액세스 권한을 부여한 계정의 이름과 전체 액세스 키를 제공하세요.
 
-If you're on Mac you'll have the option to use the [Mac Keychain](https://support.apple.com/guide/keychain-access/what-is-keychain-access-kyca1083/mac) option.
+Mac을 사용하는 경우 [Mac 키체인](https://support.apple.com/guide/keychain-access/what-is-keychain-access-kyca1083/mac) 옵션을 사용할 수 있습니다.
 
-Either storage option is fine. Using the legacy storage option will save a file in your root directory in a hidden folder called `./near-credentials`. This storage option is compatable with the `near-cli` tool (a cli tool without the guided prompts but similar functionality).
+스토리지 옵션은 괜찮습니다. 원래 스토리지 옵션을 사용하면 루트 디렉터리 내 파일을 숨겨진 폴더인 `./near-credentials`에 저장할 것입니다. 이 스토리지 옵션은 `near-cli` 도구(안내 프롬프트가 없지만 유사한 기능이 있는 CLI 도구)와 호환됩니다.
 
-**Good Job!**
-Now you can use `near-cli-rs` to it's full capacity.
+**잘하셨습니다!** 이제 `near-cli-rs` 내 모든 기능을 사용할 수 있습니다.
 
 ---
 
-## Usage
+## 사용
 
-To use the `near-cli-rs` simply run the following in your terminal.
+`near-cli-rs`를 사용하려면, 터미널에서 다음을 실행하세요.
 
 ```bash
 $ near
 ```
 
-You should then see the following. Use the arrow keys and hit `enter` or simply type out one of the available options to select an option
+그러면 다음이 표시됩니다. 화살표 키를 사용하여 `enter`를 누르거나, 가능한 옵션 중 하나를 간단히 입력하여 옵션을 선택하십시오.
 
 ![](/docs/assets/near-cli-rs.png)
 
-### Accounts
+### 계정
 
-This option will allow you to manage, control, and retrieve information on your accounts.
+이 옵션을 사용하면 계정에 대한 정보를 관리, 제어 및 검색할 수 있습니다.
 
-| Option                 | Description                                |
-| ---------------------- | ------------------------------------------ |
-| `view-account-summary` | View properties for an account             |
-| `import-account`       | Import existing account (a.k.a. "sign in") |
-| `create-account`       | Create a new account                       |
-| `delete-account`       | Delete an Account                          |
-| `list-keys`            | View a list of keys for an account         |
-| `add-key`              | Add an access key to an account            |
-| `delete-key`           | Delete an access key from an account       |
+| 옵션                     | 설명                               |
+| ---------------------- | -------------------------------- |
+| `view-account-summary` | 계정 속성 보기                         |
+| `import-account`       | 기존 계정 가져오기("로그인" 이라고도 함) 이라고도 함) |
+| `create-account`       | 새 계정 생성                          |
+| `delete-account`       | 계정 삭제                            |
+| `list-keys`            | 계정의 키 목록 보기                      |
+| `add-key`              | 계정에 액세스 키 추가                     |
+| `delete-key`           | 계정에서 액세스 키 삭제                    |
 
-### Tokens
+### 토큰
 
-This will allow you to manage your token assets such as NEAR, FTs and NFTs
+이를 통해 NEAR, FT 및 NFT와 같은 토큰 자산을 관리할 수 있습니다.
 
-| Option              | Description                                                           |
-| ------------------- | --------------------------------------------------------------------- |
-| `send-near`         | Transfers NEAR to a specified recipient in units of NEAR or yoctoNEAR |
-| `send-ft`           | Transfer Fungible Tokens to a specified user                          |
-| `send-nft`          | Transfers NFTs between accounts                                       |
-| `view-near-balance` | View the balance of NEAR tokens                                       |
-| `view-ft-balance`   | View the balance of Fungible Tokens                                   |
-| `view-nft-assets`   | View the balance of NFT Tokens                                        |
+| 옵션                  | 설명                                      |
+| ------------------- | --------------------------------------- |
+| `send-near`         | NEAR 또는 yoctoNEAR 단위로 지정된 수신자에게 NEAR 전송 |
+| `send-ft`           | 지정된 사용자에게 대체 가능한 토큰 전송                  |
+| `send-nft`          | 계정 간 NFT 전송                             |
+| `view-near-balance` | NEAR 토큰의 잔액 보기                          |
+| `view-ft-balance`   | View the balance of Fungible Tokens     |
+| `view-nft-assets`   | NEAR 토큰의 잔액 보기                          |
 
-### Contract
+### 컨트랙트
 
-This option allows you to manage and interact with your smart contracts
+이 옵션을 사용하면 스마트 컨트랙트를 관리하고 상호 작용할 수 있습니다.
 
-| Option          | Description             |
-| --------------- | ----------------------- |
-| `call-function` | Execute Function        |
-| `deploy`        | Add a new contract code |
-| `download-wasm` | Download Wasm           |
+| 옵션              | 설명           |
+| --------------- | ------------ |
+| `call-function` | 함수 실행        |
+| `deploy`        | 새 컨트랙트 코드 추가 |
+| `download-wasm` | Wasm 다운로드    |
 
-### Transaction
+### 트랜잭션
 
-Operate Transactions
+트랜잭션을 관리합니다.
 
-| Option                 | Description                 |
-| ---------------------- | --------------------------- |
-| `view-status`          | View a transaction status   |
-| `construct-tansaction` | Construct a new transaction |
+| 옵션                     | 설명         |
+| ---------------------- | ---------- |
+| `view-status`          | 트랜잭션 상태 보기 |
+| `construct-tansaction` | 새 트랜잭션 구성  |
 
-### Config
+### 구성
 
-Manage the connection parameters inside the `config.toml` file for `near-cli-rs`
+`near-cli-rs`에 대한 `config.toml` 내에서 연결 매개변수를 관리합니다.
 
-This will allow you to change or modify the network connections for your CLI.
+이렇게 하면 CLI에 대한 네트워크 연결을 변경하거나 수정할 수 있습니다.
 
-| Option              | Description                        |
-| ------------------- | ---------------------------------- |
-| `show-connections`  | Show a list of network connections |
-| `add-connection`    | Add a network connection           |
-| `delete-connection` | Delete a network Connection        |
+| 옵션                  | 설명            |
+| ------------------- | ------------- |
+| `show-connections`  | 네트워크 연결 목록 표시 |
+| `add-connection`    | 네트워크 연결 추가    |
+| `delete-connection` | 네트워크 연결 삭제    |
 
 ---

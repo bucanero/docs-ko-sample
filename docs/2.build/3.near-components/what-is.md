@@ -19,7 +19,9 @@ You can login to interact with the examples in this section.
 ---
 
 ## Familiar to Web Developers
+
 NEAR Components are built on top of [React Components](https://react.dev/), meaning that they:
+
 - Handle input through the `props` variable
 - Handle state through the [`useState`](https://react.dev/reference/react/useState) hook
 - Handle side effects through the [`useEffect`](https://react.dev/reference/react/useEffect) hook
@@ -33,7 +35,7 @@ const [count, setCount] = useState(1);
 return (
   <div>
     <p> {count} cheers for {name}! </p>
-    <button onClick={() => setCount(count + 1)}>Cheers!</button>
+    <button onClick={() > setCount(count + 1)}>Cheers!</button>
   </div>
 );
 ```
@@ -42,12 +44,13 @@ return (
 
 In contrast with React, NEAR Components are not wrapped in a `function` or `class` definition.
 
-Indeed, when writing a NEAR Component, you focus on writing the body of the component, which is a function that returns the JSX to be rendered. 
+Indeed, when writing a NEAR Component, you focus on writing the body of the component, which is a function that returns the JSX to be rendered.
 
 ---
 
 ## NEAR Native
-NEAR Components can readily [interact with smart contracts](./anatomy/near.md) in the NEAR Blockchain. While `view` methods are free to query by anyone, `call` methods require the user to be logged in.
+
+NEAR Components can readily [interact with smart contracts](../2.smart-contracts/what-is.md) in the NEAR Blockchain. While `view` methods are free to query by anyone, `call` methods require the user to be logged in.
 
 <WidgetEditor id="2">
 
@@ -151,6 +154,7 @@ Once deployed, a component can be imported and used by any other component. Comp
 return <Widget src="influencer.testnet/widget/Greeter"
                props={{name: "Anna", amount: 3}} />;
 ```
+
 </WidgetEditor>
 
 ---
@@ -357,7 +361,7 @@ return (
                 </div>
                 <div className="LidoFormTopContainerLeftContent2">
                   <span>
-                    {state.balance ?? (!state.sender ? "0" : "...")}&nbsp;ETH
+                    {state.balance ?? (!state.sender ? "0" : "...")}&amp;amp;nbsp;ETH
                   </span>
                 </div>
               </div>
@@ -375,8 +379,8 @@ return (
         <div
           className={
             state.sender ? "LidoFormBottomContainer" : "LidoFormTopContainer"
-          }
-        >
+ }
+>
           <div className="LidoFormTopContainerLeft">
             <div className="LidoFormTopContainerLeftContent1">
               <div className="LidoFormTopContainerLeftContent1Container">
@@ -386,7 +390,7 @@ return (
             <div className="LidoFormTopContainerLeftContent2">
               <span>
                 {state.stakedBalance ?? (!state.sender ? "0" : "...")}
-                &nbsp;stETH
+                &amp;amp;nbsp;stETH
               </span>
             </div>
           </div>
@@ -427,13 +431,13 @@ return (
               disabled={!state.sender}
               className="LidoStakeFormInputContainerSpan2Input"
               value={state.strEther}
-              onChange={(e) => State.update({ strEther: e.target.value })}
+              onChange={(e) > State.update({ strEther: e.target.value })}
               placeholder="Amount"
             />
           </span>
           <span
             className="LidoStakeFormInputContainerSpan3"
-            onClick={() => {
+            onClick={() > {
               State.update({
                 strEther: (state.balance > 0.05
                   ? parseFloat(state.balance) - 0.05
@@ -453,7 +457,7 @@ return (
         {!!state.sender ? (
           <button
             className="LidoStakeFormSubmitContainer"
-            onClick={() => submitEthers(state.strEther, state.sender)}
+            onClick={() > submitEthers(state.strEther, state.sender)}
           >
             <span>Submit</span>
           </button>
@@ -500,6 +504,6 @@ For a working example visit the [deployed NEAR Component](https://near.social/za
 
 ---
 
-
 ## Next Steps
+
 Build and deploy your first components without leaving the browser. Go to https://app.jutsu.ai/, create an account and start building!

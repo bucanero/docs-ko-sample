@@ -25,6 +25,7 @@ The Multichain Relayer is meant to be deployed alongside the [Gas Station Event 
 ## Paymaster
 
 A paymaster represents an address on a destination chain that holds a balance of that chain’s native gas token:
+
 - User addresses on destination chains will be funded directly from paymaster accounts.
 - Partners that want to integrate with the Multichain Gas Relayer service need to create, fund, and manage paymaster accounts on the destination chains that they want to have support for.
 - [Manual settlement](gas-station.md#settlement) between the [NEAR Gas Station contract](gas-station.md) and paymaster accounts are also required on a regular basis to ensure a consistent balance of funds.
@@ -48,7 +49,7 @@ For independent deployments of gas station contracts, generally, nonce synchroni
 
 ## System workflow
 
-[![multichain_relayer_technical_design.png](/docs/multichain_relayer_technical_design.png)](/docs/multichain_relayer_technical_design.png)
+[![multichain\_relayer\_technical\_design.png](/docs/multichain_relayer_technical_design.png)](/docs/multichain_relayer_technical_design.png)
 
 1. The wallet sends a NEAR transaction to the gas station contract that contains 2 actions:
    1. A transfer of `NEAR` (or FT Transfer in the future) to cover gas on the foreign chain
@@ -78,6 +79,7 @@ Check the Relayer's [GitHub repository](https://github.com/near/multichain-relay
 ## Limitations
 
 When using the Multichain Gas relayer solution, some limitations should be considered. Here's a list of potential issues you might encounter, and suggested ways to mitigate them:
+
 - Not enough gas for a cross-chain transaction to get included in time.
   - **Solution:** overcharge for gas at the gas station and when constructing the transaction include more than the average gas price.
 - Slippage violations causing the gas token or foreign chain Fungible Token to get refunded to the user's foreign chain address.

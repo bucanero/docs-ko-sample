@@ -1,16 +1,17 @@
 ---
 id: ds-components
-title: Design Components
+title: 디자인 구성 요소
 ---
+
 import {WidgetEditor} from "@site/src/components/widget-editor";
 
-# Design System Components
+# 디자인 시스템 구성 요소
 
-When building components, the NEAR VM provides a complete set of [Radix primitives](https://www.radix-ui.com/docs/primitives/overview/introduction) to simplify UI development.
+구성 요소를 구축할 때, NEAR VM은 UI 개발을 단순화하기 위해 [Radix primitives](https://www.radix-ui.com/docs/primitives/overview/introduction)를 제공합니다.
 
 ## Radix UI
 
-Using embedded Radix primitives on the NEAR VM is simple and straight-forward. You don't need to import any files:
+NEAR VM에서 내장 Radix primitives를 사용하는 것은 단순하고 직관적입니다. 어느 파일도 가져올 필요 없습니다.
 
 ```js
 return (
@@ -20,19 +21,19 @@ return (
 );
 ```
 
-:::caution Limitations
+:::caution 한계
 
-Currently, NEAR VM impose some limitations on the Radix UI framework:
+현재, NEAR VM은 Radix UI 프레임워크에서 몇 가지 한계점을 노출하고 있습니다.
 
-- `Form` component is not available.
-- You can't use `.Portal` definitions.
-- Using CSS is different. You'll have to use a `styled.div` wrapper.
+- `Form` 구성 요소는 사용 불가합니다.
+- `.Portal` 정의를 사용할 수 없습니다.
+- CSS 사용법이 조금 다릅니다. `styled.div` 래퍼를 사용해야 합니다.
 
 :::
 
-### Using CSS
+### CSS 사용
 
-Here is an example on how to use CSS through the `styled.div` wrapper:
+다음은 `styled.div` 래퍼를 통해 CSS를 사용하는 방법에 대한 예시입니다:
 
 ```js
 const Wrapper = styled.div`
@@ -53,15 +54,15 @@ return (
 );
 ```
 
-:::tip Using Wrapper
+:::tip 래퍼 사용
 
 [Example widget using Wrapper](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/RadixTooltipTest)
 
 :::
 
-### Using `styled-components`
+### `styled-components` 사용
 
-You can use [`styled-components`](../../2.build/3.near-components/anatomy/builtin-components.md) in combination with Radix UI primitives. Here's an example:
+You can use [`styled-components`](../../2.build/3.near-components/anatomy/builtin-components.md#styled-components) in combination with Radix UI primitives. 예시는 다음과 같습니다.
 
 ```js
 const SwitchRoot = styled("Switch.Root")`
@@ -103,7 +104,7 @@ return (
 );
 ```
 
-:::tip Using styled components
+:::tip styled-components 사용
 
 [Example widget using styled components to style Radix UI](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/RadixSwitchTest).
 
@@ -111,14 +112,14 @@ return (
 
 ### Forward references
 
-The NEAR VM re-implements [React's forwardRef](https://react.dev/reference/react/forwardRef#reference) as `ref="forwardedRef"`.
+NEAR VM은 [React의 forwardRef](https://react.dev/reference/react/forwardRef#reference)를 `ref="forwardRef"`로 다시 구현합니다.
 
-You can use `ref="forwardedRef"` to forward references through `<Widget />` to support Radix's `asChild` property:
+`ref="forwardedRef"`를 사용하여 `<Widget />`를 통해 참조를 전달하여 Radix의 `asChild` 속성을 지원할 수 있습니다:
 
 ```js title='Dialog.jsx'
 <AlertDialog.Trigger asChild>
   <Widget
-    src="near/widget/TestButton"
+    src="calebjacob.near/widget/TestButton"
     props={{ label: "Click Me" }}
   />
 </AlertDialog.Trigger>
@@ -146,7 +147,7 @@ You can find the documentation, available components, and code examples followin
 
 :::
 
-## DIG components
+## DIG 구성 요소
 
 These are the Decentralized Interface Guidelines (DIG) components available on the NEAR VM:
 
@@ -167,7 +168,6 @@ These are the Decentralized Interface Guidelines (DIG) components available on t
 - [DIG.Theme](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Theme)
 - [DIG.Toast](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Toast)
 - [DIG.Tooltip](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Tooltip)
-
 
 :::tip
 
@@ -220,7 +220,7 @@ return (<Widget
 
 :::info DIG.Accordion properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Accordion&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Accordion\&tab=about) for properties and details.
 
 :::
 
@@ -251,10 +251,9 @@ return (
 
 </WidgetEditor>
 
-
 :::info DIG.Avatar properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Avatar&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Avatar\&tab=about) for properties and details.
 
 :::
 
@@ -284,7 +283,7 @@ return (
 
 :::info DIG.Badge properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Badge&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Badge\&tab=about) for properties and details.
 
 :::
 
@@ -292,7 +291,7 @@ return (
 
 ### `DIG.Button`
 
-A fully featured button component that can act as a `<button>` or `<a>` tag.
+`<button>` 또는 `<a>` 태그 역할을 할 수 있는 완전한 기능을 갖춘 버튼 구성요소입니다
 
 <WidgetEditor networkId="mainnet" id="4">
 
@@ -303,8 +302,7 @@ return <Widget src="near/widget/DIG.Button" props={{ label: "Click Me" }} />;
 
 </WidgetEditor>
 
-:::info DIG.Button properties
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Button&tab=about) for properties and details.
+:::info DIG.Button 속성
 
 :::
 
@@ -328,7 +326,7 @@ return <Widget
 
 :::info DIG.Checkbox properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Checkbox&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Checkbox\&tab=about) for properties and details.
 
 :::
 
@@ -349,7 +347,7 @@ return (<Widget src="near/widget/DIG.Chip" props={{ label: 'Click Me' }} />);
 
 :::info DIG.Chip properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Chip&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Chip\&tab=about) for properties and details.
 
 :::
 
@@ -407,7 +405,7 @@ return (
 
 :::info DIG.Dialog properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Dialog&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Dialog\&tab=about) for properties and details.
 
 :::
 
@@ -447,7 +445,7 @@ return (<Widget
 
 :::info DIG.DropdownMenu properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.DropdownMenu&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.DropdownMenu\&tab=about) for properties and details.
 
 :::
 
@@ -484,7 +482,7 @@ return (
 
 :::info DIG.Input properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Input&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Input\&tab=about) for properties and details.
 
 :::
 
@@ -512,7 +510,7 @@ return (
 
 :::info DIG.InputSearch properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.InputSearch&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.InputSearch\&tab=about) for properties and details.
 
 :::
 
@@ -581,7 +579,7 @@ return (
 
 :::info DIG.InputSelect properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.InputSelect&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.InputSelect\&tab=about) for properties and details.
 
 :::
 
@@ -617,7 +615,7 @@ return (
 
 :::info DIG.InputTags properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.InputTags&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.InputTags\&tab=about) for properties and details.
 
 :::
 
@@ -653,7 +651,7 @@ return (
 
 :::info DIG.InputTextarea properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.InputTextarea&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.InputTextarea\&tab=about) for properties and details.
 
 :::
 
@@ -702,7 +700,7 @@ return (<Widget
 
 :::info DIG.Tabs properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Tabs&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Tabs\&tab=about) for properties and details.
 
 :::
 
@@ -713,7 +711,7 @@ return (<Widget
 This component wraps all of NEAR Components so you don't need to render it yourself.
 
 :::tip
-You can use any of the [CSS variables](https://near.org/near/widget/ComponentDetailsPage?src=near/widget/DIG.Theme&tab=source) defined inside `DIG.Theme`.
+You can use any of the [CSS variables](https://near.org/near/widget/ComponentDetailsPage?src=near/widget/DIG.Theme\&tab=source) defined inside `DIG.Theme`.
 :::
 
 ---
@@ -765,7 +763,7 @@ return (
 
 :::info DIG.Toast properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Toast&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Toast\&tab=about) for properties and details.
 
 :::
 
@@ -794,6 +792,6 @@ return (<Widget
 
 :::info DIG.Tooltip properties
 
-[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Tooltip&tab=about) for properties and details.
+[Click here](https://dev.near.org/#/near/widget/ComponentDetailsPage?src=near/widget/DIG.Tooltip\&tab=about) for properties and details.
 
 :::

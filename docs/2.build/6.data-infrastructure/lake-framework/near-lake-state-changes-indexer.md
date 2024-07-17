@@ -1,6 +1,6 @@
 ---
 id: near-lake-state-changes-indexer
-title: NEAR Lake Indexer Tutorial
+title: NEAR Lake StateChanges 인덱서 튜토리얼
 ---
 
 :::note Source code for the tutorial

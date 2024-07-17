@@ -1,26 +1,26 @@
 ---
 id: block-chunk
-title: Block / Chunk
+title: 블록 / 청크
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The RPC API enables you to query the network and get details about specific blocks or chunks.
+RPC API를 사용하면, 네트워크를 쿼리하고 특정 블록 또는 청크에 대한 세부 정보를 얻을 수 있습니다.
 
 ---
 
-## Block details {#block-details}
+## 블록 세부사항 {#block-details}
 
-> Queries network and returns block for given height or hash. You can also use `finality` param to return latest block details.
+> 네트워크를 쿼리하고 주어진 높이 또는 해시에 대해 블록을 반환합니다. `finality` 매개변수를 사용하여 최신 블록 세부 정보를 반환할 수도 있습니다.
 
-**Note**: You may choose to search by a specific block _or_ finality, you can not choose both.
+**참고**: 특정 블록 _또는_ 완결성으로 검색하도록 선택할 수 있으며, 둘 다 선택할 수는 없습니다.
 
-- method: `block`
-- params:
-  - [`finality`](/api/rpc/setup#using-finality-param) _OR_ [`block_id`](/api/rpc/setup#using-block_id-param)
+- 메서드: `block`
+- 매개변수:
+  - [`finality`](/api/rpc/setup#using-finality-param) _또는_ [`block_id`](/api/rpc/setup#using-block_id-param)
 
-`finality` example:
+`finality` 예시:
 
 
 <Tabs>
@@ -38,7 +38,7 @@ The RPC API enables you to query the network and get details about specific bloc
 ```
 
 </TabItem>
-<TabItem value="js" label="🌐 JavaScript" label="JavaScript">
+<TabItem value="js" label="JavaScript">
 
 ```js
 const response = await near.connection.provider.block({
@@ -77,7 +77,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=block \
 ```
 
 </TabItem>
-<TabItem value="js" label="🌐 JavaScript" label="JavaScript">
+<TabItem value="js" label="JavaScript">
 
 ```js
 const response = await near.connection.provider.block({blockId: 17821130});
@@ -114,7 +114,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=block \
 ```
 
 </TabItem>
-<TabItem value="js" label="🌐 JavaScript" label="JavaScript">
+<TabItem value="js" label="JavaScript">
 
 ```js
 const response = await near.connection.provider.block(
@@ -136,7 +136,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=block \
 </Tabs>
 
 <details>
-<summary>Example response:</summary>
+<summary>응답 예시:</summary>
 <p>
 
 ```json
@@ -247,9 +247,9 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=block \
 </p>
 </details>
 
-#### What Could Go Wrong?? {#what-could-go-wrong}
+#### 무엇이 잘못될 수 있나요?? {#what-could-go-wrong}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면, RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -269,11 +269,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `block` method:
+다음은 `block` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다.
 
 <table className="custom-stripe">
   <thead>
@@ -283,52 +283,52 @@ Here is the exhaustive list of the error variants that can be returned by `block
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td rowspan="2">HANDLER_ERROR</td>
       <td>UNKNOWN_BLOCK</td>
-      <td>The requested block has not been produced yet or it has been garbage-collected (cleaned up to save space on the RPC node)</td>
+      <td>요청된 블록이 아직 생성되지 않았거나 가비지 수집되었습니다(RPC 노드의 공간을 절약하기 위해 정리됨).</td>
       <td>
         <ul>
-          <li>Check that the requested block is legit</li>
+          <li>요청한 블록이 올바른지 확인하세요.</li>
           <li>If the block had been produced more than 5 epochs ago, try to send your request to <a href="https://near-nodes.io/intro/node-types#archival-node" target="_blank" rel="noopener noreferrer">an archival node</a></li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>NOT_SYNCED_YET</td>
-      <td>The node is still syncing and the requested block is not in the database yet</td>
+      <td>노드가 여전히 동기화 중이고 요청된 블록이 아직 데이터베이스에 없습니다.</td>
       <td>
         <ul>
-          <li>Wait until the node finish syncing</li>
-          <li>Send a request to a different node which is synced</li>
+          <li>노드가 동기화를 마칠 때까지 기다리세요.</li>
+          <li>동기화된 다른 노드에 요청을 보내세요.</li>
         </ul>
       </td>
     </tr>
     <tr className="stripe">
       <td>REQUEST_VALIDATION_ERROR</td>
       <td>PARSE_ERROR</td>
-      <td>Passed arguments can't be parsed by JSON RPC server (missing arguments, wrong format, etc.)</td>
+      <td>전달된 인자는 JSON RPC 서버에서 파싱할 수 없습니다(인자 누락, 잘못된 형식 등).</td>
       <td>
         <ul>
-          <li>Check the arguments passed and pass the correct ones</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>전달된 인자를 확인하고 올바른 인수를 전달하세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>INTERNAL_ERROR</td>
       <td>INTERNAL_ERROR</td>
-      <td>Something went wrong with the node itself or overloaded</td>
+      <td>노드 자체에 문제가 있거나 과부하가 걸렸습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
-          <li>Send a request to a different node</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>나중에 다시 시도하세요.</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
@@ -337,15 +337,15 @@ Here is the exhaustive list of the error variants that can be returned by `block
 
 ---
 
-## Changes in Block {#changes-in-block}
+## 블록의 변경 사항 {#changes-in-block}
 
-> Returns changes in block for given block height or hash. You can also use `finality` param to return latest block details.
+> 주어진 블록 높이 또는 해시에 대한 블록의 변경 사항을 반환합니다. `finality` 매개변수를 사용하여 최신 블록 세부 정보를 반환할 수도 있습니다.
 
-**Note**: You may choose to search by a specific block _or_ finality, you can not choose both.
+**참고**: 특정 블록 _또는_ 완결성으로 검색하도록 선택할 수 있으며, 둘 다 선택할 수는 없습니다.
 
-- method: `EXPERIMENTAL_changes_in_block`
-- params:
-  - [`finality`](/api/rpc/setup#using-finality-param) _OR_ [`block_id`](/api/rpc/setup#using-block_id-param)
+- 메서드: `EXPERIMENTAL_changes_in_block`
+- 매개변수:
+  - [`finality`](/api/rpc/setup#using-finality-param) _또는_ [`block_id`](/api/rpc/setup#using-block_id-param)
 
 `finality`
 
@@ -365,7 +365,7 @@ Here is the exhaustive list of the error variants that can be returned by `block
 ```
 
 </TabItem>
-<TabItem value="js" label="🌐 JavaScript" label="JavaScript">
+<TabItem value="js" label="JavaScript">
 
 ```js
 const response = await near.connection.provider.experimental_changes_in_block({
@@ -404,7 +404,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=EXPERIMENT
 ```
 
 </TabItem>
-<TabItem value="js" label="🌐 JavaScript" label="JavaScript">
+<TabItem value="js" label="JavaScript">
 
 ```js
 const response = await near.connection.provider.experimental_changes_in_block(
@@ -443,7 +443,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=EXPERIMENT
 ```
 
 </TabItem>
-<TabItem value="js" label="🌐 JavaScript" label="JavaScript">
+<TabItem value="js" label="JavaScript">
 
 ```js
 const response = await near.connection.provider.experimental_changes_in_block(
@@ -465,7 +465,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=EXPERIMENT
 </Tabs>
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -495,10 +495,9 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=EXPERIMENT
 </p>
 </details>
 
+#### 무엇이 잘못될 수 있나요?? {#what-could-go-wrong-1}
 
-#### What Could Go Wrong?? {#what-could-go-wrong-1}
-
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -518,11 +517,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `EXPERIMENTAL_changes_in_block` method:
+다음은 `EXPERIMENTAL_changes_in_block` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다.
 
 <table className="custom-stripe">
   <thead>
@@ -532,52 +531,52 @@ Here is the exhaustive list of the error variants that can be returned by `EXPER
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td rowspan="2">HANDLER_ERROR</td>
       <td>UNKNOWN_BLOCK</td>
-      <td>The requested block has not been produced yet or it has been garbage-collected (cleaned up to save space on the RPC node)</td>
+      <td>요청된 블록이 아직 생성되지 않았거나 가비지 수집되었습니다(RPC 노드의 공간을 절약하기 위해 정리됨).</td>
       <td>
         <ul>
-          <li>Check that the requested block is legit</li>
+          <li>요청한 블록이 올바른지 확인하세요.</li>
           <li>If the block had been produced more than 5 epochs ago, try to send your request to <a href="https://near-nodes.io/intro/node-types#archival-node" target="_blank" rel="noopener noreferrer">an archival node</a></li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>NOT_SYNCED_YET</td>
-      <td>The node is still syncing and the requested block is not in the database yet</td>
+      <td>노드가 여전히 동기화 중이고 요청된 블록이 아직 데이터베이스에 없습니다.</td>
       <td>
         <ul>
-          <li>Wait until the node finish syncing</li>
-          <li>Send a request to a different node which is synced</li>
+          <li>노드가 동기화를 마칠 때까지 기다리세요.</li>
+          <li>동기화된 다른 노드에 요청을 보내세요.</li>
         </ul>
       </td>
     </tr>
     <tr className="stripe">
       <td>REQUEST_VALIDATION_ERROR</td>
       <td>PARSE_ERROR</td>
-      <td>Passed arguments can't be parsed by JSON RPC server (missing arguments, wrong format, etc.)</td>
+      <td>전달된 인자는 JSON RPC 서버에서 파싱할 수 없습니다(인자 누락, 잘못된 형식 등).</td>
       <td>
         <ul>
-          <li>Check the arguments passed and pass the correct ones</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>전달된 인자를 확인하고 올바른 인수를 전달하세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>INTERNAL_ERROR</td>
       <td>INTERNAL_ERROR</td>
-      <td>Something went wrong with the node itself or overloaded</td>
+      <td>노드 자체에 문제가 있거나 과부하가 걸렸습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
-          <li>Send a request to a different node</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>나중에 다시 시도하세요.</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
@@ -586,15 +585,15 @@ Here is the exhaustive list of the error variants that can be returned by `EXPER
 
 ---
 
-## Chunk Details {#chunk-details}
+## 청크 세부 사항 {#chunk-details}
 
-> Returns details of a specific chunk. You can run a [block details](/api/rpc/setup#block-details) query to get a valid chunk hash.
+> 특정 청크의 세부 정보를 반환합니다. [블록 세부 정보](/api/rpc/setup#block-details) 쿼리를 실행하여 유효한 청크 해시를 얻을 수 있습니다.
 
-- method: `chunk`
-- params:
-  - `chunk_id` _OR_ [`block_id`, `shard_id`](/api/rpc/setup#using-block_id-param)
+- 메서드: `chunk`
+- 매개변수:
+  - `chunk_id` _또는_ [`block_id`, `shard_id`](/api/rpc/setup#using-block_id-param)
 
-`chunk_id` example:
+`chunk_id` 예시:
 
 
 <Tabs>
@@ -610,7 +609,7 @@ Here is the exhaustive list of the error variants that can be returned by `EXPER
 ```
 
 </TabItem>
-<TabItem value="js" label="🌐 JavaScript" label="JavaScript">
+<TabItem value="js" label="JavaScript">
 
 ```js
 const response = await near.connection.provider.chunk({
@@ -628,7 +627,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=chunk params:='{"chunk
 </TabItem>
 </Tabs>
 
-`block_id`, `shard_id` example:
+`block_id`, `shard_id` 예시:
 
 
 <Tabs>
@@ -644,7 +643,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=chunk params:='{"chunk
 ```
 
 </TabItem>
-<TabItem value="js" label="🌐 JavaScript" label="JavaScript">
+<TabItem value="js" label="JavaScript">
 
 ```js
 const response = await near.connection.provider.chunk({
@@ -663,7 +662,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=chunk params:='{"block
 </Tabs>
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -701,9 +700,9 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=chunk params:='{"block
 </p>
 </details>
 
-#### What Could Go Wrong?? {#what-could-go-wrong-2}
+#### 무엇이 잘못될 수 있나요?? {#what-could-go-wrong-2}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -723,11 +722,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `chunk` method:
+다음은 `chunk` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다.
 
 <table className="custom-stripe">
   <thead>
@@ -737,71 +736,71 @@ Here is the exhaustive list of the error variants that can be returned by `chunk
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td rowspan="4">HANDLER_ERROR</td>
       <td>UNKNOWN_BLOCK</td>
-      <td>The requested block has not been produced yet or it has been garbage-collected (cleaned up to save space on the RPC node)</td>
+      <td>요청된 블록이 아직 생성되지 않았거나 가비지 수집되었습니다(RPC 노드의 공간을 절약하기 위해 정리됨).</td>
       <td>
         <ul>
-          <li>Check that the requested block is legit</li>
+          <li>요청한 블록이 올바른지 확인하세요.</li>
           <li>If the block had been produced more than 5 epochs ago, try to send your request to <a href="https://near-nodes.io/intro/node-types#archival-node" target="_blank" rel="noopener noreferrer">an archival node</a></li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>UNKNOWN_CHUNK</td>
-      <td>The requested chunk can't be found in a database</td>
+      <td>요청한 청크를 데이터베이스에서 찾을 수 없습니다.</td>
       <td>
         <ul>
-          <li>Check that the requested chunk is legit</li>
-          <li>If the chunk had been produced more than 5 epochs ago, try to send your request to an archival node</li>
+          <li>요청한 청크가 올바른지 확인하세요.</li>
+          <li>청크가 5 이상 에포크 전에 생성된 경우, 아카이브 노드로 요청을 보내세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>INVALID_SHARD_ID</td>
-      <td>Provided <code>shard_id</code> does not exist</td>
+      <td>제공된 <code>shard_id</code>가 존재하지 않습니다.</td>
       <td>
         <ul>
-          <li>Provide <code>shard_id</code> for an existing shard</li>
+          <li>기존 샤드에 <code>shard_id</code>를 제공합니다.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>NOT_SYNCED_YET</td>
-      <td>The node is still syncing and the requested chunk is not in the database yet</td>
+      <td>노드가 여전히 동기화 중이고 요청된 블록이 아직 데이터베이스에 없습니다.</td>
       <td>
         <ul>
-          <li>Wait until the node finish syncing</li>
-          <li>Send a request to a different node which is synced</li>
+          <li>노드가 동기화를 마칠 때까지 기다리세요.</li>
+          <li>동기화된 다른 노드에 요청을 보내세요.</li>
         </ul>
       </td>
     </tr>
     <tr className="stripe">
       <td>REQUEST_VALIDATION_ERROR</td>
       <td>PARSE_ERROR</td>
-      <td>Passed arguments can't be parsed by JSON RPC server (missing arguments, wrong format, etc.)</td>
+      <td>전달된 인자는 JSON RPC 서버에서 파싱할 수 없습니다(인자 누락, 잘못된 형식 등).</td>
       <td>
         <ul>
-          <li>Check the arguments passed and pass the correct ones</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>전달된 인자를 확인하고 올바른 인수를 전달하세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>INTERNAL_ERROR</td>
       <td>INTERNAL_ERROR</td>
-      <td>Something went wrong with the node itself or overloaded</td>
+      <td>노드 자체에 문제가 있거나 과부하가 걸렸습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
-          <li>Send a request to a different node</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>나중에 다시 시도하세요.</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>

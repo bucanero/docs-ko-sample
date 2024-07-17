@@ -1,37 +1,30 @@
 ---
 id: accounts
-title: Accounts
-sidebar_label: Accounts
+title: 계정
+sidebar_label: 계정
 ---
 
-## Introduction {#introduction}
+## 소개 {#introduction}
 
 Please see the [documentation for accounts](/concepts/protocol/account-model) for basic information.
 
-- For exchanges, NEAR supports [implicit account](https://nomicon.io/DataStructures/Account.html#implicit-account-ids) creation which allows the creation of accounts without paying for transactions.
-- You can create an implicit account by following the steps in [this guide](/integrations/implicit-accounts).
-- Accounts must have enough tokens to cover its storage which currently costs `0.0001 NEAR` per byte. This equates to a minimum balance of `0.00182 NEAR` for an account with one access key. You can query the live storage price using the [`protocol-config`](https://docs.near.org/api/rpc/setup#protocol-config) RPC endpoint. For more details on storage fees see [this section of the economics paper](https://pages.near.org/papers/economics-in-sharded-blockchain/#transaction-and-storage-fees).
+- 거래소의 경우, NEAR는 트랜잭션 비용을 지불하지 않고 계정을 생성할 수 있는 [암시적 계정(Implicit Account)](https://nomicon.io/DataStructures/Account.html#implicit-account-ids) 생성을 지원합니다.
+- [이 가이드](/integrator/implicit-accounts)의 단계에 따라 암시적 계정을 만들 수 있습니다.
+- Accounts must have enough tokens to cover its storage which currently costs `0.0001 NEAR` per byte. This equates to a minimum balance of `0.00182 NEAR` for an account with one access key. [`protocol-config`](https://docs.near.org/api/rpc/setup#protocol-config) RPC 엔드포인트를 사용하여 실시간 스토리지 가격을 쿼리할 수 있습니다. For more details on storage fees see [this section of the economics paper](https://pages.near.org/papers/economics-in-sharded-blockchain/#transaction-and-storage-fees).
 
-## Transfer from Function Call {#transfer-from-function-call}
+## 함수 호출에 의한 전송 {#transfer-from-function-call}
 
-NEAR allows transfers to happen within a function call. More importantly, when an account is deployed with some contract, it is possible that the only way to transfer tokens from that account is through a function call. Therefore, exchanges need to support transfers through function calls as well. We recommend the following approach:
+NEAR에서는 함수 호출 내에서 전송이 가능합니다. 더 중요한 것은, 계정이 일부 컨트랙트와 함께 배포될 때, 해당 계정에서 토큰을 전송하는 유일한 방법은 함수 호출을 통해서만 가능하다는 것입니다. 따라서 거래소는 함수 호출을 통한 전송도 지원해야 합니다. 다음과 같은 접근 방식을 권장합니다.
 
-Exchange can [query block by height](/api/rpc/setup#block) to get blocks on each height, and for every block,
-[query its chunk](/api/rpc/setup#chunk) to obtain the transactions included in the block. For each transaction,
-[query its status](/api/rpc/setup#transaction-status-with-receipts) to see the receipts generated from
-transactions. Since exchanges are only interested in transfers to their addresses, they only need to filter receipts that
-only contain `Transfer` action and whose `predecessor_id` is not `system` (receipts with `predecessor_id` equal to `system`
-are [refunds](https://nomicon.io/RuntimeSpec/Refunds.html)). Then, to check whether the receipt succeeds, it is sufficient
-to look for the `receipt_id` in `receipts_outcome` and see if its status is `SuccessValue`.
+거래소는 [높이별로 블록을 쿼리하여](/api/rpc/setup#block) 각 높이에서 블록을 가져오고, 모든 블록에 대해 [청크를 쿼리하여](/api/rpc/setup#chunk) 블록에 포함된 트랜잭션을 얻을 수 있습니다. 각 트랜잭션에 대해, 거래소는 [상태를 쿼리하여](/api/rpc/setup#transaction-status-with-receipts) 트랜잭션에서 생성된 Receipt를 확인합니다. 거래소는 주소로의 전송에만 관심이 있기 때문에, `Transfer` Action만 포함하고 `predecessor_id`가 `system`이 아닌 Receipt만 필터링하면 됩니다(`predecessor_id`가 `system`과 같은 Receipt는 [환불](https://nomicon.io/RuntimeSpec/Refunds.html)됩니다). 그런 다음, Receipt의 성공 여부를 확인하려면, `receipts_outcome`에서 `receipt_id`을 찾아 상태가 `SuccessValue`인지 확인하는 것으로 충분합니다.
 
-Alternatively, exchange can use [the indexer framework](https://github.com/near/nearcore/tree/master/chain/indexer)
-to help index on-chain data which include receipts. An example usage of the indexer can be found [here](https://github.com/near/nearcore/tree/master/tools/indexer/example).
+아니면 거래소는 [인덱서 프레임워크](https://github.com/near/nearcore/tree/master/chain/indexer)를 사용하여, Receipt를 포함하는 온체인 데이터를 인덱싱할 수 있습니다. 인덱서의 사용 예는 [여기](https://github.com/near/nearcore/tree/master/tools/indexer/example)에서 찾을 수 있습니다.
 
-Below we include examples from the contracts that are likely to be used to perform transfers through function calls.
+아래에는 함수 호출을 통해 전송을 수행하는 데 사용될 가능성이 있는 컨트랙트의 예가 포함되어 있습니다.
 
-**Example of transfer from a lockup contract**
+**락업 컨트랙트에서 전송의 예**
 
-A contract `evgeny.lockup.near` is deployed and we can check its owner by
+`evgeny.lockup.near` 컨트랙트가 배포되면, 다음과 같이 소유자를 확인할 수 있습니다.
 
 ```bash
 > near view evgeny.lockup.near get_owner_account_id
@@ -39,13 +32,13 @@ View call: evgeny.lockup.near.get_owner_account_id()
 'evgeny.near'
 ```
 
-Now we want to transfer some unlocked tokens (1 NEAR) with the following call
+이제 다음 호출을 통해 잠금 해제된 토큰 일부(1 NEAR)를 전송하려고 합니다.
 
 ```bash
 near call evgeny.lockup.near transfer '{"amount":"1000000000000000000000000", "receiver_id": "evgeny.near"}' --accountId=evgeny.near
 ```
 
-**Note**: the response below can be obtained by hitting the RPC with the transaction hash and NEAR account like this:
+**참고**: 아래 응답은 다음과 같이 트랜잭션 해시 및 NEAR 계정으로 RPC를 치면 얻을 수 있습니다.
 
 ```bash
 http post https://rpc.testnet.near.org jsonrpc=2.0 id=txstatus method=EXPERIMENTAL_tx_status \
@@ -53,7 +46,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=txstatus method=EXPERIMENT
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary>응답 예시:</summary>
 
 ```json
 {
@@ -267,8 +260,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=txstatus method=EXPERIMENT
 ```
 </details>
 
-As we can see, there are four receipts generated in this function call. If we apply the criteria mentioned above, we can
-find in `receipts` field this object
+보시다시피 이 함수 호출에서 생성된 Receipt가 4개 있습니다. 위에서 언급한 기준을 적용하면 `receipts` 필드에서 이 객체를 찾을 수 있습니다.
 
 ```json
 {
@@ -294,9 +286,7 @@ find in `receipts` field this object
 }
 ```
 
-which contains only `Transfer` action and whose `predecessor_id` is not `system`. Now we can check the status of the
-execution by looking for the same receipt id `EvHfj4fUyVuLBRKNdCZmFGr4WfqwYf7YCbzFsRGFTFJC` in `receipts_outcome` field
-of the rpc return result, this leads us to this execution outcome
+이는 `Transfer` Action을 포함하고, 여기서 `predecessor_id`은 `system`이 아닙니다. 이제 rpc 반환 결과의 `receipts_outcome` 필드에서 `EvHfj4fUyVuLBRKNdCZmFGr4WfqwYf7YCbzFsRGFTFJC`에서 동일한 Receipt ID를 찾아 실행 상태를 확인할 수 있으며, 이는 다음 실행 결과로 이어집니다.
 
 ```json
 {
@@ -321,18 +311,13 @@ of the rpc return result, this leads us to this execution outcome
 }
 ```
 
-and its status contains `SuccessValue`, which indicates that the receipt has succeeded. Therefore we know that
-`1000000000000000000000000` yoctoNEAR, or 1 NEAR has been successfully transferred.
+상태에는 `SuccessValue`가 포함되어 있으며, Receipt가 성공했음을 나타냅니다. 따라서 우리는 `1000000000000000000000000` yoctoNEAR 또는 1 NEAR가 성공적으로 전송되었음을 알 수 있습니다.
 
-**Example of transfer from a multisig contract**
+**다중 서명(Multisig) 컨트랙트에서 전송 예시**
 
-Mutisig contract, as the name suggests, uses multiple signatures to confirm a transaction and therefore, actions performed
-by the multisig contract involves multiple transactions. In the following example, we will show how a transfer is done from
-a multisig contract that requires two confirmations.
+이름에서 알 수 있듯이 다중 서명 컨트랙트는 트랜잭션을 확인하기 위해 다중 서명을 사용하므로, 다중 서명 컨트랙트에서 수행하는 작업에는 여러 트랜잭션이 포함됩니다. In the following example, we will show how a transfer is done from a multisig contract that requires two confirmations.
 
-- First step: `add_request_and_confirm`. This initiates the action that the multisig contract wants to perform with one
-  confirmation. The multisig contract `multsigtest.testnet` wants to transfer 1 NEAR to `bowen` and it first
-  sends a transaction that calls `add_request_and_confirm` with a request
+- 첫 번쨰 단계: `add_request_and_confirm`을 통해, 다중 서명 컨트랙트의 첫 번째 확인 작업을 시작합니다. 이는 다중 서명 컨트랙트가 한 개의 확인 작업으로 실행하고 싶은 Action을 시작합니다. 다중 서명 컨트랙트 `multsigtest.testnet`는 `bowen`에게 1 NEAR를 전송하려고 하며, 먼저 요청과 함께 `add_request_and_confirm`를 호출하는 트랜잭션을 보냅니다.
 
 ```json
 {
@@ -348,11 +333,10 @@ a multisig contract that requires two confirmations.
 }
 ```
 
-that indicates it wants to transfer 1 NEAR to `bowen`. Notice that this transaction only records the action
-but does not perform the actual transfer. The transaction result is as follows:
+이는 1 NEAR를 `bowen`에 전송하려고 하는 것을 나타냅니다. 이 트랜잭션은 작업을 기록할 뿐 실제 전송을 수행하지는 않습니다. 트랜잭션 결과는 다음과 같습니다.
 
 <details>
-<summary>**Example Response:**</summary>
+<summary>응답 예시:</summary>
 
 ```json
 {
@@ -473,11 +457,10 @@ but does not perform the actual transfer. The transaction result is as follows:
 ```
 </details>
 
-- Second step: `confirm`. A second transaction is sent to confirm the transfer. This transaction takes the request id
-  returned by the first transaction and does the actual transfer. The transaction result is as follows
+- 두 번째 단계: `confirm`을 통해, 전송을 확정짓는 두 번째 트랜잭션이 보내집니다. 두 번째 트랜잭션은 전송 확인 작업을 위해 보내집니다. 이 트랜잭션은 첫 트랜잭션에 의해 반환된 요청 id를 받아 실제 전송 작업을 수행합니다. 트랜잭션 결과는 다음과 같습니다.
 
 <details>
-<summary>**Example Response:**</summary>
+<summary>응답 예시:</summary>
 
 ```json
 {
@@ -675,8 +658,7 @@ but does not perform the actual transfer. The transaction result is as follows:
 ```
 </details>
 
-Notice that similar to the transfer from lockup contract, there is also one receipt in the `receipts` field that meet
-our requirements:
+락업 컨트랙트에서의 전송 과정과 유사하게, `receipts` 필드 내에 우리의 요구 사항을 충족하는 Receipt도 한 개 있습니다.
 
 ```json
 {
@@ -702,7 +684,7 @@ our requirements:
 }
 ```
 
-and we can find its outcome in `receipts_outcome`:
+결과는 `receipts_outcome`에서 볼 수 있습니다.
 
 ```json
 {
@@ -727,8 +709,8 @@ and we can find its outcome in `receipts_outcome`:
 }
 ```
 
-which indicates that the transaction is successful.
+이는 트랜잭션이 성공했음을 나타냅니다.
 
-:::tip Got a question?
+:::tip 질문이 있으신가요?
 <a href="https://stackoverflow.com/questions/tagged/nearprotocol" target="_blank" rel="noopener noreferrer"> Ask it on StackOverflow! </a>
 :::

@@ -23,6 +23,7 @@ Technically, the end user (client) creates a `SignedDelegateAction` that contain
 When the request is received, the relayer uses its own key to sign a `Transaction` using the fields in the `SignedDelegateAction` as input to create a `SignedTransaction`.
 
 The `SignedTransaction` is then sent to the network via RPC call, and the result is sent back to the client. The `Transaction` is executed in such a way that the relayer pays the GAS fees, but all actions are executed as if the user had sent the transaction.
+
 </details>
 
 ---
@@ -30,9 +31,10 @@ The `SignedTransaction` is then sent to the network via RPC call, and the result
 ## Why use a Relayer?
 
 There are multiple reasons to use a relayer:
+
 1. Your users are new to NEAR and don't have any gas to cover transactions
 2. Your users have an account on NEAR, but only have a Fungible Token Balance. They can now use the FT to pay for gas
 3. As an enterprise or a large startup you want to seamlessly onboard your existing users onto NEAR without needing them to worry about gas costs and seed phrases
 4. As an enterprise or large startup you have a user base that can generate large spikes of user activity that would congest the network. In this case, the relayer acts as a queue for low urgency transactions
 5. In exchange for covering the gas fee costs, relayer operators can limit where users spend their assets while allowing users to have custody and ownership of their assets
-6. Capital Efficiency: Without relayer if your business has 1M users they would have to be allocated 0.25 NEAR to cover their gas costs totalling 250k NEAR. However, only ~10% of the users would actually use the full allowance and a large amount of the 250k NEAR is just sitting there unused. So using the relayer, you can allocate 50k NEAR as a global pool of capital for your users, which can refilled on an as needed basis. 
+6. Capital Efficiency: Without relayer if your business has 1M users they would have to be allocated 0.25 NEAR to cover their gas costs totalling 250k NEAR. However, only ~10% of the users would actually use the full allowance and a large amount of the 250k NEAR is just sitting there unused. So using the relayer, you can allocate 50k NEAR as a global pool of capital for your users, which can refilled on an as needed basis.

@@ -1,8 +1,8 @@
 ---
 id: sybil
-title: Sybil Attacks
+title: 시빌 공격
 ---
 
-While developing your smart contract, keep in mind that an individual can potentially create multiple NEAR accounts. This is especially relevant in ecosystems involving crowd decisions, such as [DAOs](../../../2.build/5.primitives/dao.md). 
+스마트 컨트랙트를 개발 중에 있다면, 개인이 여러 NEAR 계정을 만들 수 있다는 점을 염두에 두시기 바랍니다. 이것은 특히 [DAO](../../5.primitives/dao.md)와 같이 다수의 결정과 관련된 생태계와 관련이 있습니다.
 
-Imagine that you open the voting to anyone in the community. If each account can cast a vote, a malicious actor could span multiple accounts and gain a disproportionately large influence on the result.
+커뮤니티의 모든 사람에게 투표를 할 수 있도록 한다고 상상해 보세요. 각 계정이 투표할 수 있는 경우, 악의적인 행위자는 여러 계정을 통해 결과에 불균형을 만드는 등 큰 영향을 미칠 수 있습니다.

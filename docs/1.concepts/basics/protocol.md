@@ -1,6 +1,6 @@
 ---
 id: protocol
-title: What is NEAR?
+title: NEAR란 무엇인가요?
 ---
 
 NEAR is a **user-friendly** and [**carbon-neutral**](https://near.org/blog/near-climate-neutral-product/) blockchain, built to be [fast, secure, and able to grow without limits](https://www.leewayhertz.com/comparison-of-blockchain-protocols#Parallel-comparison-of-various-blockchain-networks).
@@ -26,7 +26,7 @@ In technical terms, NEAR is a [layer-one](https://coinmarketcap.com/academy/glos
 
 ---
 
-## Why Choose NEAR? {#why-build-on-near}
+## NEAR를 선택해야 하는 이유 {#why-build-on-near}
 
 NEAR is a technical marvel, offering built-in features such as named accounts and account abstraction. For developers, NEAR offers everything needed for their applications, from smart contracts to indexers. All while being interoperable with other chains.
 

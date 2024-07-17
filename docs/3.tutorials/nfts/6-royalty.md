@@ -1,38 +1,36 @@
 ---
 id: royalty
-title: Royalty
-sidebar_label: Royalty
+title: 로열티
+sidebar_label: 로열티
 ---
+
 import {Github} from "@site/src/components/codetabs"
 
-In this tutorial you'll continue building your non-fungible token (NFT) smart contract, and learn how to implement perpetual royalties into your NFTs. This will allow people to get a percentage of the purchase price when an NFT is sold.
+이 튜토리얼에서는 NFT(Non-Fungible Token) 스마트 컨트랙트를 계속 구축하고, NFT에 영구 로열티를 구현하는 방법을 배웁니다. 이를 통해 사람들은 NFT가 판매될 때 구매 가격의 일정 비율을 얻을 수 있습니다.
 
-## Introduction
+## 소개
 
-By now, you should have a fully fledged NFT contract, except for the royalties support.
-To get started, go to the `nft-contract-approval/` folder from our [GitHub repository](https://github.com/near-examples/nft-tutorial/), or continue your work from the previous tutorials.
+지금쯤이면 로열티 지원을 제외하고는 완전한 NFT 컨트랙트가 있어야 합니다. To get started, go to the `nft-contract-approval/` folder from our [GitHub repository](https://github.com/near-examples/nft-tutorial/), or continue your work from the previous tutorials.
 
 ```bash
 cd nft-contract-approval/
 ```
 
-:::tip
-If you wish to see the finished code for this _Royalty_ tutorial, you can find it in the `nft-contract-royalty` folder.
-:::
+:::tip If you wish to see the finished code for this _Royalty_ tutorial, you can find it in the `nft-contract-royalty` folder. :::
 
 ---
 
-## Thinking about the problem
+## 문제에 대한 생각
 
-In order to implement the functionality, you first need to understand how NFTs are sold. In the previous tutorial, you saw how someone with an NFT could list it on a marketplace using the `nft_approve` function by passing in a message that could be properly decoded. When a user purchases your NFT on the marketplace, what happens?
+로열티 기능을 구현하려면, 먼저 NFT 판매 방식을 이해해야 합니다. 이전 튜토리얼에서는, NFT를 가진 사람이 적절하게 디코딩할 수 있는 메시지를 전달하여 `nft_approve` 함수를 통해 마켓플레이스에 NFT를 리스팅하는 것을 보았습니다. 사용자가 마켓플레이스에서 NFT를 구매하면 어떤 일이 일어나나요?
 
-Using the knowledge you have now, a reasonable conclusion would be to say that the marketplace transfers the NFT to the buyer by performing a cross-contract call and invokes the NFT contract's `nft_transfer` method. Once that function finishes, the marketplace would pay the seller for the correct amount that the buyer paid.
+지금 가지고 있는 지식을 사용했을 때의 합리적인 결론은, 마켓플레이스가 교차 컨트랙트 호출을 수행하여 NFT를 구매자에게 전송하고, NFT 컨트랙트의 `nft_transfer` 메서드를 호출하는 것입니다. 해당 함수가, 완료되면 마켓플레이스는 구매자가 지불한 정확한 금액을 판매자에게 지불합니다.
 
-Let's now think about how this can be expanded to allow for a cut of the pay going to other accounts that aren't just the seller.
+이제 판매자가 아닌 다른 계정으로 가는 금액을 삭감할 수 있도록 확장할 수 있는 방법에 대해 생각해 보겠습니다.
 
 <hr class="subsection" />
 
-### Expanding the current solution
+### 현재 솔루션 확장
 
 Since perpetual royalties will be on a per-token basis, it's safe to assume that you should be changing the `Token` and `JsonToken` structs. You need some way of keeping track of what percentage each account with a royalty should have. If you introduce a map of an account to an integer, that should do the trick.
 
@@ -42,7 +40,7 @@ This is what the [royalty standards](https://nomicon.io/Standards/NonFungibleTok
 
 ---
 
-## Modifications to the contract
+## 컨트랙트 수정
 
 The first thing you'll want to do is add the royalty information to the structs. Open the `nft-contract-approval/src/metadata.rs` file and add `royalty` to the `Token` struct:
 
@@ -58,7 +56,7 @@ pub royalty: HashMap<AccountId, u32>,
 
 <hr class="subsection" />
 
-### Internal helper function
+### 내부 헬퍼 함수
 
 **royalty_to_payout**
 
@@ -70,7 +68,7 @@ If you were to use the `royalty_to_payout` function and pass in `2000` as the `r
 
 <hr class="subsection" />
 
-### Royalties
+### 로열티
 
 **nft_payout**
 
@@ -115,7 +113,7 @@ Now that you know how payouts are calculated, it's time to create the function t
 
 <hr class="subsection" />
 
-### Perpetual royalties
+### 영구 로열티
 
 To add support for perpetual royalties, let's edit the `src/mint.rs` file. First, add an optional parameter for perpetual royalties. This is what will determine what percentage goes to which accounts when the NFT is purchased. You will also need to create and insert the royalty to be put in the `Token` object:
 
@@ -123,7 +121,7 @@ To add support for perpetual royalties, let's edit the `src/mint.rs` file. First
 
 Next, you can use the CLI to query the new `nft_payout` function and validate that it works correctly.
 
-### Adding royalty object to struct implementations
+### 구조체 구현에 로열티 객체 추가
 
 Since you've added a new field to your `Token` and `JsonToken` structs, you need to edit your implementations accordingly. Move to the `nft-contract/src/internal.rs` file and edit the part of your `internal_transfer` function that creates the new `Token` object:
 
@@ -135,7 +133,7 @@ Once that's finished, move to the `nft-contract-approval/src/nft_core.rs` file. 
 
 ---
 
-## Deploying the contract {#redeploying-contract}
+## 컨트랙트 배포 {#redeploying-contract}
 
 As you saw in the previous tutorial, adding changes like these will cause problems when redeploying. Since these changes affect all the other tokens and the state won't be able to automatically be inherited by the new code, simply redeploying the contract will lead to errors. For this reason, you'll create a new account again.
 
@@ -156,19 +154,19 @@ cargo near deploy $ROYALTY_NFT_CONTRACT_ID with-init-call new_default_meta json-
 
 ### Minting {#minting}
 
-Next, you'll need to mint a token. By running this command, you'll mint a token with a token ID `"royalty-token"` and the receiver will be your new account. In addition, you're passing in a map with two accounts that will get perpetual royalties whenever your token is sold.
+다음으로 토큰을 발행해야 합니다. 이 명령을 실행하면 토큰 ID `"royalty-token"`로 토큰이 발행되고, 수신자가 새 계정이 됩니다. 또한 토큰이 판매될 때마다 영구 로열티를 받는 두 개의 계정을 포함한 맵을 전달합니다.
 
 ```bash
 near contract call-function as-transaction $ROYALTY_NFT_CONTRACT_ID nft_mint json-args '{"token_id": "royalty-token", "metadata": {"title": "Royalty Token", "description": "testing out the new royalty extension of the standard", "media": "https://bafybeiftczwrtyr3k7a2k4vutd3amkwsmaqyhrdzlhvpt33dyjivufqusq.ipfs.dweb.link/goteam-gif.gif"}, "receiver_id": "'$ROYALTY_NFT_CONTRACT_ID'", "perpetual_royalties": {"benjiman.testnet": 2000, "mike.testnet": 1000, "josh.testnet": 500}}' prepaid-gas '100.0 Tgas' attached-deposit '0.1 NEAR' sign-as $ROYALTY_NFT_CONTRACT_ID network-config testnet sign-with-legacy-keychain send
 ```
 
-You can check to see if everything went through properly by calling one of the enumeration functions:
+열거(Enumeration) 함수 중 하나를 호출하여 모든 것이 제대로 진행되었는지 확인할 수 있습니다.
 
 ```bash
 near contract call-function as-read-only $ROYALTY_NFT_CONTRACT_ID nft_tokens_for_owner json-args '{"account_id": "'$ROYALTY_NFT_CONTRACT_ID'", "limit": 10}' network-config testnet now
 ```
 
-This should return an output similar to the following:
+그러면 다음과 유사한 출력이 반환됩니다.
 
 ```json
 [
@@ -199,17 +197,17 @@ This should return an output similar to the following:
 ]
 ```
 
-Notice how there's now a royalty field that contains the 3 accounts that will get a combined 35% of all sales of this NFT? Looks like it works! Go team :)
+이제 이 NFT의 전체 매출의 35%를 합산한 3개의 계정을 포함하는 로열티 필드가 어떻게 생겼는지 확인해 보실까요? 작동하는 것 같습니다! 화이팅 :)
 
-### NFT payout
+### NFT 지급
 
-Let's calculate the payout for the `"royalty-token"` NFT, given a balance of 100 yoctoNEAR. It's important to note that the balance being passed into the `nft_payout` function is expected to be in yoctoNEAR.
+Let's calculate the payout for the `"royalty-token"` NFT, given a balance of 100 yoctoNEAR. `nft_payout` 함수로 전달되는 금액이 yoctoNEAR 단위로 표시될 것으로 예상된다는 점에 유의하는 것이 중요합니다.
 
 ```bash
 near contract call-function as-read-only $ROYALTY_NFT_CONTRACT_ID nft_payout json-args '{"token_id": "royalty-token", "balance": "100", "max_len_payout": 100}' network-config testnet now
 ```
 
-This command should return an output similar to the following:
+이 명령은 다음과 유사한 출력을 반환해야 합니다.
 
 ```js
 {
@@ -224,24 +222,21 @@ This command should return an output similar to the following:
 
 If the NFT was sold for 100 yoctoNEAR, josh would get 5, Benji would get 20, mike would get 10, and the owner, in this case `royalty.goteam.examples.testnet` would get the rest: 65.
 
-## Conclusion
+## 결론
 
-At this point you have everything you need for a fully functioning NFT contract to interact with marketplaces.
-The last remaining standard that you could implement is the events standard. This allows indexers to know what functions are being called and makes it easier and more reliable to keep track of information that can be used to populate the collectibles tab in the wallet for example.
+이 시점에서 마켓플레이스와 상호 작용하기 위해 완벽하게 작동하는 NFT 컨트랙트에 필요한 모든 것이 존재합니다. 구현할 수 있는 마지막 남은 표준은 이벤트 표준입니다. 이렇게 하면 인덱서는 호출되는 함수에 대해 알 수 있기에, 지갑의 수집품 탭을 채우는 데 사용할 수 있는 정보 등에 대해 추적하는 것을 더 쉽고 안정적으로 할 수 있게 됩니다.
 
-:::info remember
-If you want to see the finished code from this tutorial, you can go to the `nft-contract-royalty` folder.
-:::
+:::info remember If you want to see the finished code from this tutorial, you can go to the `nft-contract-royalty` folder. :::
 
-:::note Versioning for this article
+:::note 문서 버전 관리
 
-At the time of this writing, this example works with the following versions:
+글을 작성하는 시점에서, 해당 예제는 다음 버전에서 작동합니다.
 
 - rustc: `1.77.1`
 - near-cli-rs: `0.11.0`
 - cargo-near `0.6.1`
 - NFT standard: [NEP171](https://nomicon.io/Standards/Tokens/NonFungibleToken/Core), version `1.0.0`
-- Enumeration standard: [NEP181](https://nomicon.io/Standards/Tokens/NonFungibleToken/Enumeration), version `1.0.0`
-- Royalties standard: [NEP199](https://nomicon.io/Standards/Tokens/NonFungibleToken/Payout), version `2.0.0`
+- 열거 표준: [NEP181](https://nomicon.io/Standards/Tokens/NonFungibleToken/Enumeration), `1.0.0` 버전
+- 로열티 표준: [NEP199](https://nomicon.io/Standards/Tokens/NonFungibleToken/Payout), `2.0.0` 버전
 
 :::

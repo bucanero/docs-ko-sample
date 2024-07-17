@@ -7,29 +7,28 @@ sidebar_label: Best Practices
 In this article you can find suggested best practices when building blockchain indexers using [QueryAPI](intro.md).
 If you're planning to design a production-ready indexer, please check the recommendations for [indexing development](#indexing-development) and [database design](#database-design).
 
-
 ## Indexing development
 
 This section presents a recommended workflow when building a new indexer using QueryAPI.
 
 ### Design APIs for your UIs
 
-If your application requires front-end User Interfaces (UIs), your first step should be to define the APIs that will be used by your front-end UI. The main objective here is to reduce the overall number of requests that each page makes to render all content. Once you define these APIs, you will have a good overview of the data that you need to index from the blockchain. 
+If your application requires front-end User Interfaces (UIs), your first step should be to define the APIs that will be used by your front-end UI. The main objective here is to reduce the overall number of requests that each page makes to render all content. Once you define these APIs, you will have a good overview of the data that you need to index from the blockchain.
 
 ### Create a Database
 
 Once you have a better idea of the indexed data, you can design the database to store the indexing results.
 
 When defining your SQL database schema, consider these recommendations:
-  -  Design for `UPSERT`s, so that indexed data can be replaced if needed
-  -  Use foreign keys between entities for GraphQL linking
-  -  Think of indexes (e.g. by accounts, by dates, etc.)
-  -  Use views to generate more GraphQL queries – when you `CREATE VIEW`, QueryAPI generates a separate GraphQL query for it.
+
+- Design for `UPSERT`s, so that indexed data can be replaced if needed
+- Use foreign keys between entities for GraphQL linking
+- Think of indexes (e.g. by accounts, by dates, etc.)
+- Use views to generate more GraphQL queries – when you `CREATE VIEW`, QueryAPI generates a separate GraphQL query for it.
 
 :::tip
 Check the [Database design section](#database-design) to learn how to design optimal database schemas for your indexer.
 :::
-
 
 ### Find blocks to test on
 
@@ -37,15 +36,15 @@ Using exploring tools such as [NearBlocks](https://nearblocks.io/), you can find
 
 ### Write JS code and debug
 
-1. Start from a simple [`indexingLogic.js`](index-function.md) to get blockchain data dumped in a database, in a raw form. For example, start by getting the [FunctionCall](../../2.smart-contracts/anatomy/actions.md#function-call)'s arguments from the smart contract that you want to index. Then, use the [GraphQL playground](index-function.md#mutations-in-graphql) to understand the raw dump and further analyze the data.
+1. Start from a simple [`indexingLogic.js`](index-function.md) to get blockchain data dumped in a database, in a raw form. For example, start by getting the [FunctionCall](../../2.develop/contracts/actions.md#function-call)'s arguments from the smart contract that you want to index. Then, use the [GraphQL playground](index-function.md#mutations-in-graphql) to understand the raw dump and further analyze the data.
 
    ![Playground](/docs/assets/QAPIScreen.gif)
 
 :::tip
 
-  -  Check the [NEAR Lake Primitives](https://near.github.io/near-lake-framework-js/) documentation
-  -  Use [`context.db`](context.md#db) object to access your database tables
-  -  Write logs
+- Check the [NEAR Lake Primitives](https://near.github.io/near-lake-framework-js/) documentation
+- Use [`context.db`](context.md#db) object to access your database tables
+- Write logs
 
 :::
 
@@ -56,7 +55,6 @@ Using exploring tools such as [NearBlocks](https://nearblocks.io/), you can find
 3. Once your index logic extracts all data correctly as expected, you might find that you need to create new tables or change your schema to better organize the data. In that case, fork the indexer, change the  SQL schema and update the indexer logic to process and store structured data.
 
 4. If there were changes in smart contracts, e.g. changes in method and event definitions, you might need to implement conditional logic on the block height.
-
 
 ### Deploy code and check logs
 
@@ -93,17 +91,16 @@ Remember to clean out old, unused indexers. If you get `YourIndexerName_v8` to w
 
 :::
 
-
 ### Generate GraphQL queries and export
 
 When your indexer is deployed and ready, you can generate and export GraphQL queries that can be used in your front-end application, NEAR component, or any other integration.
 
 To generate GraphQL queries:
-  -  [Use GraphiQL playground](index-function.md#mutations-in-graphql)
-  -  Click through and debug queries
-  -  [Use code exporter to NEAR components](index-function.md#create-a-bos-component-from-query)
-  -  Change `query` to `subscription` for WebSockets
 
+- [Use GraphiQL playground](index-function.md#mutations-in-graphql)
+- Click through and debug queries
+- [Use code exporter to NEAR components](index-function.md#create-a-bos-component-from-query)
+- Change `query` to `subscription` for WebSockets
 
 ## Database design
 

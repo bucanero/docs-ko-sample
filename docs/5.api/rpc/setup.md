@@ -1,66 +1,62 @@
 ---
 id: setup
-title: Setup 
+title: 설정
 ---
 
-In order to use the RPC API you will need to setup the correct RPC endpoints.
+RPC API를 사용하려면 올바른 RPC 엔드포인트를 설정해야 합니다.
 
 <hr className="subsection" />
 
-## RPC Endpoint Setup
-- `POST` for all methods
+## RPC 엔드포인트 설정
+- `POST` (모든 메서드에 대해)
 - `JSON RPC 2.0`
 - `id: "dontcare"`
-- endpoint URL varies by network:
+- 엔드포인트 URL은 네트워크에 따라 다릅니다.
   - mainnet `https://rpc.mainnet.near.org`
   - testnet `https://rpc.testnet.near.org`
-  - betanet `https://rpc.betanet.near.org` _(may be unstable)_
+  - betanet `https://rpc.betanet.near.org` _(불안정할 수 있음)_
   - localnet `http://localhost:3030`
 
-### Limits
-- Maximum number of requests per IP: 600 req/min
+### 한도
+- IP당 최대 요청 수: 600 req/min
 
 <hr className="subsection" />
 
-## Querying Historical Data
-Querying historical data (older than 5 [epochs](../../1.concepts/basics/epoch.md) or ~2.5 days), you may get responses that the data is not available anymore. In that case, archival RPC nodes will come to your rescue:
+## 과거 데이터 쿼리
+이전 데이터(5 [에포크](../../1.concepts/basics/epoch.md) 또는 ~2.5일보다 오래된)를 쿼리하면 데이터를 더 이상 사용할 수 없다는 응답을 받을 수 있습니다. 이 경우 아카이브 RPC 노드가 해결책이 될 수 있습니다.
 
 - mainnet `https://archival-rpc.mainnet.near.org`
 - testnet `https://archival-rpc.testnet.near.org`
 
-You can see this interface defined in `nearcore` [here](https://github.com/near/nearcore/blob/bf9ae4ce8c680d3408db1935ebd0ca24c4960884/chain/jsonrpc/client/src/lib.rs#L181).
+[여기](https://github.com/near/nearcore/blob/bf9ae4ce8c680d3408db1935ebd0ca24c4960884/chain/jsonrpc/client/src/lib.rs#L181)에서, `nearcore`에 정의된 이 인터페이스를 볼 수 있습니다.
 
-### Limits
-- Maximum number of requests per IP: 600 req/min
-
----
-
-## Postman Setup {#postman-setup}
-
-An easy way to test the queries in this documentation page is to use an API request tool such as [Postman](https://www.postman.com/).
-You only need to configure two things:
-
-1. Make sure you add a header with a key of `Content-Type` and value of `application/json`.
-   ![postman-setup-header](/docs/assets/postman-setup-headers.png)
-
-2. Then select the `Body` tab and choose the `raw` radio button and ensure `JSON` is the selected format.
-   ![postman-setup-header](/docs/assets/postman-setup-body.png)
-
-After that is set up, just copy/paste the `JSON object` example snippets below into the `body` of your request, on Postman, and click `send`.
+### 한도
+- IP당 최대 요청 수: 600 req/min
 
 ---
-## JavaScript Setup {#javascript-setup}
 
-All of the queries listed in this documentation page can be called using [`near-api-js`](https://github.com/near/near-api-js).
+## Postman 설정 {#postman-setup}
 
-- For `near-api-js` installation and setup please refer to `near-api-js` [quick reference documentation](/tools/near-api-js/quick-reference).
-- All JavaScript code snippets require a `near` object. For examples of how to instantiate, [**click here**](/tools/near-api-js/quick-reference#connect).
+이 문서 페이지에서 쿼리를 테스트하는 쉬운 방법은 [Postman](https://www.postman.com/)과 같은 API 요청 도구를 사용하는 것입니다. 다음 두 가지만 구성하면 됩니다.
+
+1. 키로는 `Content-Type`, 값으로는 `application/json` 가진 헤더를 추가해야 합니다. ![postman-setup-header](/docs/assets/postman-setup-headers.png)
+
+2. 그런 다음 `Body` 탭을 선택하고, `raw` 라디오 버튼을 선택합니다. `JSON`이 선택한 형식인지 확인합니다. ![postman-setup-header](/docs/assets/postman-setup-body.png)
+
+설정한 후, Postman 요청의 `body` 아래 `JSON object` 예제 스니펫을 복사/붙여넣기하고, `send`을 클릭하세요.
 
 ---
-## HTTPie Setup {#httpie-setup}
+## JavaScript 설정 {#javascript-setup}
 
-If you prefer to use a command line interface, we have provided RPC examples you can use with [HTTPie](https://httpie.org/). Please note that params take
-either an object or array passed as a string.
+이 문서 페이지에 나열된 모든 쿼리는 [`near-api-js`](https://github.com/near/near-api-js)를 사용하여 호출할 수 있습니다.
+
+- `near-api-js` 설치 및 설정에 대해서는 [빠른 참조 문서](/tools/near-api-js/quick-reference)를 참조하세요.
+- 모든 JavaScript 코드 스니펫에는 `near` 객체가 필요합니다. 인스턴스화 방법에 대한 예를 보려면 [여기](/tools/near-api-js/quick-reference#connect)를 클릭하세요.
+
+---
+## HTTPie 설정 {#httpie-setup}
+
+명령줄 인터페이스 사용을 선호하는 경우, [HTTPie](https://httpie.org/)와 함께 사용할 수 있는 RPC 예제를 제공했습니다. 매개변수로는 객체 또는 문자열로 전달된 배열을 사용합니다.
 
 ```bash
 http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=network_info params:='[]'
@@ -68,20 +64,20 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=network_in
 
 ---
 
-## Using `block_id` param {#using-block_id-param}
+## 매개변수 `block_id` 사용 {#using-block_id-param}
 
-The `block_id` param can take either the block number (e.g. `27912554`) or the block hash (e.g. `'3Xz2wM9rigMXzA2c5vgCP8wTgFBaePucgUmVYPkMqhRL'` ) as an argument.
+`block_id` 매개변수는 블록 번호(예: `27912554`) 또는 블록 해시(예: `'3Xz2wM9rigMXzA2c5vgCP8wTgFBaePucgUmVYPkMqhRL'`)를 인자로 사용할 수 있습니다.
 
 :::caution
 
-The block IDs of transactions shown in [NearBlocks Explorer](https://testnet.nearblocks.io) are not necessarily the block ID of the executed transaction. Transactions may execute a block or two after its recorded, and in some cases, can take place over several blocks. Due to this, it is important to check subsequent blocks to be sure all results related to the queried transaction are discovered.
+The block IDs of transactions shown in [NearBlocks Explorer](https://testnet.nearblocks.io) are not necessarily the block ID of the executed transaction. 트랜잭션은 기록된 후 한두 블록을 실행할 수 있으며, 경우에 따라 여러 블록에 걸쳐 발생할 수 있습니다. Due to this, it is important to check subsequent blocks to be sure all results related to the queried transaction are discovered.
 
 :::
 
 ---
 
-## Using `finality` param {#using-finality-param}
+## `finality` 매개변수 사용 {#using-finality-param}
 
-The `finality` param has two options: `optimistic` and `final`.
+`finality` 매개변수에는 두 가지 옵션이 있습니다: `optimistic`과 `final`.
 1. `optimistic` uses the latest block recorded on the node that responded to your query _(< 1 second delay after the transaction is submitted)_
-2. `final` is for a block that has been validated on at least 66% of the nodes in the network _(usually takes 2 blocks / approx. 2 second delay)_
+2. `final`는 네트워크 노드의 최소 66%에서 검증된 블록용입니다 _(보통 2블록 소요/약 2초 지연)_.

@@ -4,15 +4,12 @@ title: QueryAPI Overview
 sidebar_label: Introduction
 ---
 
-
-Near QueryAPI is a fully managed solution to build indexer functions,
-extract on-chain data, store it in a database, and be able to query it using GraphQL endpoints.
+Near QueryAPI is a fully managed solution to build indexer functions, extract on-chain data, store it in a database, and be able to query it using GraphQL endpoints.
 
 ## Indexing complexity
 
 Blockchain Indexers are known to be challenging to create, maintain, and operate.
-You have to focus on the business logic of your indexer, while you also have to
-take care of everything else around it.
+You have to focus on the business logic of your indexer, while you also have to take care of everything else around it.
 A dedicated team member could be needed to deal with all these challenges.
 
 Common indexing challenges include:
@@ -36,11 +33,9 @@ Common indexing challenges include:
 - Scale the API as your application grows
 - Keep up with all the underlying blockchain nodes and upgrades
 
-
 ## QueryAPI
 
-As you can see, running indexers is a complex and comprehensive set of processes and
-Near QueryAPI tries to cover most (or all) of these needs, offering an open-source solution for creating, managing, and exploring indexers.
+As you can see, running indexers is a complex and comprehensive set of processes and Near QueryAPI tries to cover most (or all) of these needs, offering an open-source solution for creating, managing, and exploring indexers.
 
 ### NEAR Component
 
@@ -60,7 +55,6 @@ where a smart contract stores all of your indexer logic as well as your schemas.
 For example, if you select the social_feed indexer and click on [**View indexer**](https://dev.near.org/dataplatform.near/widget/QueryApi.App?selectedIndexerPath=dataplatform.near/social_feed) you'll see all the details about an indexer that powers the Activity Page on [dev.near.org](https://dev.near.org).
 You're free to review the JavaScript code of the indexer function, or check the SQL that defines the database schema.
 
-
 ## Known limitations
 
 - Currently under closed beta testing.
@@ -72,7 +66,6 @@ You're free to review the JavaScript code of the indexer function, or check the 
 - Historical backfill works in parallel to the real-time indexing.
   - Historical processing won't happen in order. (it will happen at the same time as top of network)
   - Keep that in mind to ensure you don't have unintended side effects.
-
 
 :::info Pricing
 

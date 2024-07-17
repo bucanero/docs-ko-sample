@@ -3,7 +3,7 @@ id: data-availability
 title: Rollup Data Availability
 ---
 
-Every monolithic blockchain has a data availability layer. NEAR's Data Availability (DA) represents a pioneering initiative to modularize the data availability layer from the NEAR blockchain to make it available as a roll-up solution for builders on other chains. 
+Every monolithic blockchain has a data availability layer. NEAR's Data Availability (DA) represents a pioneering initiative to modularize the data availability layer from the NEAR blockchain to make it available as a roll-up solution for builders on other chains.
 
 This infrastructure consists of a smart contract, a light client, and a Remote Procedure Call (RPC) node. The smart contract is designed to accept blob data, which is then processed through NEAR's consensus. The RPC node functions as the serving node, where users can transmit their data. Lastly, the light client operates as a node that rollups can verify to ensure the availability of data.
 
@@ -13,6 +13,7 @@ This infrastructure consists of a smart contract, a light client, and a Remote P
 - [Integrations](#integrations): Proof of concept works for integrating with L2 rollups.
 
 NEAR DA is notably inexpensive due to several key factors:
+
 - NEAR offers a substantial amount of block space per shard, ensuring efficient utilization.
 - NEAR optimizes this space by avoiding unnecessary cryptographic bloat, ensuring that each 4MB allocated equals precisely 4MB of usable data.
 - NEAR's scalability is unmatched, as it can readily reshard and scale in response to increasing demand, unlike competitors who would need to resort to constructing rollups or sidechains, thus maintaining a consistently ample and cost-effective data availability solution.
@@ -30,12 +31,11 @@ This outlines the system components that we build and how it interacts with exte
 Red lines denote external flow of commitments.
 White lines denote flow of blob data.
 
-
 :::note
 `Fisherman` is just an example how a rollup can work with the light client in the initial stage of DA, until we implement a more non-interactive approach, such as KZG.
 :::
 
-```mermaid 
+```mermaid
 C4Context
     title NEAR Data Availability System Context
 
@@ -91,6 +91,7 @@ It works by taking advantage of NEAR consensus around receipts. When a chunk pro
 We can validate that the blob was retrieved from ecosystem actors in the format submitted by checking the blob commitment. The blob commitment currently needs to be more efficient and will be improved, but it benefits us because anybody can build this with limited expertise and tooling. It is created by taking a blob, chunking it into 256-byte pieces, and creating a Merkle tree, where each leaf is a Sha-256 hash of the shard. The root of the Merkle tree is the blob commitment, which is provided as [transaction_id ++ commitment] to the L1 contract, which is 64 bytes.
 
 What this means:
+
 - Consensus is provided around the submission of a blob by NEAR validators
 - The function input data is stored by full nodes for at least three days
 - Archival nodes can store the data for longer
@@ -120,11 +121,13 @@ It's also possible that the light client may be on-chain for the header syncing 
 ---
 
 ## DA RPC
+
 This client is the defacto client for submitting blobs to NEAR. These crates allow a client to interact with the blob store. It can be treated as a "black box", where blobs go in, and `[transaction_id ++ commitment]` emerges.
 
 There are multiple versions:
+
 - The [`da-rpc` crate](https://github.com/near/rollup-data-availability/tree/main/crates/da-rpc) is the rust client, which anyone can use if they prefer rust in their application.
-The responsibility of this client is to provide a simple interface for interacting with NEAR DA.
+  The responsibility of this client is to provide a simple interface for interacting with NEAR DA.
 - The [`da-rpc-sys` crate](https://github.com/near/rollup-data-availability/tree/main/crates/da-rpc-sys) is the FFI client binding for use by non-rust applications. This calls through to `da-rpc` to interact with the blob store, with some additional black box functionality for dealing with pointers wrangling and such.
 - The [`da-rpc-go` package](https://github.com/near/rollup-data-availability/tree/main/gopkg/da-rpc) is the go client bindings for use by non-rust applications, and this calls through to `da-rpc-sys`, which provides another application-level layer for easy interaction with the bindings.
 
@@ -139,6 +142,7 @@ See also [the diagram](https://github.com/near/rollup-data-availability/blob/mai
 We have developed some proof of concept works for integrating with L2 rollups:
 
 - [CDK Stack](https://github.com/firatNEAR/cdk-validium-node/tree/near): We have integrated with the Polygon CDK stack. Using the Sequence Sender for submissions to NEAR.
+
 - [Optimism](https://github.com/near/optimism): We have integrated with the Optimism OP stack. Using the `Batcher` for submissions to NEAR and the proposer for submitting NEAR commitment data to Ethereum.
 
 - [Arbitrum Nitro](https://github.com/near/nitro): We have integrated a small plugin into the DAC daserver. This is much like our http sidecar and provides a very modular integration into NEAR DA whilst supporting arbitrum DACs.

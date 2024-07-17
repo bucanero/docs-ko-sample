@@ -5,6 +5,7 @@ hide_table_of_contents: false
 ---
 
 import {FeatureList, Column, Feature} from "@site/src/components/featurelist"
+import ContactUs from '@site/src/components/ContactUs.mdx';
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -47,6 +48,7 @@ Be mindful of not confusing an NFT with an NFT-marketplace. NFT simply store inf
 ---
 
 ## Community Projects
+
 The easiest way to create and handle NFTs is by using one of the existing community projects.
 
 1. [Paras](https://paras.id/) - a classic NFT marketplace. Just login with your NEAR account, create a collection and share the link with your community.
@@ -56,7 +58,8 @@ The easiest way to create and handle NFTs is by using one of the existing commun
 ---
 
 ## Deploying a NFT Contract
-If you want to deploy your own NFT contract, you can create one using our [reference implementation](https://github.com/near-examples/NFT) 
+
+If you want to deploy your own NFT contract, you can create one using our [reference implementation](https://github.com/near-examples/NFT)
 
 Simply personalize it and deploy it to your account.
 
@@ -73,21 +76,18 @@ Check the [Contract Wizard](https://dev.near.org/contractwizard.near/widget/Cont
 ---
 
 ## Minting a NFT
+
 To create a new NFT (a.k.a. minting it) you will call the `nft_mint` method passing as arguments the metadata that defines the NFT.
 
 <Tabs groupId="code-tabs">
   <TabItem value="⚛️ Component" label="⚛️ Component" default>
-    <BOSMintNFT />
-  </TabItem>
+    <BOSMintNFT /></TabItem>
   <TabItem value="🌐 WebApp" label="🌐 WebApp">
-    <WebAppMintNFT />
-  </TabItem>
+    <WebAppMintNFT /></TabItem>
   <TabItem value="🖥️ CLI" label="🖥️ CLI">
-    <CLIMintNFT />
-  </TabItem>
+    <CLIMintNFT /></TabItem>
   <TabItem value="📄 Contract" label="📄 Contract" default>
-    <SmartContractMintNFT />
-  </TabItem>
+    <SmartContractMintNFT /></TabItem>
 </Tabs>
 
 :::info
@@ -117,55 +117,49 @@ Notice that [minting in Mintbase](#minting-a-nft) allows you to pass a `num_to_m
 <hr className="subsection" />
 
 ### Royalties
-You might have noticed that one of the parameters is a structure called royalties. Royalties enable you to create a list of users that should get paid when the token is sell in a marketplace. For example, if `anna` has `5%` of royalties, each time the NFT is sell, `anna` should get a 5% of the selling price.
 
+You might have noticed that one of the parameters is a structure called royalties. Royalties enable you to create a list of users that should get paid when the token is sell in a marketplace. For example, if `anna` has `5%` of royalties, each time the NFT is sell, `anna` should get a 5% of the selling price.
 
 ---
 
 ## Querying NFT data
+
 You can query the NFT's information and metadata by calling the `nft_token`.
 
 <Tabs groupId="code-tabs">
   <TabItem value="⚛️ Component" label="⚛️ Component" default>
-    <BOSQueryNFT />
-  </TabItem>
+    <BOSQueryNFT /></TabItem>
   <TabItem value="🌐 WebApp" label="🌐 WebApp">
-    <WebAppQueryNFT />
-  </TabItem>
+    <WebAppQueryNFT /></TabItem>
   <TabItem value="🖥️ CLI" label="🖥️ CLI">
-    <CLIQueryNFT />
-  </TabItem>
+    <CLIQueryNFT /></TabItem>
   <TabItem value="📄 Contract" label="📄 Contract">
-    <SmartContractQueryNFT />
-  </TabItem>
+    <SmartContractQueryNFT /></TabItem>
 </Tabs>
 
 ---
 
 ## Transferring a NFT
+
 Transferring an NFT can happen in two scenarios: (1) you ask to transfer an NFT, and (2) an [authorized account](#approving-users) asks to transfer the NFT.
 
 In both cases, it is necessary to invoke the `nft_transfer` method, indicating the token id, the receiver, and an (optionally) an [approval_id](https://nomicon.io/Standards/Tokens/NonFungibleToken/ApprovalManagement).
 
-
 <Tabs groupId="code-tabs">
   <TabItem value="⚛️ Component" label="⚛️ Component" default>
-    <BOSTransferNFT />
-  </TabItem>
+    <BOSTransferNFT /></TabItem>
   <TabItem value="🌐 WebApp" label="🌐 WebApp">
-    <WebAppTransferNFT />
-  </TabItem>
+    <WebAppTransferNFT /></TabItem>
   <TabItem value="🖥️ CLI" label="🖥️ CLI">
-    <CLITransferNFT />
-  </TabItem>
+    <CLITransferNFT /></TabItem>
   <TabItem value="📄 Contract" label="📄 Contract">
-    <SmartContractTransferNFT />  
-  </TabItem>
+    <SmartContractTransferNFT /></TabItem>
 </Tabs>
 
 ---
 
 ## Attaching NFTs to a Call
+
 Natively, only NEAR tokens (Ⓝ) can be attached to a function calls. However, the NFT standard enables to attach a non-fungible tokens in a call by using the NFT-contract as intermediary. This means that, instead of you attaching tokens directly to the call, you ask the NFT-contract to do both a transfer and a function call in your name.
 
 <Tabs className="language-tabs" groupId="code-tabs">
@@ -188,7 +182,9 @@ Optionally, a [`memo` parameter](https://nomicon.io/Standards/Tokens/NonFungible
 <hr className="subsection" />
 
 ### How Does it Work?
+
 Assume you want to attach an NFT (🎫) to a call on the receiver contract. The workflow is as follows:
+
 1. You call `nft_transfer_call` in the NFT-contract passing: the receiver, a message, and the token-id of 🎫.
 2. The NFT contract transfers the NFT 🎫 to the receiver.
 3. The NFT contract calls **`receiver.nft_on_transfer(sender, token-owner, token-id, msg)`**.
@@ -196,14 +192,15 @@ Assume you want to attach an NFT (🎫) to a call on the receiver contract. The 
 5. The NFT contract returns `true` if it succeeded.
 
 #### The nft_on_transfer method
+
 From the workflow above it follows that the receiver we want to call needs to implement the `nft_on_transfer` method. When executed, such method will know:
+
 - Who is sending the NFT, since it is a parameter
 - Who is the current owner, since it is a parameter
 - Which NFT was transferred, since it is a parameter.
 - If there are any parameters encoded as a message
 
 The `nft_on_transfer` **must return true** if the NFT has to be **returned to the sender**.
-
 
 ---
 
@@ -240,23 +237,20 @@ Basic NFT contracts following [the NEP-171 and NEP-177 standards](https://nomico
 
 For this purpose, there are ecosystem apps such as [Paras](https://paras.id/) or [Mintbase](https://www.mintbase.xyz/), that use dedicated marketplace contracts.
 
-In order to put a NFT for a sale on a marketplace you need to do two actions: 
+In order to put a NFT for a sale on a marketplace you need to do two actions:
 
-1. Cover data storage costs in the marketplace contract. 
+1. Cover data storage costs in the marketplace contract.
 2. Approve the marketplace to sell the NFT in your NFT contract.
 
 <br />
 
 <Tabs groupId="code-tabs">
   <TabItem value="⚛️ Component" label="⚛️ Component" default>
-    <BOSListNFTForSale />
-  </TabItem>
+    <BOSListNFTForSale /></TabItem>
   <TabItem value="🌐 WebApp" label="🌐 WebApp">
-    <WebAppListNFTForSale />
-  </TabItem>
+    <WebAppListNFTForSale /></TabItem>
   <TabItem value="🖥️ CLI" label="🖥️ CLI">
-    <CLIListNFTForSale />
-  </TabItem>
+    <CLIListNFTForSale /></TabItem>
 </Tabs>
 
 ---
@@ -269,17 +263,13 @@ For this purpose, there are ecosystem apps such as [Paras](https://paras.id/) or
 
 <Tabs groupId="code-tabs">
   <TabItem value="⚛️ Component" label="⚛️ Component" default>
-    <BOSBuyNFT />
-  </TabItem>
+    <BOSBuyNFT /></TabItem>
   <TabItem value="🌐 WebApp" label="🌐 WebApp">
-    <WebAppBuyNFT />
-  </TabItem>
+    <WebAppBuyNFT /></TabItem>
   <TabItem value="🖥️ CLI" label="🖥️ CLI">
-    <CLIBuyNFT />
-  </TabItem>
+    <CLIBuyNFT /></TabItem>
   <TabItem value="📄 Contract" label="📄 Contract" default>
-    <SmartContractBuyNFT />
-  </TabItem>
+    <SmartContractBuyNFT /></TabItem>
 </Tabs>
 
 ---

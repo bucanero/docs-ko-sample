@@ -1,14 +1,14 @@
 ---
 id: predeployed-contract
-title: Pre-deployed Contract
-sidebar_label: Pre-deployed Contract
+title: 사전 배포된 컨트랙트
+sidebar_label: 사전 배포된 컨트랙트
 ---
 
 Learn how to easily receive fungible tokens without doing any software development by using a readily-available FT smart contract.
 
 ---
 
-## Prerequisites
+## 전제 조건
 
 To complete this tutorial successfully, you'll need:
 
@@ -17,11 +17,11 @@ To complete this tutorial successfully, you'll need:
 
 ---
 
-## Using the FT contract
+## FT 컨트랙트 사용
 
 Create a new `testnet` account using the [web wallet](https://testnet.mynearwallet.com).
 
-### Setup
+### 설정
 
 Log in to your newly created account with `near-cli-rs` by running the following command in your terminal:
 
@@ -48,7 +48,7 @@ echo $NEARID
 
 <hr className="subsection" />
 
-### Receiving Fungible Tokens
+### 대체 가능한 토큰 받기
 
 NEAR has deployed a new Fungible Token contract to the account `ft.predeployed.examples.testnet` which allows users to freely receive some `gtNEAR` - a new fungible token aimed to promote the power of teamwork! Each `gtNEAR` is equal to `1e24 yocto-gtNEAR` similar to how 1 $NEAR is equal to 1e24 yoctoNEAR.
 
@@ -102,7 +102,7 @@ The contract used in this section has been modified such that you can infinitely
 
 ---
 
-## Final remarks
+## 끝맺는 말
 
 This basic example illustrates all the required steps to call an FT smart contract on NEAR and receive your own fungible tokens.
 

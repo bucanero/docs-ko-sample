@@ -1,38 +1,38 @@
 ---
 id: kurtosis-localnet
-title: Creating a Local Development Environment
-sidebar_label: Local Development
-description: Using Kurtosis NEAR Package to develop locally
+title: 로컬 개발 환경 만들기
+sidebar_label: 로컬 개발 환경
+description: 로컬 개발을 위해 Kurtosis NEAR 패키지 사용
 ---
 
-> [Kurtosis](https://www.kurtosis.com/) has created an easy way to spin up a local NEAR testing environment using a [Docker container](https://www.docker.com/).
+> [Kurtosis](https://www.kurtosis.com/)는 [Docker 컨테이너](https://www.docker.com/)를 사용하여 로컬 NEAR 테스트 환경을 가동하는 쉬운 방법을 만들었습니다.
 
-This Kurtosis NEAR Package contains the following components:
+이 Kurtosis NEAR 패키지에는 다음 구성 요소가 포함되어 있습니다.
 
-- [Indexer for Explorer](https://github.com/near/near-indexer-for-explorer)
-- [NEAR Explorer](https://github.com/near/near-explorer)
-- [NEAR Wallet](https://github.com/near/near-wallet)
-- Local RPC Endpoint
+- [익스플로러용 인덱서](https://github.com/near/near-indexer-for-explorer)
+- [NEAR 익스플로러](https://github.com/near/near-explorer)
+- [NEAR 지갑](https://github.com/near/near-wallet)
+- 로컬 RPC 엔드포인트
 
-[Visit here](https://www.loom.com/share/8a1b8e2138334a81a380f5d523fba27e) to see a short demo of the package in action.
+실행 중인 패키지의 짧은 데모를 보려면 [여기를 방문하세요](https://www.loom.com/share/8a1b8e2138334a81a380f5d523fba27e).
 
 ---
 
-## Prerequisites {#prerequisites}
+## 전제 조건 {#prerequisites}
 
 - [Docker](https://docs.docker.com/get-docker/)
 - [Yarn](https://classic.yarnpkg.com/lang/en/docs/install)
 - [NEAR-CLI](/tools/near-cli#setup)
 - [Kurtosis CLI](https://docs.kurtosis.com/install)
-  - Start Kurtosis engine after installation using: `kurtosis engine start`
+  - `kurtosis engine start`를 사용하여 설치 후 Kurtosis 엔진을 시작합니다.
 
 ---
 
-## Setup
+## 설정
 
-### Launch Kurtosis NEAR Package {#launching-cluster}
+### Kurtosis NEAR 패키지 설치 {#launching-cluster}
 
-Launch your Kurtosis NEAR Package in four easy steps!
+간단한 네 가지 단계로 Kurtosis NEAR 패키지를 시작하세요!
 
 1. Launch [Docker](https://docs.docker.com/get-docker/)
 
@@ -270,35 +270,35 @@ test.near" NEAR_EXPLORER_URL="http://127.0.0.1:8331" near'
 
 :::tip
 
-The URLs and validator key value above will be the same for each run of Kurtosis, so you can safely use these values in your config files.
+위의 URL 및 밸리데이터 키 값은 Kurtosis를 실행할 때마다 동일하므로, 구성(config) 파일에서 이 값을 안전하게 사용할 수 있습니다.
 
 :::
 
 :::tip
 
-If you're running Kurtosis on a remote machine, you'll also need to:
+원격 기기에서 Kurtosis를 실행하고 있다면, 다음과 같은 것들이 필요할 것입니다.
 
-- Replace the `127.0.0.1` IP addresses in the environment variables with the IP address of your remote machine
-- Copy the validator key from where it lives on the machine running Kurtosis (in `NEAR_CLI_LOCALNET_KEY_PATH`) to somewhere on your local machine
-- Adjust the value of the `NEAR_CLI_LOCALNET_KEY_PATH` on your local machine to match the location you stored the key at
+- 환경 변수의 '127.0.0.1' IP 주소를 원격 시스템의 IP 주소로 바꿉니다.
+- Kurtosis를 실행하는 시스템의 밸리데이터 키('NEAR_CLI_LOCALNET_KEY_PATH')를 로컬 시스템의 어딘가에 복사합니다.
+- 키를 저장한 위치와 일치하도록 로컬 시스템의 'NEAR_CLI_LOCALNET_KEY_PATH' 값을 조정합니다.
 
 :::
 
 </details>
 
-If you ever forget the above URLs, you can inspect the cluster:
+위의 URL을 잊어버린 경우, 클러스터를 검사합니다.
 
 ```
 kurtosis enclave inspect near
 ```
 
-### Setup Environment Variables
+### 환경 변수 설정
 
-After deploying your Kurtosis NEAR Package, you will need to setup some environment variables to make life a lot easier. Notice the **ACTION** sections in your terminal log from the package deployment. You will be using these exact values to setup these variables.
+Kurtosis NEAR 패키지를 배포한 뒤, 작업을 훨씬 더 쉽게 만들기 위해 몇 가지 환경 변수를 설정해야 합니다. 패키지 배포에서 터미널 로그의 **ACTION** 섹션을 확인하세요. 정확한 값을 사용하여 이러한 변수들을 설정하게 됩니다.
 
 1. Follow the first ACTION item from the deployment log by copying all of the export commands and running them in your terminal.
 
-**Example exports: (DO NOT COPY ~ yours will be slightly different)**
+\*\*내보내기 예시: (복사하지 마세요!
 
 ```bash
 export NEAR_ENV="local"
@@ -311,7 +311,7 @@ export NEAR_HELPER_ACCOUNT="test.near"
 export NEAR_EXPLORER_URL="http://127.0.0.1:8331"
 ```
 
-2. Proceed to the second ACTION item which asks you to create an alias for `local_near`. This is what we will use when running [`near-cli`](/tools/near-cli) commands with our test environment.
+2. Proceed to the second ACTION item which asks you to create an alias for `local_near`. 이는 테스트 환경에서 [`near-cli`](/tools/near-cli) 명령을 실행할 때 사용할 것입니다.
 
 **Example alias: (DO NOT COPY ~ yours will be slightly different)**
 
@@ -319,19 +319,19 @@ export NEAR_EXPLORER_URL="http://127.0.0.1:8331"
 alias local_near='NEAR_ENV="local" NEAR_CLI_LOCALNET_NETWORK_ID="localnet" NEAR_NODE_URL="http://127.0.0.1:8332" NEAR_CLI_LOCALNET_KEY_PATH="/Users/zerix/.neartosis/2022-06-03T18.04.32/validator-key.json" NEAR_WALLET_URL="http://127.0.0.1:8334" NEAR_HELPER_URL="http://127.0.0.1:8330" NEAR_HELPER_ACCOUNT="test.near" NEAR_EXPLORER_URL="http://127.0.0.1:8331" near'
 ```
 
-Now replacing `near` with `local_near` when running [`near-cli`](/tools/near-cli) commands will perform these actions in your local test environment.
+이제 [`near-cli`](/tools/near-cli)를 동작시킬 때 `near`를 `local_near`로 바꾸면, 로컬 테스트 환경에서 작업이 수행될 것입니다
 
-### Testing
+### 테스트
 
-Ensure that your alias is working correctly by checking the state of the root account `test.near`.
+루트 계정인 `test.near`의 상태를 확인하여, 별칭이 올바르게 작동하는지 확인하세요.
 
-Run the following in your terminal:
+터미널에서 다음 명령어를 실행합니다.
 
 ```bash
 local_near state test.near
 ```
 
-This should return something similar to the following output:
+그러면 다음 출력과 유사한 결과가 반환됩니다.
 
 ```bash
 Loaded master account test.near key from /Users/zerix/.neartosis/2022-06-03T18.04.32/validator-key.json with public key = ed25519:3Kuyi2DUXdoHgoaNEvCxa1m6G8xqc6Xs7WGajaqLhNmW
@@ -348,51 +348,51 @@ Account test.near
 }
 ```
 
-**Congratulations! Setup is complete and you are ready to start exploring your local NEAR blockchain!** 🎉
+**축하드립니다! Setup is complete and you are ready to start exploring your local NEAR blockchain!** 🎉
 
 :::tip
 
-The Kurtosis Team has created a great [video presentation](https://www.loom.com/share/8a1b8e2138334a81a380f5d523fba27e) that covers the above steps as well as demoing the functionality of this local network setup.
+Kurtosis 팀은 위의 단계 및 로컬 네트워크 설정의 기능을 시연하는 훌륭한 [비디오 프레젠테이션](https://www.loom.com/share/8a1b8e2138334a81a380f5d523fba27e)을 만들었습니다.
 
 :::
 
 ---
 
-## Using Wallet and Explorer
+## 지갑 및 익스플로러 사용
 
-### Local NEAR Wallet
+### 로컬 NEAR 지갑
 
 Now that you have [everything setup](#setup), create an account using your local NEAR Wallet at 127.0.0.1:8334.
 
-![Local wallet landing page](/docs/assets/kurtosis/local-wallet-landing-page.png)
+![로컬 지갑 랜딩 페이지](/docs/assets/kurtosis/local-wallet-landing-page.png)
 
-The account creation is exactly the same as on mainnet or testnet but **only the passphrase recovery mode** will work here. Also note that the root account is `test.near` instead of `testnet` or `mainnet`. This means that all the accounts you create will be [subaccounts](/concepts/protocol/account-model#subaccounts) of `test.near`. (ex. `benji.test.near`)
+계정 생성 과정은 메인넷이나 테스트넷에서와 정확히 동일하지만, 여기서는 **암호 복구 모드만** 작동합니다. 또한 루트 계정이 `testnet` 또는 `mainnet` 대신 `test.near`임을 유의하세요. This means that all the accounts you create will be [subaccounts](/concepts/protocol/account-model#subaccounts) of `test.near`. `benji.test.near`)
 
 :::tip
 
-Because the Wallet will start on the same host and port, and the Wallet stores your account information in your browser's local storage, if you've created an account with a previous Kurtosis network then the Wallet will be storing the old account's information (which won't work with your new network). If this is the case for you, you'll need to clear the Wallet's storage by visiting [your Chrome's local storage](chrome://settings/siteData?searchSubpage=127.0.0.1), removing the `127.0.0.1` entry, and refreshing the Wallet.
+지갑은 동일한 호스트와 포트에서 시작하고, 브라우저의 로컬 스토리지에 계정 정보를 저장하기 때문에, 이전 Kurtosis 네트워크로 계정을 만든 경우 지갑은 이전 계정의 정보를 저장합니다(새 네트워크에서는 작동하지 않음). 이 경우 [Chrome의 로컬 스토리지](chrome://settings/siteData?searchSubpage=127.0.0.1)에 가서 `127.0.0.1` 항목을 삭제하고 지갑을 새로고침하여 스토리지를 비워야 합니다.
 
 :::
 
-Now that you've created an account, try interacting with it using the local CLI. In order to use this account you will need to "login" with it via CLI which will save a full access key locally for that account. [`near login`](/tools/near-cli#near-login) is the command to perform this action but as you are on `localnet` you will need to replace `near` with `local_near`.
+이제 계정을 만들었으므로, 로컬 CLI를 사용하여 계정과 상호 작용해 보세요. 이 계정을 사용하려면 해당 계정에 대한 전체 액세스 키를 로컬에 저장하는 CLI를 통해 "로그인"해야 합니다. [`near login`](/tools/near-cli#near-로그인)은 이 작업을 수행하는 명령이지만, 현재 `localnet`에 있기 때문에 작업을 진행하는 동안 `near`를 `localnet`으로 바꿔야 합니다.
 
 ```bash
 local_near login
 ```
 
-This launches the local wallet site and will ask for confirmation for this action. Once you authorize you should see confirmation in your terminal similar to this:
+이렇게 하면 로컬 지갑 사이트가 시작되고 이 작업에 대한 확인을 요청할 것입니다. 권한을 부여하면 터미널에 다음과 유사한 확인 메시지가 표시됩니다.
 
 ```bash
 Logged in as [ kevin.test.near ] with public key [ ed25519:8EaALn... ] successfully
 ```
 
-- Export your account ID to an environment variable by running the following: (replacing YOUR_ACCOUNT_ID)
+- 다음을 실행하여 계정 ID를 환경 변수로 내보냅니다.
 
 ```bash
 export ACCOUNT_ID=YOUR_ACCOUNT_ID
 ```
 
-- Now create a test transaction by sending 1 $NEAR to the root account `test.near`:
+- 이제 루트 계정 `test.near`에 1 $NEAR를 전송하여 테스트 트랜잭션을 생성합니다.
 
 ```bash
 local_near send $ACCOUNT_ID test.near 1
@@ -411,9 +411,9 @@ http://127.0.0.1:8331/transactions/3e3H5zqj9noKGYTCMqeZ5pb4NWK7tQsjYKak6ybtpgvD
 
 </details>
 
-### Local NEAR Explorer
+### 로컬 NEAR 익스플로러
 
-Again, now that you have [everything setup](#setup) you can view the transaction details of the command you just performed at the end of [the last section](#local-near-wallet). Notice that the last line of the terminal log displays a link to the transaction details in your local NEAR Explorer.
+다시 말하지만, 이제 [모든 설정이 완료](#설정)되었으므로 [마지막 섹션](#로컬-near-지갑)의 끝에서 방금 수행한 명령의 트랜잭션 세부 정보를 볼 수 있습니다. 터미널 로그의 마지막 줄에는 로컬 NEAR 탐색기의 트랜잭션 세부 정보에 대한 링크가 표시됩니다.
 
 ```bash
 Sending 1 NEAR to test.near from kevin.test.near
@@ -423,11 +423,11 @@ To see the transaction in the transaction explorer, please open this url in your
 http://127.0.0.1:8331/transactions/3e3H5zqj9noKGYTCMqeZ5pb4NWK7tQsjYKak6ybtpgvD
 ```
 
-- Click on this link or copy/paste it into your browser:
+- 이 링크를 클릭하거나 브라우저에 복사/붙여넣기하세요.
 
-![Local explorer sending 1 NEAR](/docs/assets/kurtosis/local-explorer-send-funds.png)
+![1 NEAR를 보내는 로컬 익스플로러](/docs/assets/kurtosis/local-explorer-send-funds.png)
 
-Here everything behaves exactly like the `testnet` or `mainnet` NEAR Explorer except it is retrieving data from your local NEAR blockchain!
+여기에서는 로컬 NEAR 블록체인에서 데이터를 검색한다는 점을 제외하면 모든 것이 `testnet` 또는 `mainnet` NEAR 익스플로러와 똑같이 작동합니다!
 
 - If you ever need to open your local NEAR Explorer, you can always visit 127.0.0.1:8331 or run:
 
@@ -435,27 +435,27 @@ Here everything behaves exactly like the `testnet` or `mainnet` NEAR Explorer ex
 echo $NEAR_EXPLORER_URL
 ```
 
-**Example Response:**
+**응답 예시:**
 
 ```bash
 http://127.0.0.1:8331
 ```
 
-![Localnet explorer](/docs/assets/kurtosis/localnet-explorer.png)
+![Localnet 익스플로러](/docs/assets/kurtosis/localnet-explorer.png)
 
 ---
 
 ## Deploy a Smart Contract
 
-With everything setup and your `test.near` account created, it's time to deploy a smart contract on `localnet`. For this example you will deploy an NFT use a pre-compiled WASM smart contract from [this NFT example](https://github.com/near-examples/nft-tutorial.git).
+모든 설정과 `test.near` 계정 생성이 완료되면, `localnet`에 스마트 컨트랙트를 배포할 차례입니다. 이 예제에서는 [이 NFT 예시](https://github.com/near-examples/nft-tutorial.git)에서 미리 컴파일된 WASM 스마트 컨트랙트를 통해 NFT를 배포합니다.
 
-- Download the smart contract:
+- 스마트 컨트랙트를 다운로드하세요:
 
 ```
 curl -o ~/main.wasm https://github.com/near-examples/nft-tutorial/raw/main/out/main.wasm -L
 ```
 
-- Deploy the smart contract:
+- 스마트 컨트랙트를 배포하세요:
 
 ```
 local_near deploy --wasmFile ~/main.wasm --accountId $ACCOUNT_ID
@@ -479,35 +479,35 @@ Done deploying to goteam.test.near
 
 ![Local explorer contract deployed](/docs/assets/kurtosis/local-explorer-contract-deployed.png)
 
-Now, let's interact with the deployed contract.
+이제, 배포된 컨트랙트와 상호 작용해보겠습니다.
 
-- First, initialize the contract by running the following command:
+- 먼저 다음 명령을 실행하여 컨트랙트를 초기화합니다.
 
 ```bash
 local_near call $ACCOUNT_ID new_default_meta '{"owner_id": "'$ACCOUNT_ID'"}' --accountId $ACCOUNT_ID
 ```
 
-This will initialize the contract with some default metadata and set our account ID as the owner of the contract.
+이렇게 하면 일부 기본 메타데이터로 컨트랙트가 초기화되고, 계정 ID가 컨트랙트 소유자로 설정됩니다.
 
-- Now mint your first NFT!
+- 이제 첫 번째 NFT를 만드세요!
 
 ```bash
 local_near call $ACCOUNT_ID nft_mint '{"token_id": "team_token", "metadata": { "title": "Go Team!", "description": "Go Team!", "media": "https://bafybeiftczwrtyr3k7a2k4vutd3amkwsmaqyhrdzlhvpt33dyjivufqusq.ipfs.dweb.link/goteam-gif.gif", "copies": 1}, "receiver_id": "'$ACCOUNT_ID'"}' --accountId $ACCOUNT_ID --amount 0.1
 ```
 
-Once the NFT has been minted, you can view the token on the local wallet's collectibles tab. If you already had the wallet site open, simply refresh. Otherwise open your local NEAR Wallet instance and view your collectible.
+NFT가 발행되면 로컬 지갑의 수집품 탭에서 토큰을 볼 수 있습니다. 지갑 사이트가 이미 열려 있다면 새로고침하세요. 아니면 로컬 NEAR 지갑 인스턴스를 열어서 수집품을 볼 수도 있습니다.
 
-![Local wallet collectibles tab](/docs/assets/kurtosis/local-wallet-collectibles-tab.png)
+![로컬 지갑 수집품 탭](/docs/assets/kurtosis/local-wallet-collectibles-tab.png)
 
-We won't spoil what the NFT is, but once you switch over to the collectibles tab your beautiful token should be there!
+어떤 NFT인지 스포일러는 하지 않겠습니다. 수집품 탭으로 가서 아름다운 토큰을 확인하세요!
 
 ---
 
-## Connecting a dApp to `localnet`
+## `localnet`에 dApp 연결
 
-The ability to develop decentralized applications locally is a dream come true for dApp developers and the Kurtosis NEAR Package really simplifies this process. Here you'll integrate `localnet` into one of the examples at [near.dev](http://near.dev).
+로컬에서 탈중앙화 애플리케이션을 개발할 수 있는 능력은 dApp 개발자의 꿈이 실현된 것이며, Kurtosis NEAR 패키지는 이 프로세스를 실제로 단순화합니다. 여기에서는 `near.dev`의 예제를 활용하여 `localnet`에 통합하는 작업을 할 것입니다.
 
-### Clone Example dApp
+### dApp 예제 복사
 
 - Clone the [NEAR Guestbook](https://github.com/near-examples/guest-book-examples) repository:
 
@@ -515,9 +515,9 @@ The ability to develop decentralized applications locally is a dream come true f
 git clone https://github.com/near-examples/guest-book-examples.git
 ```
 
-### Configure Network
+### 네트워크 구성
 
-- Open the `src/config.js` file inside the guestbook repo and scroll down to the `local` config:
+- 레퍼지토리 내에서 `src/config.js` 파일을 열고, `local` 구성까지 아래로 스크롤합니다.
 
 ```javascript
 case 'local':
@@ -530,7 +530,7 @@ case 'local':
       };
 ```
 
-Here you will need to update all of the values **except** the `contractName`. Copy the following into your `local` case. This will automatically assign the config to your environment variables if you've specified them. This way, you don't need to change anything when running new enclaves.
+여기에서 `contractName`을 **제외한** 모든 값을 업데이트해야 합니다. 다음을 `local` 케이스에 복사하세요. 환경 변수를 지정한 경우 환경 변수에 구성이 자동으로 할당됩니다. 이렇게 하면 새 엔클레이브를 실행할 때 아무 것도 변경할 필요가 없습니다.
 
 ```javascript
 case 'local':
@@ -543,27 +543,27 @@ case 'local':
         };
 ```
 
-The last thing you will need to do is set your `NODE_ENV` in your terminal to `local` so your dApp will use the values we configured above.
+마지막으로 해야 할 일은 터미널에서 `NODE_ENV`를 `local`로 설정해서, 위에서 구성한 값을 dApp이 사용할 수 있도록 하는 것입니다.
 
-- Run:
+- 실행:
 
 ```bash
 export NODE_ENV=local
 ```
 
-**Your dApp is now fully configured to use `localnet`!** 🎉
+**dApp이 이제 `localnet`을 사용할 수 있도록 구성 완료되었습니다!** 🎉
 
-### Create Contract Account
+### 컨트랙트 계정 생성
 
-As mentioned earlier, you do not need to change the `contractName` in the `config.js` file you updated earlier. This is an environment variable you will configure now. Let's quickly create a subaccount from [the account you created earlier](#local-near-wallet) to deploy the guest-book contract to.
+앞에서 언급했듯이, 이전에 업데이트한 `config.js` 파일 내 `contractname`은 변경할 필요 없습니다. 이는 지금 구성할 환경 변수입니다. 방명록 컨트랙트를 배포하기 위해 [이전에 생성한 계정](#로컬-near-지갑)에서 빠르게 하위 계정을 생성해 보겠습니다.
 
-- Using the `local_near CLI`, run the following command:
+- `local_near CLI`를 사용해, 다음 명령을 실행하세요.
 
 ```bash
 local_near create-account guest-book.$ACCOUNT_ID --masterAccount $ACCOUNT_ID --initialBalance 5
 ```
 
-**Example Response:**
+**응답 예시:**
 
 ```bash
 Loaded master account test.near key from /Users/benjaminkurrek/.neartosis/2021-12-02T13.37.41/validator-key.json with public key = ed25519:AnLHi4ZAxfxFAQSXniycyZS6dpBqxhmVZH3zBCZbqAS6
@@ -571,27 +571,27 @@ Saving key to 'undefined/localnet/guest-book.goteam.test.near.json'
 Account guest-book.goteam.test.near for network "localnet" was created.
 ```
 
-- Export the `CONTRACT_NAME` environment variable as the account you just created:
+- 방금 만든 계정으로 환경 변수 `CONTRACT_NAME`을 내보냅니다.
 
 ```bash
 export CONTRACT_NAME=guest-book.$ACCOUNT_ID
 ```
 
-### Deploy Contract to `localnet`
+### `localnet`에 컨트랙트 배포
 
-With the network setup and contract account created you are now ready to launch your dApp!
+네트워크 설정 및 컨트랙트 계정이 생성되면 이제 dApp을 시작할 준비가 되었습니다!
 
-- Run the following command in the root directory of the guest book repo:
+- 방명록 레퍼지토리의 루트 디렉터리에서 다음 명령을 실행합니다.
 
 ```bash
 yarn && yarn start
 ```
 
-**Example Response:**
+**응답 예시:**
 
-![Local dApp build](/docs/assets/kurtosis/local-dapp-build.png)
+![로컬 dApp 빌드](/docs/assets/kurtosis/local-dapp-build.png)
 
-- Open the dApp by clicking on the server address in the terminal:
+- 터미널에서 서버 주소를 클릭하여 dApp을 엽니다.
 
 ```bash
 Server running at http://localhost:1234
@@ -604,47 +604,47 @@ You should see the Guest Book landing page:
 
 :::tip
 
-If you run into any problems signing into try clearing your browser's local storage. If you've used the guest-book before your browser might think you're still logged in with your `testnet` account and it will throw an error saying it can't find that account on `localnet`.
+로그인하는 데 문제가 있으면 브라우저의 로컬 스토리지를 비워보세요. 브라우저에 `testnet` 계정으로 로그인하기 전에 방명록을 사용한 경우, `localnet`에서 해당 계정을 찾을 수 없다는 오류가 표시됩니다.
 
 :::
 
-Once you've logged in, you can sign a message with an optional donation.
+로그인하면 기부 메시지에 서명할 수도 있습니다.
 
 ![Local Guest Book Signed Message](/docs/assets/kurtosis/local-guest-book-signed-message.png)
 
-- Sign the Guest Book which will create a transaction on `localnet`.
+- `localnet`에 트랜잭션을 생성할 방명록에 서명하세요.
 
-- Once complete, open your local NEAR explorer and you can view the transaction you just created!
+- 완료되면, 로컬 NEAR 익스플로러를 열고 방금 생성한 트랜잭션을 볼 수 있습니다!
 
 ![Local Explorer Signed Transaction](/docs/assets/kurtosis/local-explorer-signed-transaction.png)
 
-**Congratulations! You've successfully deployed and interacted with a dApp on a local NEAR blockchain!** 🎉
+**축하드립니다! 로컬 NEAR 블록체인에서 dApp을 성공적으로 배포하고 상호 작용했습니다!** 🎉
 
 ---
 
-## Managing NEAR Pacakages
+## NEAR 패키지 관리
 
-The Kurtosis NEAR Pacakages you create will continue to run on your local machine for as long as your Docker engine is running. This package runs inside of a Kurtosis "enclave" which is an environment isolated from both your computer and other enclaves. In practice, this means that you can have multiple independent local NEAR clusters running on your machine simply by rerunning the script we executed from the [setup instructions](#setup).
+생성한 Kurtosis NEAR 패키지는 Docker 엔진이 실행되는 동안 로컬 시스템에서 계속 실행됩니다. 이 패키지는 컴퓨터와 다른 enclave 모두에서 격리된 환경인 Kurtosis "엔클레이브" 내부에서 실행됩니다. 실제로 [설정 지침](#설정)에서 실행한 스크립트를 다시 실행하기만 하면 여러 개의 독립적인 로컬 NEAR 클러스터를 컴퓨터에서 실행할 수 있습니다.
 
-### View Package Status
+### 패키지 상태 조회
 
-- To see the status of your existing enclaves, run:
+- 기존 엔클레이브의 상태를 보려면 다음을 실행합니다.
 
 ```bash
 kurtosis enclave ls
 ```
 
-### View Package Details
+### 패키지 세부 사항 확인
 
-- To see detailed information about an enclave, copy an enclave ID and run:
+- 엔클레이브에 대한 자세한 정보를 보려면, 엔클레이브 ID를 복사하고 다음을 실행합니다.
 
 ```bash
 kurtosis enclave inspect near
 ```
 
-### Terminate Package
+### 패키지 종료
 
-- To shut down your NEAR Package and free up resources on your machine, run the following:
+- NEAR 패키지를 종료하고 시스템에서 리소스를 확보하려면, 다음을 실행하세요.
 
 ```bash
 kurtosis enclave stop near
@@ -652,24 +652,24 @@ kurtosis enclave stop near
 
 :::note
 
-You will not be able to restart the cluster! If this is something you need, please [file an issue here](https://github.com/kurtosis-tech/kurtosis-cli-release-artifacts) so we can prioritize it.
+클러스터를 다시 시작할 수 없나요? 필요한 경우, 여기에 [문제를 제출](https://github.com/kurtosis-tech/kurtosis-cli-release-artifacts)하세요.
 
 :::
 
-### Delete Package
+### 패키지 삭제
 
-- Stopping an enclave leaves its resources intact so that you can examine them if need be. To destroy a stopped enclave and free its resources, run:
+- 엔클레이브를 중지하면, 필요한 경우 검사할 수 있도록 리소스가 그대로 유지됩니다. 중지된 엔클레이브를 제거하고 리소스를 확보하려면 다음을 실행합니다.
 
 ```
 kurtosis clean
 ```
 
-### Delete All Package
+### 모든 패키지 삭제
 
-If you would like to destroy _all_ enclaves, regardless of if they're running, pass the `-a` flag to `clean` like so:
+실행 여부에 관계없이 _모든_ 엔클레이브를 파괴하려면 다음과 같이 `-a` 플래그를 전달하여 다음과 같이 `clean`을 실행하세요.
 
 ```
 kurtosis clean -a
 ```
 
-This can be a handy way to clear all your Kurtosis data.
+이것은 모든 Kurtosis 데이터를 지우는 편리한 방법이 될 수 있습니다.

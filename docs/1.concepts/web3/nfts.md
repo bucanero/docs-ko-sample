@@ -1,81 +1,79 @@
 ---
 id: nfts
-title: NFTs for Web 2 Applications
-sidebar_label: NFTs for Web 2.0 Apps
+title: Web2 애플리케이션을 위한 NFT
+sidebar_label: Web 2.0 앱을 위한 NFT
 ---
 
-# NFTs for Web 2 Applications
+# Web2 애플리케이션을 위한 NFT
 
-At the first stage of our Web 3 transformation, let’s decentralize ownership of our digital assets using blockchain technology. By doing this, we can create a user-owned economy, where digital assets are exchanged and traded without any participation or control from the developers. Later, we’ll discuss how to bring it to the next level by adding Fungible Tokens into the mix.
+Web3로 넘어가기 위한 첫 번째 단계로, 블록체인 기술을 사용하여 디지털 자산의 소유권을 분산시켜 봅시다. 이를 통해 개발자의 참여나 통제 없이 디지털 자산이 교환되고 거래되는 사용자 소유 경제를 만들 수 있습니다. 나중에 다음 단계로, 대체 가능한 토큰을 추가하는 방법에 대해서도 논의할 것입니다.
 
-As we discussed previously, in the Web 3 world, NFTs are used to represent ownership of an asset. This can be anything a user owns, e.g. in case of a game this can be a character, upgrade, crafting material, skin, etc. However, since NFTs are living on the blockchain, and the rest of the application resides on traditional servers, we need to find a way to connect these different worlds together.
+이전에 논의한 것처럼, Web3 세계에서 NFT는 자산의 소유권을 나타내는 데 사용됩니다. 이는 사용자가 소유한 모든 것이 될 수 있습니다. 예를 들어 게임의 경우 캐릭터, 업그레이드, 제작 재료, 스킨 등이 될 수 있습니다. 그러나 NFT는 블록체인에 존재하고 나머지 애플리케이션은 기존 서버에서 동작하므로, 서로 다른 두 세계를 연결할 방법을 찾아야 합니다.
 
-## Blockchain-Enabled Application Architecture
+## 블록체인 어플리케이션 아키텍쳐
 
-First of all, let’s outline a typical architecture of a Web 2 application. In most cases, a classic client-server model is used:
+우선 Web2 어플리케이션의 일반적인 아키텍처에 대해 개략적으로 설명하겠습니다. 대부분의 경우 기존의 클라이언트-서버 모델이 사용됩니다.
 
 <div align="center">
 <img src="/docs/assets/web3/nfts-1.png" alt="image" width="150" />
 </div>
 
-In such architecture, we usually have 3 layers:
-- Database - stores application’s data. This can be a single database, or several databases of different types, but this is mostly an implementation detail - for our purposes we can view it as a single logical database.
-- Server - a centralized web-server. It may be implemented using different architecture patterns (monolithic, microservices, serverless) and technologies, but again, we can consider it as a single logical server.
-- Client - client side application user directly interacts with. Different client types are possible: web, mobile or desktop. There is a difference between these clients in regards to blockchain integration, which we’ll discuss later.
+이러한 아키텍처에는 일반적으로 3개의 레이어가 있습니다.
+- 데이터베이스 - 어플리케이션의 데이터를 저장합니다. 이것은 단일 혹은 여러 개의 데이터베이스일 수 있지만 대부분 구현에 따라 달라집니다. 논리 구조상 하나의 데이터베이스로 볼 수 있습니다.
+- 서버 - 중앙 집중식 웹 서버입니다. 다양한 아키텍처 패턴(모놀리틱, 마이크로서비스, 서버리스) 및 기술을 사용하여 구현될 수 있지만 이도 역시 논리 구조상 하나의 서버로 간주할 수 있습니다.
+- 클라이언트 - 클라이언트 측 애플리케이션 사용자가 직접 상호 작용합니다. 웹, 모바일 또는 데스크탑과 같은 다양한 클라이언트 유형이 존재합니다. 나중에 논의할 블록체인 통합과 관련하여 이러한 클라이언트 간에 차이가 존재합니다.
 
-Now, let’s compare it to a dApp architecture:
+이제 dApp 아키텍처와 비교해 보겠습니다.
 
 <div align="center">
 <img src="/docs/assets/web3/nfts-2.png" alt="image" width="400" />
 </div>
 
-We can notice that there is a common component in these architectures - the client application. This means we can use it as a junction point to connect them together.
+이러한 아키텍처에는 클라이언트 애플리케이션이라는 공통 구성 요소가 있음을 알 수 있습니다. 즉, 이를 이용해 위 두 가지 아키텍처를 함께 연결할 수 있음을 의미합니다.
 
 <div align="center">
 <img src="/docs/assets/web3/nfts-3.png" alt="image" width="400" />
 </div>
 
-A keen reader may notice an additional connection between the Server and RPC Node. This is required because in a client-server architecture clients cannot be trusted. That’s why every action performed from the client should be validated by a backend server. But in our case everything is complicated by the fact that we essentially have two backends: Web 2 server and a smart contract, so two possible validation flows are possible:
-- Client performs an action on a server, which involves blockchain data. In this case the server should talk to the blockchain and verify that valid data is provided.
-- Client performs an action on a smart contract, which involves server-owned data. Since the smart contract can’t talk to the server directly to verify it, we should use a different way to verify the authenticity of the data. In blockchain terminology, such a server is called an [Oracle](https://en.wikipedia.org/wiki/Blockchain_oracle).
-We’ll explore how to implement both of these approaches later.
+예리한 독자라면 서버와 RPC 노드 간의 추가 연결을 발견하였을 것입니다. 이는 클라이언트-서버 아키텍처에서 클라이언트를 신뢰할 수 없기 때문에 필요합니다. 그렇기 때문에 클라이언트에서 수행되는 모든 작업은 백엔드 서버에서 유효성이 검사되어야 합니다. 그러나 우리의 경우에는 기본적으로 Web2 서버와 스마트 컨트랙트라는 두 개의 백엔드가 있으므로, 두 가지 가능한 유효성 검사 방식이 가능하기 때문에 복잡한 구조가 형성됩니다.
+- 클라이언트는 블록체인 데이터와 관련된 서버에서 작업을 수행합니다. 이 경우 서버는 블록체인과의 통신을 통해, 유효한 데이터가 제공되었는지 확인해야 합니다.
+- 클라이언트는 스마트 컨트랙트에 대한 작업을 수행하고, 이는 서버 소유 데이터와 관련되어 있습니다. 스마트 컨트랙트는 서버 소유 데이터를 확인하기 위해 서버와 직접 통신할 수 없기 때문에, 데이터의 진위를 확인하기 위해 다른 방법을 사용해야 합니다. 블록체인 용어로 이러한 서버를 [오라클](https://en.wikipedia.org/wiki/Blockchain_oracle)이라고 합니다. 나중에 이러한 접근 방식을 모두 구현하는 방법을 살펴보도록 하겠습니다.
 
-By now, we've reached the point where the type of our client begins to matter. Specifically, problems arise from the dApps payment model - user’s pay for the blockchain infrastructure using gas, so money goes directly to infrastructure providers. Also, users make payments directly on the blockchain, without using any intermediaries, like banks or payment services. This approach is at odds with mobile app stores (Google Play Store and Apple App Store) - they don’t allow any payments on their respective mobile platforms without their cut. Although some shifts in policy are starting to happen (e.g. [Apple vs Epic Games duel](https://en.wikipedia.org/wiki/Epic_Games_v._Apple)), at the time of this writing getting blockchain-enabled applications into the stores will probably get vetoed by reviewers. There are some ways to bypass these limitations, e.g. by not using Play Store on Android, but all of these ways are either sub-par in terms of usability or involve some risk of getting banned by stores. That’s why for mobile applications an alternative approach is needed. 
+이제 클라이언트 유형이 중요해지기 시작하는 지점에 도달했습니다. 특히 dApp 지불 모델에서 문제가 발생합니다. 사용자는 가스를 사용하여 블록체인 인프라에 대한 비용을 지불하므로, 자금은 인프라 제공자에게 직접 전달됩니다. 또한 사용자는 은행이나 결제 서비스와 같은 중개자를 거치지 않고 블록체인에서 직접 결제합니다. 이 접근 방식은 모바일 앱 스토어(Google 플레이 스토어 및 Apple 앱 스토어)와 상충됩니다. 그들은 허락 없이 해당 플랫폼 내 결제를 허용하지 않습니다. 정책의 일부 변화가 일어나기 시작했지만([예: Apple 대 Epic Games](https://en.wikipedia.org/wiki/Epic_Games_v._Apple)), 이 글을 쓰는 시점에서 블록체인 지원 애플리케이션을 스토어에 올리는 것은 아마도 거부될 것입니다. 예를 들어 Android에서 플레이 스토어를 사용하지 않는 등 이러한 제한을 우회할 수 있는 몇 가지 방법이 있지만, 이러한 모든 방법은 사용성 측면에서 수준 이하이거나 스토어에서 아예 금지될 위험이 있습니다. 그렇기 때문에 모바일 애플리케이션의 경우 다른 접근 방식이 필요합니다.
 
-Sometimes, to move forward we need to take a step back. In our case, to solve a problem with mobile clients we can return to our initial concept of having two clients - one for blockchain integration, and another one for Web 2 server. Blockchain client can be a usual web application, which isn’t subject to any constraints from stores. It can also serve as a connection point between blockchain and our existing application.
+때로는 앞으로 나아가기 위해 한 걸음 뒤로 물러나야 합니다. 우리의 경우 모바일 클라이언트의 문제를 해결하기 위해 블록체인 통합용 클라이언트와 Web2 서버용 클라이언트의 두 클라이언트를 갖는 초기 개념으로 돌아갈 수 있습니다. 블록체인 클라이언트는 상점의 제약을 받지 않는 일반적인 웹 애플리케이션일 수 있습니다. 또한 블록체인과 기존 애플리케이션 간의 연결 지점 역할을 할 수 있습니다.
 
 ![image](/docs/assets/web3/nfts-4.png)
 
 
-In this architecture the mobile client is still allowed to talk to the blockchain, but only in a read-only way, which doesn’t require wallet connection or any payments. All actions on the blockchain happen on the Web Client instead.
-Further in this guide we’ll use such dual-client architecture, since simpler architecture with a single client can be directly derived from it by merging two clients together.
+이 아키텍처에서 모바일 클라이언트는 여전히 블록체인과 통신할 수 있지만, 지갑 연결이나 지불이 필요하지 않은 읽기 전용 방식으로만 가능합니다. 대신 블록체인의 모든 작업은 웹 클라이언트에서 발생합니다. 또한 이 가이드에서는 이중 클라이언트 아키텍처를 사용할 것인데, 이는 두 개의 클라이언트를 병합하는 방식으로 단일 클라이언트가 있는 더 간단한 아키텍처를 직접 만들어낼 수 있기 때문입니다.
 
-At this point, our architecture covers almost everything we need to start building our application. However, since we want to build a user-owned economy, we need a marketplace where it’ll happen. An obvious choice is to put this marketplace into the web client, but there’s one gotcha. If we recall the smart contract’s storage model, it’s not suitable to serve complex data queries, so an indexer should be used to aggregate data from blockchain into a proper database.
+이 시점에서, 우리의 아키텍처는 애플리케이션 구축을 시작하는 데 필요한 거의 모든 것을 다룹니다. 그러나 우리는 사용자 소유 경제를 구축하기를 원하기 때문에, 이를 위한 마켓플레이스가 필요합니다. 할 수 있는 선택 중 하나는 이 마켓플레이스를 웹 클라이언트에 넣는 것이지만, 여기에는 한 가지 문제가 있습니다. 스마트 컨트랙트의 스토리지 모델은 복잡한 데이터 쿼리를 제공하는 데 적합하지 않으므로, 인덱서를 사용하여 블록체인에서 적절한 데이터베이스로 데이터를 집계해야 한다는 것입니다.
 
 
 ![image](/docs/assets/web3/nfts-5.png)
 
 
 
-By now, every building-block is in place and we can start exploring how to implement this architecture in practice.
+이제 모든 빌딩 블록이 준비되었으며 실제로 이 아키텍처를 구현하는 방법을 알아볼 수 있습니다.
 
 
-## NFTs in Web 2 Applications
+## Web2 어플리케이션 내 NFT
 
-In order to implement a fully functional application using a hybrid Web 2 - Web 3 architecture, a lot of technological challenges have to be addressed, like authentication and authorization, seamless NFTs usage in client and server, and proper NFT storage model. In the following sections we’ll take a closer look at this and describe common patterns and approaches.
-
-
-### Authentication and Authorization 
-
-Since our digital assets are represented as NFTs on blockchain, in order to use them in our Web 2 application, a server needs a way to authorize their usage. The basic idea is pretty simple - it can just read data from blockchain by calling a smart contract method and check an owner’s account id. For such flow, we have 3 actors:
+하이브리드 Web2 - Web3 아키텍처를 사용하여 완전한 기능을 갖춘 애플리케이션을 구현하려면, 인증 및 권한 부여, 클라이언트 및 서버에서의 원활한 NFT 사용, 적절한 NFT 스토리지 모델과 같은 많은 기술적 문제를 해결해야 합니다. 다음 섹션에서는 이에 대해 자세히 살펴보고 일반적인 패턴과 접근 방식을 설명합니다.
 
 
+### 인증 및 승인
 
-* Client that wants to use some digital asset (NFT). 
-* Smart Contract for NFTs. Should be implemented according to [NEAR NFT standards](https://nomicon.io/Standards/NonFungibleToken/).
-* Server that verifies ownership of NFT and uses it in its internal logic. 
+우리의 디지털 자산은 블록체인에서 NFT로 표시되기 때문에, Web 2 애플리케이션에서 사용하려면 서버에서 사용을 승인하는 방법이 필요합니다. 기본 아이디어는 매우 간단합니다. 스마트 컨트랙트 메서드를 호출하고 소유자의 계정 ID를 확인하여 블록체인에서 데이터를 읽는 것입니다. 이러한 흐름에는 3명의 참여자가 있습니다.
 
-A general flow looks like this:
+
+
+* 일부 디지털 자산(NFT)을 사용하려는 클라이언트.
+* NFT용 스마트 컨트랙트. [NEAR NFT 표준](https://nomicon.io/Standards/NonFungibleToken/)에 따라 구현되어야 합니다.
+* NFT의 소유권을 확인하고 내부 로직에 따라 사용하는 서버.
+
+일반적인 흐름은 다음과 같습니다.
 
 
 
@@ -85,36 +83,36 @@ A general flow looks like this:
 
 
 
-However, such an authorization process cannot be performed without authentication, so the server also needs a way to authenticate a user.
+그러나 이러한 권한 부여 과정은 인증 없이는 수행할 수 없으므로, 서버에서도 사용자를 인증할 수 있는 방법이 필요합니다.
 
-Recall that the user's identity on a blockchain is represented by a key pair. However, since in NEAR a user may have multiple key pairs and an account is a separate entity, the authentication procedure is a bit more complicated. 
+블록체인에서 사용자의 신원은 키 쌍으로 표시됩니다. 그러나 NEAR에서는 사용자가 여러 개의 키 쌍을 가질 수 있고, 계정이 별도의 엔터티이므로 인증 절차가 조금 더 복잡합니다.
 
-To authenticate our requests, we can use public-key cryptography - a client can sign a request using a user’s private key, and then a server can verify the signature and key ownership. A typical request with authentication may look like this:
+요청을 인증하기 위해 공개 키 암호화를 사용할 수 있습니다. 클라이언트는 사용자의 개인 키를 사용하여 요청에 서명할 수 있으며 그런 다음 서버는 서명과 키 소유권을 확인할 수 있습니다. 인증이 포함된 일반적인 요청은 다음과 같습니다.
 
 
 ```javascript
 {
-	"payload": { /* request-specific payload */ },
-	"accountId": "account.near",
-	"publicKey": "...",
-	"timestamp": 1647091283342,
-	"signature": "..."
+    "payload": { /* request-specific payload */ },
+    "accountId": "account.near",
+    "publicKey": "...",
+    "timestamp": 1647091283342,
+    "signature": "..."
 }
 ```
 
 
-where:
+여기서:
 
 
 
-* `accountId` – user’s account id on NEAR.
-* `publicKey` - public key of the key pair used for signature, must be either Functional or Full access key for the provided account.
-* `timestamp` - current datetime, must be verified on server. It’s needed to prevent [replay attacks](https://en.wikipedia.org/wiki/Replay_attack). Alternative to timestamps is usage of [nonce](https://en.wikipedia.org/wiki/Cryptographic_nonce), but it’s more complicated.
-* `signature` - signature of the request payload and other fields. Usually, a payload is hashed beforehand.
+* `accountId` – NEAR의 사용자 계정 ID입니다.
+* `publicKey` - 서명에 사용되는 키 쌍의 공개 키입니다. 해당 계정에 대한 함수 호출 또는 전체 액세스 키여야 합니다.
+* `timestamp` - 현재 날짜/시간은 서버에서 확인해야 합니다. [replay attack](https://en.wikipedia.org/wiki/Replay_attack)을 방지하기 위해 필요합니다. 타임스탬프의 대안은 [nonce](https://en.wikipedia.org/wiki/Cryptographic_nonce)를 사용하는 것이지만, 이는 조금 더 복잡합니다.
+* `signature` - 요청 페이로드 및 기타 필드의 서명입니다. 일반적으로 페이로드는 사전에 해시됩니다.
 
-Depending on the implementation, request body, headers, or other side channels can be used to transfer authentication data - exact implementation depends on used technologies and protocols.
+구현에 따라 요청 본문, 헤더 또는 기타 사이드 채널을 사용하여 인증 데이터를 전송할 수 있습니다. 정확한 구현은 사용되는 기술 및 프로토콜에 따라 다릅니다.
 
-Server can use this data to authenticate a request using the following approach:
+서버는 이 데이터를 사용하여, 다음과 같은 접근 방식을 통해 요청을 인증할 수 있습니다.
 
 
 ![image](/docs/assets/web3/nfts-7.png)
@@ -122,23 +120,23 @@ Server can use this data to authenticate a request using the following approach:
 
 
 
-3 authentication steps are performed on the server:
+3가지 인증 단계가 서버에서 수행됩니다.
 
 
 
-1. Signature verification - if the signature is correct, we are sure that the client really has the private key for the provided public key. Also, this proves that request data hasn't been modified in transit.
-2. Timestamp verification - prevents replay attacks. Server can verify that the request’s timestamp is not too old (e.g. has been created no more than 10 seconds ago).
-3. Public key ownership verification - by calling [view_access_key method](../../5.api/rpc/access-keys.md), we can make sure that the provided public key is really associated with the provided account.
+1. 서명 확인 - 서명이 정확하면 클라이언트가 제공된 공개 키에 대한 개인 키를 실제로 가지고 있음을 확신합니다. 또한 이것은 요청 데이터가 전송 중에 수정되지 않았음을 증명합니다.
+2. 타임스탬프 확인 - replay attack을 방지합니다. 서버는 요청의 타임스탬프가 너무 오래되지 않았는지(예: 생성된 지 10초 이내) 확인할 수 있습니다.
+3. 공개 키 소유권 확인 - [view_access_key](../../5.api/rpc/access-keys.md) 메서드를 호출 하여 제공된 공개 키가 실제로 계정과 연결되어 있는지 확인할 수 있습니다.
 
-Such authentication approach is the simplest one, but has a few major drawbacks:
+이러한 인증 방식은 가장 간단한 방식이지만 다음과 같은 몇 가지 주요 단점이 있습니다.
 
 
 
-* Performing a REST API call to RPC Node is quite expensive to do each time from the performance perspective.
-* We can’t sign requests from the mobile client, since it usually should be disconnected from the blockchain due to store policies, and hence doesn’t have a key pair.
-* A NEAR account is required in order to start using the application, which complicates the onboarding process.
+* RPC 노드에 대한 REST API 호출을 수행하는 것은 성능 관점에서 매번 수행하는 데 비용이 많이 듭니다.
+* 모바일 클라이언트의 요청에 서명할 수 없습니다. 일반적으로 스토리지 정책으로 인해 블록체인에서 연결이 끊어져야 하므로 키 쌍이 없기 때문입니다.
+* 애플리케이션 사용을 시작하려면 NEAR 계정이 필요한데, 이는 온보딩 프로세스를 복잡하게 만듭니다.
 
-To solve the first problem, we can simply issue a JWT token or authenticate connection in some other way after a successful NEAR account authentication, so the it will serve as “login” of sorts:
+첫 번째 문제를 해결하기 위해, 성공적인 NEAR 계정 인증 후 JWT 토큰을 발행하거나 다른 방식으로 연결을 인증할 수 있습니다. 즉, 이는 일종의 "로그인" 역할을 합니다.
 
 
 
@@ -147,20 +145,20 @@ To solve the first problem, we can simply issue a JWT token or authenticate conn
 
 
 
-While this may be enough for some applications, it doesn’t address the last 2 problems. In order to solve all of them, we can use a hybrid authentication approach with 2 accounts:
+이것은 일부 애플리케이션에 충분할 수 있지만, 뒤 두 가지 문제를 해결하지 못합니다. 이 모든 문제를 해결하기 위해 2개의 계정을 통한 하이브리드 인증 방식을 사용할 수 있습니다.
 
 
 
-1. “Classic” Web 2 account - all clients can use this account to call a server. For example, this can be a simple username/password or OAuth 2 login with a JWT token.
-2. NEAR account - can be used from non-mobile clients only. Instead of performing NEAR account auth each time we need to use it, we can do it a single time in order to “connect” this account to our primary Web 2 account and store Classic-NEAR account connection in our server database. In this way we solve all problems - server doesn’t need to authenticate NEAR account each time it wants to perform an authorization, instead it can read an associated NEAR account from its own database.
+1. "기존의" Web2 계정 - 모든 클라이언트가 이 계정을 사용하여 서버를 호출할 수 있습니다. 예를 들어 간단한 사용자 이름/암호 또는 JWT 토큰을 사용한 OAuth 2 로그인일 수 있습니다.
+2. NEAR 계정 - 모바일이 아닌 클라이언트에서만 사용할 수 있습니다. NEAR 계정 인증을 사용해야 할 때마다 수행하는 대신, 이 계정을 기존 Web2 계정에 "연결"하고 서버 데이터베이스에 Classic-NEAR 계정 연결을 저장하는 방식으로 한 번만 수행할 수 있습니다. 이러한 방식으로 우리는 모든 문제를 해결할 수 있습니다. 서버는 인증을 수행하려고 할 때마다 NEAR 계정을 인증할 필요가 없으며, 대신 자체 데이터베이스에서 연결된 NEAR 계정을 읽기만 하면 됩니다.
 
-With such hybrid approach, different authentication methods are used for blockchain and server:
+이러한 하이브리드 접근 방식에서는, 블록체인과 서버에 서로 다른 인증 방법이 사용됩니다.
 
 <div align="center">
 <img src="/docs/assets/web3/nfts-9.png" alt="image" width="400" />
 </div>
 
-NEAR account connection sequence can be implemented in a very similar way to the already described NEAR authentication method, where at the end we store an authenticated account in our database:
+NEAR 계정 연결 시퀀스는 이미 설명한 NEAR 인증 방법과 매우 유사한 방식으로 구현할 수 있습니다. 마지막에 인증된 계정을 데이터베이스에 저장합니다.
 
 
 
@@ -169,7 +167,7 @@ NEAR account connection sequence can be implemented in a very similar way to the
 
 
 
-There’s one more improvement we can make to this flow. Since a Web Client uses both accounts, a user is forced to login using both Web 2 login method (e.g. login/password) and NEAR Wallet. This is not ideal from the UX perspective, so we can simplify it by introducing a “Login with Wallet” method to our server, which would work when a user already has a wallet connected. We can do this in a similar way to the account connection flow:
+여기에서 한 가지 더 개선할 수 있습니다. 웹 클라이언트는 두 계정을 모두 사용하기 때문에, 사용자는 Web 2 로그인 방법(예: 로그인/비밀번호)과 NEAR 지갑을 모두 사용하여 로그인해야 합니다. 이는 UX 관점에서 이상적이지 않으므로, 사용자가 이미 지갑을 연결한 경우 "지갑으로 로그인" 방법을 서버에 도입하여 단순화할 수 있습니다. 이는 계정 연결과 유사한 방식으로 수행될 수 있습니다.
 
 
 
@@ -179,7 +177,7 @@ There’s one more improvement we can make to this flow. Since a Web Client uses
 
 
 
-Now, as we’ve discussed possible approaches for authentication, let’s summarize it as an overall login flow for our clients:
+이제 논의한 대로 클라이언트에 대한 전체 로그인 흐름을 요약해 보겠습니다.
 
 
 
@@ -189,21 +187,21 @@ Now, as we’ve discussed possible approaches for authentication, let’s summar
 
 
 
-Of course, this is just one possible flow, and a different solution can be assembled from described building blocks. The most important considerations for choosing right authentication flow are following:
+물론 이것은 하나의 방식일 뿐이며 설명된 빌딩 블록에서 다른 솔루션과도 조합할 수 있습니다. 올바른 인증 흐름을 선택하기 위한 가장 중요한 고려 사항은 다음과 같습니다.
 
 
 
-* Type of your client - for web/desktop clients, or sideloaded Android clients, it’s possible to use Wallet as a single authentication method. For mobile clients installed from a store, a hybrid approach with multiple auth methods should be used.
-* Target audience - if you target regular users that are not familiar with blockchain technologies, having a hybrid auth method to simplify onboarding might be better than forcing users to learn blockchain before trying your application.
+* 클라이언트 유형 - 웹/데스크톱 클라이언트 또는 사이드로드된 Android 클라이언트의 경우, 지갑을 단일 인증 방법으로 사용할 수 있습니다. 스토어에서 설치한 모바일 클라이언트의 경우 여러 인증 방법을 사용하는 하이브리드 접근 방식을 사용해야 합니다.
+* 대상 고객 - 블록체인 기술에 익숙하지 않은 일반 사용자를 대상으로 하는 경우, 하이브리드 인증 방법을 사용하여 온보딩을 간소화하는 것이 사용자가 어플리케이션을 사용하기 전에 블록체인을 배우도록 강요하는 것보다 나을 수 있습니다.
 
 
-#### Blockchain Auth & Auth
+#### 블록체인 인증
 
-So far, we’ve discussed authentication and authorization on the Web 2 server’s side. But what about Web 3 smart contracts? Everything is much more straightforward in this case.
+지금까지 Web2 서버 측의 인증 및 권한 부여에 대해 논의했습니다. 그러나 Web3 스마트 컨트랙트는 어떻습니까? 이 경우 모든 것이 훨씬 더 간단합니다.
 
-Since everything is public data on the blockchain, we don’t need any authentication for read calls. For transactions, each is signed by an account’s private key, and authentication is performed by the network. More details on transaction signing can be found [in the docs](../protocol/transactions.md).
+모든 것이 블록체인의 공개 데이터이므로, 읽기 호출에 대한 인증은 필요하지 않습니다. 트랜잭션의 경우 각 계정의 개인 키로 서명되며 인증은 네트워크에서 수행됩니다. More details on transaction signing can be found [in the docs](../protocol/transactions.md).
 
-Authorization, on the other hand, must be performed on a smart contract itself, the simplest way is just to check whether caller is allowed to perform an action:
+반면 권한 부여는 스마트 컨트랙트 자체에서 수행되어야 합니다. 가장 간단한 방법은 호출자가 작업을 수행할 수 있는지 확인하는 것입니다.
 
 
 ```rust
@@ -216,69 +214,68 @@ assert_eq!(
 
 
 
-### NFT usage
+### NFT 사용
 
-After we’ve learned how to authenticate users and how to authorize NFTs usage, let’s find out how we can actually use them in our application.
+사용자를 인증하는 방법과 NFT 사용 권한을 부여하는 방법을 배웠으니, 이제 어플리케이션에서 NFT를 실제로 사용할 수 있는 방법을 알아보겠습니다.
 
-Since we essentially have two backends in our application - server and smart contract(s), they both can use NFTs for different purposes:
-
-
-
-* Server usually uses NFTs for actual functional purposes, e.g. by treating NFT as an in-game character, it can read its properties and stats and apply them using some logic.
-* Smart contract is responsible for NFTs ownership, as well as NFTs creation, modification and burning (destruction).
-
-This is the point where the NFT data storage model comes into place. Let’s recall, that there are 3 possible options:
+기본적으로 애플리케이션에는 서버와 스마트 컨트랙트라는 두 개의 백엔드가 있으므로, 둘 다 다른 목적으로 NFT를 사용할 수 있습니다.
 
 
 
-1. Store data in a smart-contract (on-chain).
-2. Store data in an [off-chain decentralized storage](../../1.concepts/storage/decentralized-storage.md), like IPFS (off-chain).
-3. Store data in an application itself (in-application).
+* 서버는 일반적으로 실제 기능적 목적을 위해 NFT를 사용합니다. 예를 들어 NFT를 게임 내 캐릭터로 취급하면, NFT의 속성과 통계를 읽고 일부 로직을 통해 적용할 수 있습니다.
+* 스마트 컨트랙트는 NFT 소유권은 물론 NFT 생성, 수정 및 소각(파기)을 담당합니다.
 
-First 2 approaches provide good decentralization, but make NFT harder to work with, especially if we need to modify its properties. Let’s consider usage options depending on a storage model used:
-
-
-
-1. On-chain storage: 
-    * Server can read data from the blockchain by making an API call. Server can’t directly modify data, it should make a smart contract call instead (by issuing a transaction).
-    * Smart contract can directly read/modify NFT data.
-    * Clients can read all data directly from the blockchain.
-2. Off-chain storage:
-    * Server can read data from storage by making an API call. Data on the off-chain storage is usually immutable, so no modifications are possible.
-    * Smart contract cannot read data directly, an Oracle should be used. Data cannot be modified from it.
-    * Clients should read data from both blockchain and off-chain storage.
-3. In-application storage:
-    * Server can read/modify data from its own database.
-    * Smart contract cannot read data directly, an Oracle should be used. Data cannot be modified from it.
-    * Clients should read data from both blockchain and server.
-
-Depending on a particular use case, any approach, or combination of them, can be used. The simplest case is when we don’t have any dynamic NFT data, and we can easily divide data by domains:
+이것이 NFT 데이터 스토리지 모델이 등장하는 지점입니다. 3가지 가능한 옵션이 있음을 기억해 봅시다.
 
 
 
-* Data that is used by smart contracts is stored on-chain.
-* Other data is stored either off-chain or in-application.
+1. 스마트 컨트랙트(온체인)에 데이터를 저장합니다
+2. IPFS(오프체인)와 같은 [오프체인 분산 저장소](../../1.concepts/storage/decentralized-storage.md)에 데이터를 저장합니다.
+3. 애플리케이션 자체(인앱)에 데이터를 저장합니다.
+
+처음 2가지 접근 방식은 탈중앙화된 방식이지만, 특히 속성을 수정해야 하는 경우 NFT를 사용하기 어렵게 만듭니다. 사용된 스토리지 모델에 따라 사용 옵션을 고려해 보겠습니다.
+
+
+
+1. 온체인 스토리지:
+    * 서버는 API 호출을 통해 블록체인에서 데이터를 읽을 수 있습니다. 서버는 데이터를 직접 수정할 수 없으며 대신 스마트 컨트랙트 호출을 수행해야 합니다(트랜잭션 발행을 통해).
+    * 스마트 컨트랙트는 NFT 데이터를 직접 읽고 수정할 수 있습니다.
+    * 클라이언트는 블록체인에서 직접 모든 데이터를 읽을 수 있습니다.
+2. 오프체인 스토리지:
+    * 서버는 API 호출을 통해 스토리지에서 데이터를 읽을 수 있습니다. 오프 체인 스토리지의 데이터는 일반적으로 변경할 수 없으므로 수정이 불가능합니다.
+    * 스마트 컨트랙트는 데이터를 직접 읽을 수 없으므로 오라클을 사용해야 합니다. 데이터는 수정할 수 없습니다.
+    * 클라이언트는 블록체인과 오프체인 스토리지 모두에서 데이터를 읽어야 합니다.
+3. 인앱 스토리지:
+    * 서버는 자체 데이터베이스에서 데이터를 읽고 수정할 수 있습니다.
+    * 스마트 컨트랙트는 데이터를 직접 읽을 수 없으므로 오라클을 사용해야 합니다. 데이터는 수정할 수 없습니다.
+    * 클라이언트는 블록체인과 서버 모두에서 데이터를 읽어야 합니다.
+
+특정 사용 사례에 따라, 세 개 모두 또는 이들의 조합을 사용할 수 있습니다. 가장 간단한 경우는 동적 NFT 데이터가 없고 도메인별로 데이터를 쉽게 나눌 수 있는 경우입니다.
+
+
+
+* 스마트 컨트랙트에서 사용하는 데이터는 온체인에 저장됩니다.
+* 다른 데이터는 오프체인 또는 인앱에 저장됩니다.
 
 
 <div align="center">
 <img src="/docs/assets/web3/nfts-13.png" alt="image" width="400" />
 </div>
 
+이 접근 방식에서 서버는 스마트 컨트랙트 및 선택적으로 오프체인 저장소(예: IPFS 또는 데이터베이스)에서 데이터를 읽어야 합니다.
 
-In this approach the server needs to read data from the smart contract, and, optionally, from an off-chain storage (like IPFS or Database). 
+이것은 간단한 사용 사례에는 잘 작동하지만, NFT와 관련된 동적 데이터가 필요한 경우 모든 것이 더 복잡해집니다. 예를 들어 게임 캐릭터와 관련된 경험치를 원할 수 있습니다. 이러한 데이터는 온체인 또는 인앱에 저장할 수 있습니다(오프체인 스토리지도 가능하지만 더 복잡하므로 여기에서 논의하지 않겠습니다).
 
-This will work well for simple use cases, but everything becomes more complicated if we need to have some dynamic data associated with NFTs. E.g we may want to have experience points associated with our game character. Such data can be stored either on-chain or in-application (off-chain storage is also possible, but it’s more involved, so we won’t discuss it here).
-
-In case of in-application storage, data can be modified by a server without any problems, but there are few drawbacks:
-
+인앱 스토리지의 경우, 문제 없이 서버에서 데이터를 수정할 수 있지만 다음과 같은 몇 가지 단점이 있습니다.
 
 
-* In order to read this data, clients should make an API call to the server. This adds a centralized point for our NFT, and may not be suitable for all applications.
-* If a smart contract requires this data, a server should serve as a [Blockchain Oracle](https://en.wikipedia.org/wiki/Blockchain_oracle), which complicates things.
 
-If we want our server to serve as an oracle for our smart contract, the easiest way is to cryptographically sign server’s data and verify it on the contract’s side (server’s public key that was used for signing should be stored in a contract in this case). 
+* 이 데이터를 읽으려면 클라이언트가 서버에 API 호출을 해야 합니다. 이것은 NFT에 대한 중앙 집중식 지점이 추가되는 것이고, 모든 어플리케이션에 적합하지 않을 수 있습니다.
+* 스마트 컨트랙트에 이 데이터가 필요한 경우, 서버는 [블록체인 오라클](https://en.wikipedia.org/wiki/Blockchain_oracle) 역할을 해야 하므로 상황이 복잡해집니다.
 
-In order to prevent replay attacks, signed data should include a timestamp, which should also be verified. However, there’s one trick to this - smart contracts can’t access current time, since it would make them non-deterministic. Instead, transaction signature time can be used - it can be accessed using `env::block_timestamp()` function.
+서버가 스마트 컨트랙트의 오라클 역할을 하게 하려면, 가장 쉬운 방법은 서버의 데이터를 암호로 서명하고 컨트랙트 측에서 확인하는 것입니다(이 경우 서명에 사용된 서버의 공개 키는 컨트랙트에 저장되어야 함).
+
+replay attack을 방지하기 위해, 서명된 데이터에는 타임스탬프가 포함되어야 하며 이 또한 확인되어야 합니다. However, there’s one trick to this - smart contracts can’t access current time, since it would make them non-deterministic. 이 경우, 트랜잭션 서명 시간을 사용하면 됩니다. 이는 `env::block_timestamp()` 함수를 사용하여 액세스할 수 있습니다.
 
 
 
@@ -288,48 +285,46 @@ In order to prevent replay attacks, signed data should include a timestamp, whic
 
 
 
-In order to avoid all these complications, we can instead store dynamic data on-chain, and use smart contract calls to update it.
+이러한 모든 복잡성을 피하기 위해, 동적 데이터를 온체인에 저장하고 스마트 컨트랙트 호출을 사용하여 업데이트할 수 있습니다.
 
 
 <div align="center">
 <img src="/docs/assets/web3/nfts-15.png" alt="image" width="500" />
 </div>
 
+이러한 접근 방식에는 한 가지 단점이 있습니다. 스마트 컨트랙트의 메서드를 호출하려면, 서버에서 트랜잭션을 생성해야 하고 트랜잭션을 생성하려면 계정의 키를 사용하여 서명해야 합니다. 그렇기 때문에 서버에서 사용할 별도의 NEAR 계정을 만들어야 합니다. 스마트 컨트랙트에 대한 작업은 이 계정에만 권한을 부여하도록 할 수 있으므로, 일반 사용자는 이러한 데이터를 수정할 수 없습니다.
 
-Such an approach has one drawback - in order to call a smart contract’s method, a transaction should be created by the server, and in order to create a transaction it must be signed using an account’s key. That’s why a separate NEAR account should be created to be used by the server. Actions on the smart contract can be configured to authorize only this account, so regular users will be disallowed from modifying such data. 
-
-Yet another option is to store data on the server-side, but a smart contract can authorize only a server account for calls that rely on this data. As with the previous scenario, the server must have its own NEAR account.
+또 다른 옵션은 서버 측에 데이터를 저장하는 것이지만, 스마트 컨트랙트는 이 데이터에 의존하는 호출에 대해 서버 계정에만 권한을 부여할 수 있습니다. 이전 시나리오와 마찬가지로, 서버에는 자체 NEAR 계정이 있어야 합니다.
 
 
 <div align="center">
 <img src="/docs/assets/web3/nfts-16.png" alt="image" width="500" />
 </div>
 
+일반적으로 스마트 컨트랙트에 동적 데이터를 저장하는 접근 방식이 훨씬 쉽지만, 중요한 제약 사항을 고려해야 합니다.
 
-In general, the approach of storing dynamic data on the Smart Contract side is much easier, but an important constraint should be considered - storing data on the blockchain is not cheap, so an appropriate method can be chosen depending on a scenario.
-
-By now, we’ve covered methods to store and interact with NFTs from our application, an exact strategy should be chosen depending on use cases and constraints. A few things to remember:
-
-
-
-* Storing NFTs data in a centralized storage (like an application's database) goes against Web 3 philosophy, and should be used sparingly and with care.
-* Storage on the blockchain is not cheap, so decentralized off-chain storages can be used to store large data.
-* Storing and using dynamic NFT data is quite tricky, and should be carefully designed. If such dynamic data is needed by smart contracts, it’s better to store it inside this contract if possible.
-
-
-### NFT minting
-
-So far, we’ve discussed only how to use NFTs in the application, but how do they get created?
-
-In the blockchain world, creation of new NFTs is usually called minting. And as with traditional digital assets, there are few ways how to create them:
+지금까지 애플리케이션에서 NFT를 저장하고 상호 작용하는 방법을 다루었으며, 사용 사례 및 제약 조건에 따라 정확한 전략을 선택해야 합니다. 기억해야 할 몇 가지 사항은 다음과 같습니다:
 
 
 
-* Users can mint them directly. This can be done by either allowing creation of NFTs from scratch, or by using more complex processes, like breeding or upgrading. The most famous example of such process is breeding in [CrytoKitties](https://www.cryptokitties.co/) game - new NFTs are created by combining existing ones. With this approach users usually have to pay to cover the storage and gas cost of NFTs creation.
-* NFTs can be distributed by the developer to a set of users - it is usually called [NFTs airdrop](https://www.investopedia.com/terms/a/airdrop-cryptocurrency.asp). Most often this is used as a marketing strategy to kickstart NFTs usage in applications. Storage and gas costs in this case are covered by developers.
-* NFTs can be bought on a market or obtained from the lootbox. Depending on an exact strategy, costs can either be paid by a user or by developer. Also, in this case NFTs sometimes can be minted on-demand, to avoid paying upfront costs.
+* 애플리케이션의 데이터베이스와 같은 중앙 집중식 스토리지에 NFT 데이터를 저장하는 것은 Web 3 철학에 어긋나므로 신중하고 신중하게 사용해야 합니다.
+* 블록체인의 스토리지는 저렴하지 않으므로, 분산형 오프체인 스토리지를 사용하여 대용량 데이터를 저장할 수 있습니다.
+* 동적 NFT 데이터를 저장하고 사용하는 것은 매우 까다롭기 때문에 신중하게 설계해야 합니다. 이러한 동적 데이터가 스마트 컨트랙트에 필요한 경우, 가능하면 컨트랙트 내부에 저장하는 것이 좋습니다.
 
-An exact strategy used for NFTs minting depends on application use cases. However, almost always there’ll be an `nft_mint _function` defined in a smart contract, which will handle creation of new tokens. This function itself isn't defined [in the standard](https://nomicon.io/Standards/NonFungibleToken/) and is up to the application to implement, but the standard library provides a core implementation for it - [mint_internal](https://docs.rs/near-contract-standards/latest/near_contract_standards/non_fungible_token/core/struct.NonFungibleToken.html#method.internal_mint). On top of this function an additional logic, e.g. for authorization, can be added:
+
+### NFT 발행
+
+지금까지 애플리케이션에서 NFT를 사용하는 방법에 대해서만 논의했지만, NFT는 어떻게 생성되나요?
+
+블록체인 세계에서 새로운 NFT를 생성하는 것을 일반적으로 민팅이라고 합니다. 기존의 디지털 자산과 마찬가지로, 이를 생성하는 방법은 다음과 같습니다.
+
+
+
+* 사용자가 직접 민팅할 수 있습니다. 처음부터 NFT를 민팅하도록 허용하거나, 브리딩 또는 업그레이드와 같은 보다 복잡한 프로세스를 사용하여 수행될 수 있는 작업입니다. 이러한 프로세스의 가장 유명한 예는 [CrytoKitties](https://www.cryptokitties.co/) 게임의 브리딩입니다. 여기에서는 기존 NFT를 결합하여 새로운 NFT를 생성합니다. 이 접근 방식을 사용하면 일반적으로 사용자는 NFT 생성의 스토리지 및 가스 비용을 충당하기 위해 비용을 지불해야 합니다.
+* NFT는 개발자에 의해 일련의 사용자에게 배포될 수 있습니다. 이를 일반적으로 [NFT 에어드랍](https://www.investopedia.com/terms/a/airdrop-cryptocurrency.asp)이라고 합니다. 대부분의 경우 이것은 애플리케이션에서 NFT 사용을 시작하기 위한 마케팅 전략으로 사용됩니다. 이 경우 스토리지 및 가스 비용은 개발자가 부담합니다.
+* NFT를 시장에서 구입하거나 전리품 상자에서 얻을 수 있습니다. 정확한 전략에 따라 비용은 사용자 또는 개발자가 지불할 수 있습니다. 또한 이 경우 NFT는 때때로 주문 형식으로 발행될 수 있습니다.
+
+NFT 민팅에 사용되는 정확한 전략은 애플리케이션 사용 사례에 따라 다릅니다. 그러나 스마트 컨트랙트에 정의되어 있는 `nft_mint _function`이 존재할 것이고, 여기에서 거의 항상 새로운 토큰 생성을 처리할 것입니다. 이 함수 자체는 [표준](https://nomicon.io/Standards/NonFungibleToken/)에 정의되어 있지 않으며, 구현하는 애플리케이션에 달려 있지만 표준 라이브러리는 이를 위한 핵심 구현 사항인 [mint_internal](https://docs.rs/near-contract-standards/latest/near_contract_standards/non_fungible_token/core/struct.NonFungibleToken.html#method.internal_mint)을 제공합니다. 이 함수 위에 추가 로직(예: 권한 부여)을 추가할 수 있습니다.
 
 
 ```rust
@@ -355,23 +350,23 @@ pub fn nft_mint(
 ```
 
 
-This approach is quite simple, but everything becomes a bit complicated if we want to provide some on-demand minting functionality to avoid paying upfront costs. For example, we may want to create a lootbox with a set of predefined items appearing with some probability. 
+이 접근 방식은 매우 간단하지만, 선불 비용을 지불하지 않기 위해 주문형 발행 기능을 제공하려는 경우 모든 것이 약간 복잡해집니다. 예를 들어 미리 정의된 아이템 세트가 일정 확률로 나타나는 전리품 상자를 만들고 싶을 수 있습니다.
 
-One approach is to handle this logic on a server side, in this case the server will call `nft_mint` function with computed parameters. However, in this case developers will have to pay the cost of minting. If we want to avoid this, loot box logic can be moved into the smart contract itself. If users want to open a loot box, he can call a smart contract function and pay for this action (e.g. by using NEAR or Fungible Tokens). Developers would only need to pay for a lootbox configuration costs, like possible items and their probabilities.
-
-
-## Blockchain Onboarding
-
-Before designing an onboarding strategy, the target audience should be carefully analyzed. As we briefly mentioned before, users can be divided into two broad buckets:
+한 가지 접근 방식은 서버 측에서 이 로직을 처리하는 것입니다. 이 경우 서버는 계산된 매개변수를 통해 `nft_mint` 함수를 호출합니다. 그러나 이 경우 개발자는 민팅 비용을 지불해야 합니다. 이를 피하려면 전리품 상자 로직을 스마트 컨트랙트 자체로 옮길 수 있습니다. 사용자가 전리품 상자를 열려면 스마트 컨트랙트 함수를 호출하고, 이 작업에 대한 비용을 지불할 수 있습니다(예: NEAR 또는 대체 가능 토큰 사용). 개발자는 가능한 항목 및 확률과 같은 전리품 상자 구성 비용만 지불하면 됩니다.
 
 
+## 블록체인 온보딩
 
-1. Users that are already familiar with blockchain, have their own wallets and understand cryptocurrency basics.
-2. “Casual” users that aren’t familiar with blockchain and don’t know much about it.
+온보딩 전략을 설계하기 전에 대상 고객을 신중하게 분석해야 합니다. 앞에서 간략히 언급했듯이 사용자는 두 가지 범주로 나눌 수 있습니다.
 
-If only the first category is targeted, then everything is quite simple - users are already familiar with main concepts, and will have no problem connecting their own wallet or creating a new one. However, if we want to target the second category of users as well, a strategy has to be developed to make onboarding into the blockchain world as smooth as possible. While a lot relies on proper UX and is very application-specific, a few architectural patterns and technologies exist to simplify this process: custodial wallets, NEAR drops, Prepaid Gas and Implicit Accounts.
 
-[Custodial Wallet](https://www.coindesk.com/learn/custodial-wallets-vs-non-custodial-crypto-wallets/) is a wallet which is managed by a third party. In our case, a wallet can be created and stored on a server side, and all blockchain operations could be done using the server as a proxy.
+
+1. 이미 블록체인에 익숙하고 자신의 지갑을 가지고 있으며 암호화폐 기본 사항을 이해하는 사용자.
+2. 블록체인에 익숙하지 않고 잘 모르는 "일반" 사용자.
+
+첫 번째 범주만 타겟으로 지정하면 모든 것이 매우 간단합니다. 사용자는 이미 기본 개념에 익숙하며 자신의 지갑을 연결하거나 새 지갑을 만드는 데 아무런 문제가 없습니다. 그러나 두 번째 범주의 사용자도 타겟으로 삼으려면, 블록체인 세계에 최대한 원활하게 온보딩할 수 있는 전략을 개발해야 합니다. 많은 것이 적절한 UX에 의존하고 애플리케이션에 따라 다르지만, 이 프로세스를 단순화하기 위한 몇 가지 아키텍처 패턴과 기술이 존재합니다: 수탁 지갑, NEAR 드롭, 선불 가스 및 암시적 계정과 같은 것들이 그것입니다.
+
+[수탁 지갑](https://www.coindesk.com/learn/custodial-wallets-vs-non-custodial-crypto-wallets/)은 제3자가 관리하는 지갑입니다. 우리의 경우 서버 측에서 지갑을 생성하고 저장할 수 있으며, 모든 블록체인 작업은 서버를 프록시로 사용하여 수행됩니다.
 
 
 
@@ -381,33 +376,33 @@ If only the first category is targeted, then everything is quite simple - users 
 
 
 
-In this way, users can remain unaware about the intricacies of blockchain until they are comfortable enough to claim ownership of this account. Once they are ready, the server can transfer the account's ownership and remove it from the server. However, despite simplifying UX for the users, such approach has a few significant drawbacks:
+이러한 방식으로 사용자는 이 계정의 소유권을 주장하기에 충분히 편안해질 때까지 블록체인의 복잡성에 대해 인식하지 않아도 됩니다. 준비가 되면 서버는 계정 소유권을 이전할 수 있습니다. 그러나 사용자를 위한 UX 단순화에도 불구하고, 이러한 접근 방식에는 몇 가지 중요한 단점이 있습니다.
 
 
 
-* Users should trust our application to manage their accounts. 
-* Accounts creation is not free, so unless developers want to pay for it, funds should be transferred from a user to cover this cost. Traditional payment methods can be used, like PayPal or Apple/Google Pay. However, such an approach should be used with care for mobile applications due to app stores policies. Alternatively, NEAR Implicit Accounts can be used to avoid paying for account creation.
-* Unless we want to leave a custodial wallet as the only supported wallet type, we need to support both types of wallets (custodial and non-custodial) in our application. This will increase implementations complexity, since we need to support 2 transaction types:
-    * Server-signed transactions in case of custodial wallet.
-    * Client-signed transactions in case of non-custodial wallet.
+* 사용자는 자신의 계정을 관리하기 위해 우리의 애플리케이션을 신뢰해야 합니다.
+* 계정 생성은 무료가 아니므로, 개발자가 비용을 지불하지 않는 한 이 비용을 충당하기 위해 사용자로부터 자금을 받아야 합니다. 이를 위해 PayPal 또는 Apple/Google Pay와 같은 기존 결제 수단을 사용할 수 있습니다. 그러나 이러한 접근 방식은 모바일 어플리케이션의 경우 앱 스토어 정책을 주의하여 사용해야 합니다. 또는 NEAR 암시적 계정을 사용하여 계정 생성 비용을 지불하지 않아도 됩니다.
+* 수탁 지갑을 지원되는 유일한 지갑 유형으로 두지 않으려면, 어플리케이션에서 두 가지 유형의 지갑(수탁형 및 비수탁형)을 모두 지원해야 합니다. 이렇게 하면 2가지 트랜잭션 유형을 지원해야 하므로 구현 복잡성이 증가합니다.
+    * 수탁 지갑의 경우 서버 서명 트랜잭션.
+    * 비수탁 지갑의 경우 클라이언트 서명 트랜잭션.
 
-As we mentioned above, [Implicit Accounts](../protocol/account-id.md#implicit-accounts-implicit-accounts) can be used to avoid paying account creation costs. This is especially useful for custodial wallets, since it allows us to create a NEAR Account free of charge. Basically, they work like an Ethereum/Bitcoin-style account by using a public key as an account id, and later can be converted to a full NEAR account. However, they have drawbacks as well. First of all, human-readable account names cannot be used. Also, if we want to convert it to a proper NEAR account, which can support Functional Call keys, the account creation fee still has to be paid.
+As we mentioned above, [Implicit Accounts](../protocol/account-id.md#implicit-accounts-implicit-accounts) can be used to avoid paying account creation costs. NEAR 계정을 무료로 만들 수 있기 때문에, 수탁 지갑에 특히 유용합니다. 기본적으로 공개 키를 계정 ID로 사용하여 Ethereum/Bitcoin 내 계정처럼 작동하며, 나중에 완전한 NEAR 계정으로 전환할 수 있습니다. 그러나 단점도 있습니다. 우선 사람이 읽을 수 있는 계정 이름은 사용할 수 없습니다. 또한 함수 호출 키를 지원할 수 있는 적절한 NEAR 계정으로 전환하려면 계정 생성 수수료를 여전히 지불해야 합니다.
 
-While being very powerful, custodial accounts are quite complex and tricky to implement. An alternative approach to ease users onboarding is to simplify creation of a wallet itself. In NEAR, we can do this using [NEAR Drops](https://near.org/blog/send-near-to-anyone-with-near-drops/). It allows us to generate a link that guides users through a quick wallet creation process. However, the same problem as for the custodial accounts applies - creation of an account is not free. That’s why, such a link has NEAR tokens attached to it to cover account creation cost and to serve as an initial balance for a newly created wallet. And as with custodial accounts, funds should be transferred from a user to cover this cost using traditional payment channels.
+수탁 계정은 매우 강력하지만, 구현하기가 매우 복잡하고 까다롭습니다. 사용자 온보딩을 용이하게 하는 다른 접근 방식은 지갑 자체 생성을 단순화하는 것입니다. NEAR에서는 [NEAR Drops](https://near.org/blog/send-near-to-anyone-with-near-drops/)를 사용하여 이를 수행할 수 있습니다. 빠른 지갑 생성 프로세스를 통해 사용자를 안내하는 링크를 생성할 수 있습니다. 그러나 수탁 계정과 동일한 문제가 적용됩니다. 계정 생성은 무료가 아니라는 점입니다. 그렇기 때문에 이러한 링크에는 NEAR 토큰이 부착되어 계정 생성 비용을 충당하고 새로 생성된 지갑의 초기 잔액 역할을 합니다. 수탁 계정과 마찬가지로 기존 결제 채널을 사용하여 이 비용을 충당하기 위해 사용자로부터 자금을 이체해야 합니다.
 
-Another option to simplify onboarding is usage of the [Prepaid Gas](../protocol/gas.md#what-about-prepaid-gas-what-about-prepaid-gas) concept. For example, we can issue a Functional Call key that allows users to interact with blockchain without having an account created. In this case funds will be drawn from the developer's account. This can be used for demo purposes, or to allow users without a NEAR account to perform some smart contract actions.
-
-
-## NFT Marketplace
-
-At this point, we’ve covered in detail how to integrate NFTs into our Web 2 application, but we’ve stayed away from the economy part. The essential part for having a functioning economy is a marketplace where users can freely trade and exchange their NFTs. Such a marketplace usually consists of a smart contract and a client application. This smart contract is closely integrated with a NFT’s smart contract using the cross-contract calls. The reason for having a separate smart contract is two-fold:
+Another option to simplify onboarding is usage of the [Prepaid Gas](../protocol/gas.md#what-about-prepaid-gas-what-about-prepaid-gas) concept. 예를 들어 사용자가 계정을 생성하지 않고도 블록체인과 상호 작용할 수 있도록 하는 함수 호출 키를 발행할 수 있습니다. 이 경우 자금은 개발자 계정에서 인출됩니다. 이는 데모 목적으로 사용하거나 NEAR 계정이 없는 사용자가 일부 스마트 컨트랙트 작업을 수행할 수 있도록 허용할 수 있습니다.
 
 
+## NFT 마켓플레이스
 
-* This provides a better separation of concerns - we can modify and upgrade our marketplace independently from the NFT contract.
-* Multiple marketplaces can be used - e.g. we can have an internal marketplace, and in addition to it users can list their NFTs on external marketplaces. This is possible because a common NFT standard exists that all marketplaces can rely on.
+지금까지 NFT를 Web2 어플리케이션에 통합하는 방법을 자세히 다루었지만 경제적인 부분은 다루지 않았습니다. 이러한 기능을 유지하기 위한 필수적인 부분은, 사용자가 NFT를 자유롭게 거래하고 교환할 수 있는 마켓플레이스입니다. 이러한 시장은 일반적으로 스마트 컨트랙트와 클라이언트 어플리케이션으로 구성됩니다. 이 스마트 컨트랙트는 교차 컨트랙트 호출을 사용하여 NFT의 스마트 컨트랙트와 밀접하게 통합됩니다. 별도의 스마트 컨트랙트가 있는 이유는 두 가지입니다.
 
-General flow of a simple marketplace integration can look like this:
+
+
+* 이를 통해 시스템을 분리할 수 있습니다. NFT 컨트랙트와 독립적으로 마켓플레이스를 수정하고 업그레이드할 수 있습니다.
+* 여러 마켓플레이스를 사용할 수 있습니다. 예를 들어 내부 마켓플레이스를 가질 수 있고, 여기에 추가로 사용자는 외부 마켓플레이스에 자신의 NFT를 나열할 수 있습니다. 이는 모든 마켓플레이스가 신뢰할 수 있는 공통 NFT 표준이 존재하기 때문에 가능합니다.
+
+간단한 마켓플레이스 통합의 일반적인 흐름은 다음과 같습니다.
 
 
 
@@ -418,21 +413,21 @@ General flow of a simple marketplace integration can look like this:
 
 
 
-1. Client calls the [nft_approve](https://nomicon.io/Standards/NonFungibleToken/ApprovalManagement#2-approval-with-cross-contract-call) method on the NFT smart contract. This will approve Marketplace Smart Contract to sell this NFT.
-2. After approving an account, NFT smart contract issues a cross-contract call to the Marketplace to create a sale object. Arguments for this call are provided as part of the `nft_approve` call.
-3. Another user wants to buy the NFT on sale, so he issues a call to the marketplace contract offering to buy it. An exact call signature for such action is not standardized and depends on marketplace implementation.
-4. If an offer to buy a NFT is valid, Marketplace issues an [nft_transfer_payout](https://nomicon.io/Standards/NonFungibleToken/Payout) call to transfer the NFT and return payout information. This information is used by the Marketplace to distribute profits from the sale between recipients. In the simplest case, all profits go to a seller.
+1. 클라이언트는 NFT 스마트 컨트랙트에서 [nft_approve](https://nomicon.io/Standards/NonFungibleToken/ApprovalManagement#2-approval-with-cross-contract-call) 메서드를 호출합니다. 이렇게 하면 이 NFT를 판매하기 위한 마켓플레이스 스마트 컨트랙트가 승인됩니다.
+2. 계정을 승인한 후 NFT 스마트 컨트랙트는 판매 객체 생성하기 위해 마켓플레이스에 대한 교차 컨트랙트 호출을 발행합니다. 이 호출에 대한 인수는 `nft_approve` 호출의 일부로 제공됩니다.
+3. 다른 사용자는 판매 중인 NFT를 구매하기를 원하므로 구매를 제안하는 마켓플레이스 컨트랙트에 대한 호출을 만듭니다. 이러한 작업에 대한 정확한 호출 서명은 표준화되지 않았으며, 마켓플레이스 내 구현 방식에 따라 다릅니다.
+4. NFT 구매 제안이 유효한 경우, 마켓플레이스는 [nft_transfer_payout](https://nomicon.io/Standards/NonFungibleToken/Payout) 호출을 발행하여 NFT를 전송하고 지급 정보를 반환합니다. 이 정보는 마켓플레이스에서 수령인 간 판매 수익을 분배하는 데 사용됩니다. 가장 간단한 경우 모든 이익은 판매자에게 돌아갑니다.
 
-Such flow looks relatively simple, but a few important details are missing. 
+이러한 흐름은 비교적 단순해 보이지만 몇 가지 중요한 세부 정보가 빠져 있습니다.
 
-First of all, in order to create a sale, storage needs to be paid for. Usually, the seller is the one who needs to pay for it, but other models are possible - e.g. marketplace or application developers could cover the cost. If we want users to pay for a sale, an approach with storage reservation can be used:
+우선, 판매를 생성하려면 스토리지 비용을 지불해야 합니다. 일반적으로 판매자가 비용을 지불해야 하지만, 다른 모델도 가능합니다. 예를 들어 마켓플레이스나 애플리케이션 개발자가 비용을 부담할 수 있습니다. 사용자가 판매 비용을 지불하도록 하려면 스토리지 예약 접근 방식을 사용할 수 있습니다.
 
 
 
-* Before approving NFT for sale, a user should reserve storage on the Marketplace contract to cover sale storage requirements.
-* After the NFT is bought or delisted, the user can withdraw storage reservation (remember, that in NEAR storage staking model is used, so data can be deleted and locked tokens refunded).
+* NFT 판매를 승인하기 전에 사용자는 판매 스토리지 요구 사항을 충족하기 위해 Marketplace 컨트랙트에 스토리지를 예약해야 합니다.
+* NFT를 구매하거나 리스팅을 철회한 후, 사용자는 스토리지 예약을 철회할 수 있습니다(NEAR 스토리지 스테이킹 모델이 사용되므로 데이터가 삭제되고 잠긴 토큰이 환불될 수 있음을 기억하세요).
 
-While this model is relatively straightforward, it’s not ideal from the UX perspective - users must make a separate action to reserve storage if they want to sell their NFTs. To improve this, we can combine `nft_approve` call with storage reservation, and automatically refund back the storage cost after the sale is removed. 
+이 모델은 비교적 간단하지만 UX 관점에서는 이상적이지 않습니다. 사용자가 NFT를 판매하려면 스토리지를 예약하기 위해 별도의 조치를 취해야 합니다. 이를 개선하기 위해 `nft_approve` 호출과 스토리지 예약을 결합하고, NFT의 리스팅이 철회된 후 스토리지 비용을 자동으로 환불할 수 있습니다.
 
 
 
@@ -442,7 +437,7 @@ While this model is relatively straightforward, it’s not ideal from the UX per
 
 
 
-Another missing thing is how a client can read data about available sales. Of course, sales information can be read directly from a smart contract, but available data structures are not optimized for searching or filtering. Also, we would have to join data from the NFT and Marketplace contracts on the client side, which isn’t efficient. In order to solve these problems, an indexer can be used to aggregate data into a suitable database, where data can be stored in a way optimal for retrieval (e.g. a relational database or an ElasticSearch index can be used).
+또 다른 누락 사항은 클라이언트가 가능한 매물들에 대한 데이터를 읽을 수 있는 방법입니다. 물론 판매 정보는 스마트 컨트랙트에서 직접 읽을 수 있지만, 여기에서의 데이터 구조는 검색이나 필터링에 최적화되어 있지 않습니다. 또한 클라이언트 측에서 NFT 및 마켓플레이스 컨트랙트의 데이터를 결합해야 하는데 이는 비효율적입니다. 이러한 문제를 해결하기 위해 인덱서를 사용하여 데이터를 적절한 데이터베이스로 집계할 수 있습니다. 여기서 데이터는 검색에 최적인 방식으로 저장될 수 있습니다(예: 관계형 데이터베이스 또는 ElasticSearch 인덱스를 사용할 수 있음).
 
 
 
@@ -451,72 +446,71 @@ Another missing thing is how a client can read data about available sales. Of co
 
 
 
-This is just one example of how a marketplace can be designed, but with it we’ve covered all basic concepts and problems. Most important points to remember:
+이것은 마켓플레이스가 어떻게 설계될 수 있는지에 대한 한 가지 예일 뿐이지만, 이를 통해 모든 기본 개념과 문제를 다루었습니다. 기억해야 할 가장 중요한 사항은 다음과 같습니다:
 
 
 
-* It’s better to implement a marketplace as a separate contract.
-* Storage management should be carefully designed, with UX in mind.
-* In order to implement a proper searching/filtering functionality, a separate indexing service is needed.
+* 마켓플레이스를 별도의 컨트랙트로 구현하는 것이 좋습니다.
+* 스토리지 관리는 UX를 염두에 두고 신중하게 설계해야 합니다.
+* 적절한 검색/필터링 기능을 구현하기 위해서는 별도의 인덱싱 서비스가 필요합니다.
 
-An example of a simple marketplace [can be found here](../../3.tutorials/nfts/8-marketplace.md). A more sophisticated marketplace may allow purchases with Fungible Tokens as payment.
-
-
-## Implementing Components
-
-Now, let’s explore our choice of libraries, frameworks and third-party solutions that can be used to implement our architecture.
+간단한 마켓플레이스의 예는 [여기](../../3.tutorials/nfts/8-marketplace.md)에서 찾을 수 있습니다. 보다 복잡한 마켓플레이스에서는 결제 수단으로 대체 가능 토큰을 사용한 구매를 허용할 수 있습니다.
 
 
-#### Client & Server
+## 구성 요소 구현
 
-First of all, how can we interact with blockchain from our clients? 
-
-If we need read-level access only, we can simply use the [REST API](https://docs.near.org/api/rpc/setup), so it can be integrated into any language and technology without any problems. But everything becomes more complicated if we need to post transactions from a client. Remember, that transaction should be signed with a private key which is stored in a wallet:
+이제 아키텍처를 구현하는 데 사용할 수 있는 라이브러리, 프레임워크 및 타사 솔루션을 선택해 보겠습니다.
 
 
+#### 클라이언트 & 서버
 
-* In case of a Functional Call key, it can be obtained from the wallet and used directly by the client.
-* In case of a Full Access key, the user should be redirected to the wallet to approve a transaction.
+우선, 고객으로부터 블록체인까지 어떻게 상호 작용할 수 있을까요?
 
-A [JavaScript API](/tools/near-api-js/quick-reference) exists to cover all of these scenarios. It has all of the necessary functionality to integrate Web/Node.JS applications with blockchain. This SDK is a perfect choice for the Web-based clients, but it’s not suitable for desktop or mobile based clients. Other libraries can be used for them:
+읽기 수준 액세스만 필요한 경우 [REST API](https://docs.near.org/api/rpc/setup)를 사용하면 문제 없이 모든 언어 및 기술에 통합될 수 있습니다. 그러나 클라이언트에서 트랜잭션을 게시해야 하는 경우 모든 것이 더 복잡해집니다. 트랜잭션은 지갑에 저장된 개인 키로 서명되어야 합니다.
 
 
 
-* [.NET Client](https://github.com/good1101/NearClientApi/tree/master/NearClient) - suitable for Unity or Xamarin.
+* 함수 호출 키의 경우 지갑에서 획득하여 클라이언트에서 직접 사용할 수 있습니다.
+* 전체 액세스 키의 경우 사용자는 트랜잭션을 승인하기 위해 지갑으로 리디렉션되어야 합니다.
+
+이러한 모든 시나리오를 처리하기 위해 [JavaScript API](/tools/near-api-js/quick-reference)가 존재 합니다. 여기에 Web/Node.JS 어플리케이션을 블록체인과 통합하는 데 필요한 모든 기능이 들어가 있습니다. 이 SDK는 웹 기반 클라이언트를 위한 완벽한 선택이지만, 데스크톱 또는 모바일 기반 클라이언트에는 적합하지 않습니다. 이 경우 다른 라이브러리를 사용할 수 있습니다.
+
+
+
+* [.NET Client](https://github.com/good1101/NearClientApi/tree/master/NearClient) - Unity 또는 Xamarin에 적합함.
 * [Swift](https://github.com/near/near-api-swift)
 * [Python](https://github.com/near/near-api-py)
 * [Unity](https://github.com/near/near-api-unity)
 
 
-Same SDKs and libraries can be used for servers. The only difference is that a server cannot interact with a Wallet, so it must have access to a Full Access key, which should be stored and accessed in a secure way. 
+동일한 SDK 및 라이브러리를 서버에 사용할 수 있습니다. 유일한 차이점은 서버가 지갑과 상호 작용할 수 없기 때문에 안전한 방식으로 저장하고 액세스해야 하는 전체 액세스 키에 대한 액세스 권한이 있어야 한다는 것입니다.
 
-Also, another solution is available if a server uses a technology that doesn’t have NEAR SDK available for - we can create a separate (micro)service using the Node.js, which would handle all blockchain interactions:
+또한 서버가 NEAR SDK를 사용할 수 없는 기술을 사용하는 경우 다른 솔루션을 사용할 수 있습니다. 예를 들어, 모든 블록체인 상호 작용을 처리하는 Node.js를 사용하여 별도의 (마이크로)서비스를 만들 수 있습니다.
 
 
 <div align="center">
 <img src="/docs/assets/web3/nfts-21.png" alt="image" width="450" />
 </div>
 
-
-An example of such a proxy server [can be found here](https://github.com/near-examples/near-api-rest-server).
-
-
-#### Contracts
-
-As we discovered in a previous section, for our application we need two smart contracts: for NFT and for Marketplace. There are two options on how to get them - use in-house implementation or some third-party/SAAS solution. Both options are viable and have different pros/cons. 
-
-If we want to create our own contract, we are fully in control and can implement anything we want. An obvious drawback, of course, is that it will take time and money to build it. Third-party solutions, on the other hand, are limited in their functionality and often cannot be easily extended. Also, they usually have some upfront costs and/or usage fees.
-
-For an in-house NFT contract implementation a few resources can be used as a starting point. First of all, a [Rust library](https://docs.rs/near-contract-standards/latest/near_contract_standards/index.html) is available which implements most of the standard. Another option is to build an entire contract from scratch, a good guide on how to do this is available by [this link](../../3.tutorials/nfts/0-intro.md).
-
-Implementing an own Marketplace contract is more involved since there is no standard implementation. A few examples:
+이러한 프록시 서버의 예는 [여기](https://github.com/near-examples/near-api-rest-server)에서 찾을 수 있습니다 .
 
 
+#### 컨트랙트
 
-* [Basic marketplace example](../../3.tutorials/nfts/8-marketplace.md)
-* [Paras ](https://paras.id/)marketplace contract - [source](https://github.com/ParasHQ/paras-marketplace-contract/tree/master/paras-marketplace-contract/src). 
+이전 섹션에서처럼, 애플리케이션에는 NFT와 마켓플레이스의 두 가지 스마트 컨트랙트가 필요합니다. 이를 얻는 방법에는 사내 구현 또는 타사/SAAS 솔루션을 사용하는 두 가지 옵션이 있습니다. 두 옵션 모두 실행 가능하며 장단점이 다릅니다.
 
-As for third-party solutions, the most complete one is [Mintibase](https://www.mintbase.io/), which provides a full suite of components for NFTs integration - including contracts, indexer, API and a web client:
+우리가 우리만의 컨트랙트를 만들고 싶다면, 우리가 완전히 통제하고 우리가 원하는 모든 것을 구현할 수 있습니다. 물론 명백한 단점은 그것을 구축하는 데 시간과 비용이 든다는 것입니다. 반면 타사 솔루션은 기능이 제한되어 쉽게 확장할 수 없는 경우가 많습니다. 또한 일반적으로 약간의 선불 비용 및/또는 사용료가 있습니다.
+
+사내 NFT 컨트랙트 구현의 경우 몇 가지 리소스를 시작점으로 사용할 수 있습니다. 우선, 대부분의 표준을 구현 하는 [Rust 라이브러리](https://docs.rs/near-contract-standards/latest/near_contract_standards/index.html)를 사용할 수 있습니다. 또 다른 옵션은 전체 컨트랙트를 처음부터 작성하는 것입니다. 이를 수행하는 방법에 대한 좋은 가이드는 [이 링크](../../3.tutorials/nfts/0-intro.md)에서 확인할 수 있습니다 .
+
+표준 구현이 없기 때문에 자체 마켓플레이스 컨트랙트를 구현하는 것은 더 복잡합니다. 몇 가지 예시는 다음과 같습니다:
+
+
+
+* [기본 마켓플레이스 예시](../../3.tutorials/nfts/8-marketplace.md)
+* [Paras](https://paras.id/) 마켓플레이스 컨트랙트 - [소스](https://github.com/ParasHQ/paras-marketplace-contract/tree/master/paras-marketplace-contract/src).
+
+타사 솔루션의 경우 가장 완벽한 솔루션은 [Mintibase](https://www.mintbase.io/)입니다. 이는 컨트랙트, 인덱서, API 및 웹 클라이언트를 포함하여 NFT 통합을 위한 전체 구성 요소 제품군을 제공합니다.
 
 
 
@@ -525,7 +519,7 @@ As for third-party solutions, the most complete one is [Mintibase](https://www.m
 
 
 
-Another option is to roll-out an own NFT contract and integrate with one of the third-party marketplaces, e.g. with [Paras](https://paras.id/) ([integration docs](https://docs.paras.id/nft-smart-contract-integration)).
+또 다른 옵션은 자체 NFT 컨트랙트를 출시하고, [Paras](https://paras.id/)([통합 문서](https://docs.paras.id/nft-smart-contract-integration))와 같은 타사 마켓플레이스 중 하나와 통합하는 것입니다.
 
 
 
@@ -536,94 +530,92 @@ Another option is to roll-out an own NFT contract and integrate with one of the 
 
 
 
-The major advantage of an external marketplace is the fact that they usually run their own indexer and expose collected data via an API, so we don’t have to implement these components. However, they usually have their fee for providing them, so a cost-benefit analysis should be conducted before using them.
+외부 마켓플레이스의 주요 이점은, 이러한 마켓플레이스들이 일반적으로 자체 인덱서를 실행하고 API를 통해 수집된 데이터를 노출하므로 이러한 구성 요소를 구현할 필요가 없다는 사실입니다. 그러나 일반적으로 제공에 대한 대가가 있으므로 사용하기 전에 비용 편익 분석을 수행해야 합니다.
 
 
-#### Off-chain storages
+#### 오프체인 스토리지
 
-Previously, we’ve discussed that storage on the blockchain is not cheap, so in most cases some decentralized storage solution should be used. A few options are available:
-
-
-
-* [IPFS ](https://ipfs.io/)- one of the first decentralized storage solutions, which is widely used in the blockchain world. However, in order to make sure that data is preserved on the network, an IPFS node(s) should be maintained. 
-* [Arweawe](https://www.arweave.org/) - blockchain-based decentralized storage.  
-* [Filecoin](https://filecoin.io/) - another blockchain-based storage.
-* [nft.storage](https://nft.storage/) - a free service built on top of the IPFS and Filecoin. 
-
-A more in-depth overview of such solutions is available [in the docs](../storage/decentralized-storage.md). In general, there's no “silver bullet”, so different solutions should be evaluated and the most suitable chosen. The main concerns while choosing a solution are availability guarantees, and cost.
-
-
-#### Indexer
-
-As we already determined, an indexing service is needed in order to support marketplace functionality. It usually consists of 3 components:
+이전에 우리는 블록체인의 스토리지가 저렴하지 않기 때문에 대부분의 경우 일부 분산형 스토리지 솔루션을 사용해야 한다고 논의했습니다. 몇 가지 옵션을 사용할 수 있습니다.
 
 
 
-* Indexer - processes transactions from a NEAR network and puts extracted data into a database.
-* Database - database of choice to store extracted data.
-* Indexer API - an API layer on top of the database.
+* [IPFS](https://ipfs.io/) - 블록체인 세계에서 널리 사용되는 최초의 분산 스토리지 솔루션 중 하나입니다. 그러나 데이터가 네트워크에 보존되도록 하려면 IPFS 노드를 유지해야 합니다.
+* [Arweawe](https://www.arweave.org/) - 블록체인 기반 분산 스토리지입니다.
+* [Filecoin](https://filecoin.io/) - 또 다른 블록체인 기반 스토리지입니다.
+* [nft.storage](https://nft.storage/) - IPFS 및 Filecoin 위에 구축된 무료 서비스입니다.
 
-    
+이러한 솔루션에 대한 보다 심층적인 개요는 다음 [문서](../storage/decentralized-storage.md)에서 확인할 수 있습니다. 일반적으로 "비장의 무기"는 없으므로 다양한 솔루션을 평가하고 가장 적합한 솔루션을 선택해야 합니다. 솔루션을 선택하는 동안 주요 관심사는 가용성 보장 및 비용입니다.
+
+
+#### 인덱서
+
+이미 결정한 바와 같이 마켓플레이스 기능을 지원하려면 인덱싱 서비스가 필요합니다. 일반적으로 3가지 구성 요소로 구성됩니다.
+
+
+
+* 인덱서 - NEAR 네트워크에서 트랜잭션을 처리하고 추출된 데이터를 데이터베이스에 넣습니다.
+* 데이터베이스 - 추출된 데이터를 저장하기 위해 선택한 데이터베이스입니다.
+* 인덱서 API - 데이터베이스 위에 있는 API 계층입니다.
+
+
 <div align="center">
 <img src="/docs/assets/web3/nfts-24.png" alt="image" width="150" />
 </div>
 
-
 While any technology of choice can be used to implement Database and API, an indexer itself is can be implemented using both [Rust](https://github.com/near/near-lake-framework-rs) and [JavaScript](https://github.com/near/near-lake-framework-js). See [this example](https://github.com/near-examples/near-lake-nft-indexer) written in Rust.
 
-Usually, an indexer works by extracting data from [Events](https://nomicon.io/Standards/EventsFormat), which are basically just structured log messages written during contract execution.
+일반적으로 인덱서는 기본적으로 컨트랙트 실행 중에 작성된, 구조화된 로그 메시지인 [이벤트](https://nomicon.io/Standards/EventsFormat)에서 데이터를 추출하여 작동합니다.
 
-[The Graph](https://thegraph.com/en/) is an alternative to building an indexer from scratch. This is an Indexer-as-a-Service solution, which simplifies their creation and deployment. Guide on how to create a NEAR indexer is available [by this link](https://thegraph.com/docs/en/supported-networks/near/).
-
-
-#### Automated Testing
-
-Automated testing of the code is one of the pillars of modern software development. But how do we test our dApp?
-
-Recall that a smart contract is a pure function, which can be easily tested using Unit Tests. Guide on how to write them is available [here](../../2.build/2.smart-contracts/testing/unit-test.md), and some examples can be found here. Another important kind of tests that is supported by NEAR are E2E tests, they can be executed either deploying contract code to either the local network environment (more info [here](../../2.build/2.smart-contracts/testing/introduction.md)), or directly to `testnet`, more info [here](../../2.build/2.smart-contracts/testing/integration-test.md)).
-
-Having both types of tests is equally important to ensure continuous quality of smart contracts, especially since contract upgrades usually aren’t easy to perform (remember, that in DAOs upgrade itself might be governed by a community vote).
+[The Graph](https://thegraph.com/en/)는 처음부터 인덱서를 구축하지 않고 사용할 수 있는 대안입니다. 이는 생성 및 배포를 간소화하는 서비스형 인덱서 솔루션입니다. NEAR 인덱서를 만드는 방법에 대한 안내는 [이 링크](https://thegraph.com/docs/en/supported-networks/near/)에서 확인할 수 있습니다.
 
 
-## Non-Functional Concerns
+#### 테스트 자동화
 
-Last, but not least, let’s cover important non-functional concerns for our architecture.
+코드의 테스트 자동화는 최신 소프트웨어 개발의 기둥 중 하나입니다. 그러나 dApp을 어떻게 테스트할까요?
 
+스마트 컨트랙트는 순수 함수이며, 단위 테스트를 사용하여 쉽게 테스트할 수 있습니다. Guide on how to write them is available [here](../../2.build/2.smart-contracts/testing/unit-test.md), and some examples can be found here. Another important kind of tests that is supported by NEAR are E2E tests, they can be executed either deploying contract code to either the local network environment (more info [here](../../2.build/2.smart-contracts/testing/introduction.md)), or directly to `testnet`, more info [here](../../2.build/2.smart-contracts/testing/integration-test.md)).
 
-### Security
-
-The most important thing to remember during the entire development is security, and especially the security of smart contracts. Since their code is public and an upgrade procedure is not trivial, it should be carefully audited for security issues and logical exploits. 
-
-Another important thing that should be kept secure is a user's private key. In most cases, only Functional Call keys should be directly accessed from a client, and Full Access keys should be kept in a wallet. However, in some cases a Full Access key might have to be used directly (e.g. in case of server transaction signing scenarios). In such a case, it must be kept in a secure location and treated as a most sensitive secret, since its compromise might lead to a full account takeover.
-
-In general, before deploying an application to the NEAR mainnet, it’s a good idea to conduct a full security audit.
+두 가지 유형의 테스트를 모두 해보는 것은 스마트 컨트랙트의 지속적인 품질을 보장하기 위해 똑같이 중요합니다. 특히 컨트랙트 업그레이드는 일반적으로 수행하기 쉽지 않기 때문입니다(DAO에서 업그레이드 자체는 커뮤니티 투표에 의해 관리될 수 있음을 기억하세요).
 
 
-### Scalability and Availability
+## 비기능적 문제
 
-Another concern is scalability and availability of a solution. There are a lot of ways to scale traditional servers, but how do we scale our blockchain and make sure it’s always available? 
+마지막으로 아키텍처에 대한 중요한 비기능적 문제를 다루겠습니다.
 
-Since blockchain is decentralized, it provides us with high-availability by design, and NEAR provides a great scalability by employing Proof-of-Stake consensus and sharding. However, in order to interact with a network, we need an RPC Node. NEAR maintains publicly available nodes for its networks (listed [here](https://rpc.mainnet.near.org/status)), but it doesn't provide any performance or availability guarantees for them. So, in order to make sure our architecture is scalable and fault tolerant, we need to maintain our own cluster of RPC nodes, typically behind a load balancer.
+
+### 보안
+
+전체 개발 과정에서 기억해야 할 가장 중요한 것은 보안, 특히 스마트 컨트랙트의 보안입니다. 그들의 코드는 공개되어 있고 업그레이드 절차가 간단하지 않기 때문에 보안 문제 및 논리적 악용에 대해 주의 깊게 감사해야 합니다.
+
+보안을 유지해야 하는 또 다른 중요한 사항은 사용자의 개인 키입니다. 대부분의 경우 함수 호출 키만 클라이언트에서 직접 액세스해야 하며, 전체 액세스 키는 지갑에 보관해야 합니다. 그러나 경우에 따라 전체 액세스 키를 직접 사용해야 할 수도 있습니다(예: 서버 트랜잭션 서명 시나리오의 경우). 이러한 경우 보안이 침해되면 완전한 계정 탈취로 이어질 수 있으므로 안전한 위치에 보관하고 가장 민감한 비밀로 취급해야 합니다.
+
+일반적으로 NEAR 메인넷에 어플리케이션을 배포하기 전에 전체 보안 감사를 수행하는 것이 좋습니다.
+
+
+### 확장성 및 가용성
+
+또 다른 관심사는 솔루션의 확장성과 가용성입니다. 기존 서버를 확장하는 방법은 많지만, 블록체인을 확장하고 항상 사용할 수 있도록 하려면 어떻게 해야 할까요?
+
+블록체인은 분산되어 있기 때문에 설계상 높은 가용성을 제공하며, NEAR는 Proof-of-Stake 합의 및 샤딩을 사용하여 뛰어난 확장성을 제공합니다. 그러나 네트워크와 상호 작용하려면 RPC 노드가 필요합니다. NEAR는 네트워크에 대해 공개적으로 사용 가능한 노드([여기](https://rpc.mainnet.near.org/status)에 나열 됨)를 제공하지만, 이에 대한 성능 또는 가용성을 보장하지 않습니다. 따라서 아키텍처가 확장 가능하고 내결함성이 있는지 확인하려면 일반적으로 로드 밸런서 뒤에 자체 RPC 노드 클러스터를 유지 관리해야 합니다.
 
 
 <div align="center">
 <img src="/docs/assets/web3/nfts-25.png" alt="image" width="150" />
 </div>
 
+RPC 노드를 설정하는 방법에 대한 정보는 [여기](https://near-nodes.io/rpc)에서 볼 수 있습니다.
 
-Information on how to set up an RPC node is available [here](https://near-nodes.io/rpc). 
-
-Also, to guarantee availability and scalability of a whole system, all used third-party services should be reviewed as well. For example, if IPFS is used as a storage for NFTs, pinning nodes and IPFS gateway should be scalable and fault tolerant.
-
-
-### Costs
-
-When building a Web 3 application, it’s important to remember that cost calculation is somewhat different from Web 2 applications. Additional costs can be broken down into several categories:
+또한 전체 시스템의 가용성과 확장성을 보장하기 위해 사용된 모든 타사 서비스도 검토해야 합니다. 예를 들어 IPFS가 NFT의 스토리지로 사용되는 경우 피닝 노드와 IPFS 게이트웨이는 확장 가능하고 내결함성이 있어야 합니다.
 
 
+### 비용
 
-1. Smart Contracts deployment costs. While deploying on NEAR testnet or local environment, it’s essentially free of charge. However, when deploying into the mainnet, developers will be charged for storage and gas cost. Gas cost for a contract deployment transaction is relatively small (around 0.04$ at the time of writing). On the other hand, storage costs can be quite substantial, e.g. a 150KB contract (compiled) will cost around 20$.
-2. Smart Contracts usage cost. In Web 3, users pay for smart contract calls, so in order to make sure users aren’t discouraged to interact with a contract due to a high cost, it should be optimized to incur the lowest cost possible. This is especially important for storage costs, since gas is relatively cheap.
-3. If we want to use a privately hosted RPC node for better availability, its operational costs should be taken into account as well. Cost breakdown can be found [here](https://near-nodes.io/rpc/hardware-rpc), a rough estimation is about 290$ per node per month (and remember that we need at least 2 nodes for redundancy).
-4. Cost of a privately hosted indexer (if it’s used). More information can be found [here](/concepts/advanced/near-indexer-framework), a rough estimation for the costs is about 100$ per month.
-5. Third party services costs. 
+Web3 어플리케이션을 구축할 때 비용 계산이 Web2 애플리케이션과 다소 다르다는 점을 기억하는 것이 중요합니다. 추가 비용은 여러 범주로 나눌 수 있습니다.
+
+
+
+1. 스마트 컨트랙트 배포 비용. NEAR 테스트넷 또는 로컬 환경에 배포하는 동안 기본적으로 무료입니다. 그러나 메인넷에 배포할 때 개발자에게 스토리지 및 가스 비용이 청구됩니다. 컨트랙트 배포 트랜잭션의 가스 비용은 상대적으로 작습니다(작성 ​​당시 약 0.04$). 반면에 스토리지 비용은 상당할 수 있습니다. 예를 들어 150KB 컨트랙트(컴파일)의 비용은 약 20$입니다.
+2. 스마트 컨트랙트 사용 비용. Web3에서 사용자는 스마트 컨트랙트 호출에 대해 비용을 지불하므로 사용자가 높은 비용으로 인해 컨트랙트와 상호 작용하는 데 낙담하지 않도록 하려면 가능한 가장 낮은 비용이 발생하도록 최적화해야 합니다. 이것은 가스가 상대적으로 저렴하기 때문에 스토리지 비용에 특히 중요합니다.
+3. 더 나은 가용성을 위해 비공개로 호스팅되는 RPC 노드를 사용하려면 운영 비용도 고려해야 합니다. [여기](https://near-nodes.io/rpc/hardware-rpc)에서 비용 내역을 확인할 수 있습니다. 대략적인 추정치는 매월 노드당 약 290$입니다(redundancy을 위해 최소 2개의 노드가 필요함을 기억하십시오).
+4. 비공개로 호스팅되는 인덱서의 비용(사용되는 경우). More information can be found [here](/concepts/advanced/near-indexer-framework), a rough estimation for the costs is about 100$ per month.
+5. 타사 서비스 비용. 

@@ -1,145 +1,138 @@
 ---
 id: minecraft-nfts
-title: Create NFTs in Minecraft
+title: Minecraft에서 NFT 만들기
 sidebar_label: Minecraft NFTs
 ---
 
-> In this tutorial you'll learn how to take your custom Minecraft creations and mint the schematics into NFTs on the NEAR blockchain!
+> 이 튜토리얼에서는 맞춤형 Minecraft 제작물을 가져와서, NEAR 블록체인의 NFT로 발행하는 방법을 배웁니다!
 
-## Overview
+## 개요
 
-This tutorial will run you through minting Minecraft structures of any size onto the NEAR blockchain. It will allow you to copy and paste the designs into your own worlds. For this, we will be using WorldEdit to download and read the schematics and we'll put them on-chain using [IPFS](https://ipfs.io/).
+이 튜토리얼은 모든 크기의 Minecraft 도면을 NEAR 블록체인에 발행하는 과정을 안내합니다. 마인크래프트 내 디자인을 복사하여 자신의 세계에 붙여넣을 수 있습니다. 이를 위해 WorldEdit를 사용하여 설계도를 다운로드하고 읽을 것이며, [IPFS](https://ipfs.io/)를 사용하여 온체인에 배치할 것입니다.
 
-## Prerequisites
+## 전제 조건
 
-:::info
-It is recommended that you first complete the introductory **[minting NFTs tutorial](/tutorials/nfts/minting-nfts)**
-:::
+:::info It is recommended that you first complete the introductory **[minting NFTs tutorial](/tutorials/nfts/minting-nfts)** :::
 
-To complete this tutorial successfully, you'll need:
+이 튜토리얼을 성공적으로 완료하려면 다음이 필요합니다.
 
-- [A Minecraft account](https://www.minecraft.net/)
-- [WorldEdit installed](https://worldedit.enginehub.org/en/latest/install/)
-- [A NEAR account](#wallet)
-- [NEAR command-line interface](/tools/near-cli#setup) (`near-cli`)
+- [Minecraft 계정](https://www.minecraft.net/)
+- [WorldEdit 설치](https://worldedit.enginehub.org/en/latest/install/)
+- [NEAR 계정](#wallet)
+- [NEAR 명령줄 인터페이스](/tools/near-cli#setup) (`near-cli`)
 
-## Creating a Schematic
+## 도면 만들기
 
-In this section, we'll be creating the Minecraft schematic to put on chain.
+이 섹션에서는 체인에 넣을 Minecraft 도면을 만들 것입니다.
 
-### Setup
+### 설정
 
-- Once you have [WorldEdit](https://worldedit.enginehub.org/en/latest/install/) installed and Minecraft loaded up, let's check if WorldEdit is working properly by running:
+- [WorldEdit](https://worldedit.enginehub.org/en/latest/install/)이 설치되고 Minecraft가 로드되면, 다음을 실행하여 WorldEdit가 제대로 작동하는지 확인합니다.
 
 ```bash
 //pos1
 ```
 
-If WorldEdit is properly installed, it should output `First position set to (X, Y, Z).` where X, Y, and Z are coordinates.
+WorldEdit이 제대로 설치된 경우, 이는 `First position set to (X, Y, Z)`를 출력해야 합니다. X, Y 및 Z는 좌표를 의미합니다.
 
-For this tutorial, we will be minting a small village house. To follow along, choose any structure that you'd like to mint as shown below:
+이 튜토리얼에서는 작은 마을 집을 만들 것입니다. 따라가려면 아래와 같이 발행하고자 하는 구조를 선택하세요.
 
 ![Village House Minecraft](/docs/assets/nfts/village-house-minecraft.png)
 
-You'll then want to choose the boundaries of the structure that you'd like to copy. We will turn these into schematics which will be placed on chain for you or others to download and paste in your own worlds.
+그런 다음 복사하려는 구조의 경계를 선택해야 합니다. 우리는 이것을 당신이나 다른 사람들이 다운로드하여 당신의 Minecraft 세계에 붙여넣을 수 있도록, 체인에 배치될 도면으로 바꿀 것입니다.
 
-- To do this, we'll need to outline the boundaries of the build using WorldEdit. Stand in the bottom left corner of your build and run:
+- 이렇게 하려면 WorldEdit을 사용하여 빌드의 경계를 지정해야 합니다. 빌드의 왼쪽 하단 모서리에 서서 다음을 실행합니다.
 
 ```bash
 //pos1
 ```
 
-- You can then move to the top right corner and run:
+- 그런 다음 오른쪽 상단으로 이동하여 다음을 실행할 수 있습니다.
 
 ```bash
 //pos2
 ```
 
-Setting these two positions has now created a cube around your build.
+이 두 위치를 설정하면 빌드 주변에 큐브가 생성됩니다.
 
-- We can now copy the contents of that build by running:
+- 이제 다음을 실행하여 해당 빌드의 내용을 복사할 수 있습니다.
 
 ```bash
 //copy
 ```
 
-The output should look something like this:
+출력은 다음과 같아야 합니다.
 
 ![Copy Chat Message](/docs/assets/nfts/copy-chat-message-minecraft.png)
 
-:::info TIP
-Remember to note the position of your player when copying. If you copy the build and lets say you're standing on the roof, when you paste the build it will paste the build in a way that will result in you standing on the roof.
+:::info 팁
+복사할 때 플레이어의 위치를 ​​기록해 두십시오. 빌드를 복사하고 지붕에 서 있다고 가정하면, 빌드를 붙여넣을 때 지붕에 서 있는 방식으로 빌드를 붙여넣습니다.
 :::
 
-### Sanity Check
+### 온전성 검사
 
-We can check and see if our build is fine by pasting what we just copied elsewhere in our world.
+방금 복사한 것을 세계의 다른 곳에 붙여넣어 빌드가 괜찮은지 확인하고 확인할 수 있습니다.
 
-- Go to a location that you would like to paste the build and run:
+- 빌드를 붙여넣을 위치로 이동하고 다음을 실행합니다.
 
 ```bash
 //paste
 ```
 
-In the example below, we pasted the village house floating above a coral reef biome. You should also see a response notifying you that the clipboard has been pasted. (See example below)
+아래 예에서는 산호초 바이옴 위에 떠 있는 마을 집을 붙여넣었습니다. 클립보드를 붙여넣었다는 응답도 표시되어야 합니다. (아래 예시 참조)
 
 ![Pasted Minecraft House](/docs/assets/nfts/pasted-minecraft-house.png)
 
-### Creating the Schematics File
+### 도면 파일 생성
 
-When you're happy with the build you've just copied and pasted, it's time to create the schematic file that we'll mint into an NFT. To do this we'll run a WorldEdit command that will save the schematic file on our local machine.
+방금 복사하여 붙여넣은 빌드가 만족스러우면 NFT에 생성할 도면 파일을 만들 차례입니다. 이를 위해 로컬 장치에 도면 파일을 저장하는 WorldEdit 명령을 실행합니다.
 
-- To do this, run the command `schematic save FILE_NAME` replacing `FILE_NAME` with a name of your choosing.
+- 이렇게 하려면 선택한 이름으로 `FILE_NAME`을 대체하여 `schematic save FILE_NAME` 명령을 실행합니다.
 
-This will save the file to your Minecraft folder with under `minecraft/config/worldedit/schematics` witha `.schem` extension.
+그러면 Minecraft 폴더 내 `minecraft/config/worldedit/schematics`에 확장자가 `.schem`인 파일이 저장됩니다.
 
-- Now test your file by loading the schematic we just saved using `schematic load FILE_NAME`.
+- 이제 `schematic load FILE_NAME`를 사용하여, 방금 저장한 도면을 로드하여 파일을 테스트합니다
 
-This will load the schematic to our clipboard and we're free to paste it in our world.
+이렇게 하면 도면이 클립보드에 로드되고, 자유롭게 붙여넣을 수 있습니다.
 
-## Minting the Schematic
+## 도면 발행하기
 
-In this section, we'll mint the schematics file, we've just created and put it on the blockchain using IPFS and web3.storage. In order to proceed, you need to locate the `FILE_NAME.schem` we created in the last section. This file can be found in your Minecraft folder under `minecraft/config/worldedit/schematics`. The location of your minecraft folder differs depending on your OS.
+이 섹션에서는 IPFS 및 web3.storage를 사용하여, 방금 생성하고 블록체인에 배치한 도면 파일을 만들 것입니다. 계속 진행하려면, 마지막 섹션에서 생성한  `FILE_NAME.schem`을 찾아야 합니다. 이 파일은 Minecraft 폴더 내 `minecraft/config/worldedit/schematics`에서 찾을 수 있습니다. minecraft 폴더의 위치는 OS에 따라 다를 수 있습니다.
 
-### Uploading the schematic
+### 도면 업로드
 
-To upload the schematic, we are going to use the free [web3.storage](https://web3.storage/) service built for storing off-chain data.
-Web3.storage offers free decentralized storage and bandwidth on [IPFS](https://ipfs.io/) and [Filecoin](https://filecoin.io/).
+도면을 업로드하기 위해, 오프체인 데이터를 저장하기 위한 무료 [web3.storage](https://web3.storage/) 서비스를 사용할 것입니다. Web3.storage는 [IPFS](https://ipfs.io/) 및 [Filecoin](https://filecoin.io/)에서 무료 탈중앙화 스토리지 및 대역폭을 제공합니다.
 
-#### Steps
+#### 단계
 
 1. Register an account and log in to [web3.storage](https://web3.storage/) either via email or your GitHub.
 
-2. Go to the [Files](https://web3.storage/) section, and click on the [Upload more Files](https://web3.storage/) button.
+2. [파일](https://web3.storage/) 섹션 으로 이동하여 [추가 파일 업로드](https://web3.storage/) 버튼을 클릭합니다.
 
    ![web3.storage](/docs/assets/nfts/web3-storage-upload.png)
 
-3. Once you have uploaded your file, you'll get a unique `CID` for your content, and a URL similar to:
+3. 파일을 업로드하면, 컨텐츠에 대한 고유한 `CID`와, 다음과 같은 URL이 표시됩니다.
    ```
    https://bafybeidadhfilezx23dcdaueo3bjuafqeehokw33vyepkjtppigorrhbpy.ipfs.dweb.link/
    ```
 
-:::info
-See the [web3.storage docs](https://docs.web3.storage/) for information on uploading multiple files and available API endpoints.
-:::
+:::info See the [web3.storage docs](https://docs.web3.storage/) for information on uploading multiple files and available API endpoints. :::
 
-### Interacting With the Contract
+### 컨트랙트와 상호 작용
 
-NEAR has already deployed a contract to the account `nft.examples.testnet` which allows users to freely mint tokens. This is the account we'll be interacting with to mint our NFTs. Alternatively, if you've deployed a contract when following the original tutorial, you can use that as well.
+NEAR는 이미 사용자가 토큰을 자유롭게 발행할 수 있는 `nft.examples.testnet` 컨트랙트를 계정에 배포했습니다. 이는 우리가 NFT를 발행하기 위해 상호 작용할 계정입니다. 또한, 원래 튜토리얼 따를 때 컨트랙트를 배포한 경우에도 이를 사용할 수 있습니다.
 
-:::info
-We'll be using the IPFS link we got in step three of the uploading process above as the media value when calling `nft_mint`.
-:::
+:::info `nft_mint`를 호출할 때 위의 업로드 프로세스 3단계에서 얻은 IPFS 링크를 미디어 값으로 사용합니다. :::
 
-- Run the following command and replace the `receiver_id` field and the `--accountId` flag with the account ID you're [logged into](/tools/near-cli#near-login) with NEAR CLI:
+- 다음 명령을 실행하고, NEAR CLI를 통해 `receiver_id` 필드와 `--accountId` 플래그를 [로그인한](/tools/near-cli#near-login) 계정 ID로 바꿉니다.
 
 ```bash
 near call nft.examples.testnet nft_mint '{"token_id": "my-token-unique-id", "receiver_id": "YOUR_ACCOUNT", "metadata": { "title": "YOUR NFT TITLE", "description": "YOUR NFT DESCRIPTION", "media": "https://bafybeidadhfilezx23dcdaueo3bjuafqeehokw33vyepkjtppigorrhbpy.ipfs.dweb.link/", "copies": 1}}' --accountId YOUR_ACCOUNT --deposit 0.1
 ```
-- Be sure to replace the title, description and media URL with your own.
+- 제목, 설명 및 미디어 URL을 자신의 것으로 바꾸세요.
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -167,14 +160,14 @@ near call nft.examples.testnet nft_mint '{"token_id": "my-token-unique-id", "rec
 </p>
 </details>
 
-- To view tokens owned by an account on the `example-nft` contract, you can call the contract with the following `near-cli` command:
+- `example-nft` 컨트랙트에서 계정이 소유한 토큰을 보려면, 다음 `near-cli` 명령을 통해 컨트랙트를 호출할 수 있습니다.
 
 ```bash
 near view nft.examples.testnet nft_tokens_for_owner '{"account_id": "YOUR_ACCOUNT"}'
 ```
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -204,24 +197,24 @@ near view nft.examples.testnet nft_tokens_for_owner '{"account_id": "YOUR_ACCOUN
 </p>
 </details>
 
-## Using the Village Schematic
+## 마을 도면 사용
 
-Now that you've uploaded your schematic to the blockchain, all someone would need to do to paste it in their own world would be to download the `*.schem` file associated with the IPFS link we minted the NFT with and place it in their schematics folder.
+이제 도면을 블록체인에 업로드했으므로, 누군가 이를 자신의 세계에 붙여넣기 위해 해야 할 일은 NFT를 생성한 IPFS 링크와 관련된 `*.schem` 파일을 다운로드하여 도면 폴더에 배치하는 것입니다.
 
-As a test, we've minted an NFT that contains the village schematic we've been working with so that you can download it and paste it in your world.
+테스트로 우리가 작업한 마을 도면을 포함하는 NFT를 생성하고, 이를 다운로드하여 자신의 세계에 붙여넣을 수 있습니다.
 
-### Getting the Schematics File
+### 도면 파일 가져오기
 
-The first thing you'll need to do is view the metadata for the token we've minted that contains the IPFS link to the village schematic. We've minted a token with the ID `village-schematic` under the account `village-schematic.testnet`.
+가장 먼저 해야 할 일은 마을 도면에 대한 IPFS 링크를 포함하는 발행한 토큰의 메타데이터를 보는 것입니다. 현재 우리는 `village-schematic.testnet` 계정 내의 `village-schematic` ID로 토큰을 발행했습니다.
 
-- To get the media link, run the following command:
+- 미디어 링크를 가져오려면 다음 명령을 실행합니다.
 
 ```bash
 near view nft.examples.testnet nft_tokens_for_owner '{"account_id": "village-schematic.testnet"}'
 ```
 
 <details>
-<summary>Expected response: </summary>
+<summary>예상 응답: </summary>
 <p>
 
 ```bash
@@ -251,29 +244,29 @@ near view nft.examples.testnet nft_tokens_for_owner '{"account_id": "village-sch
 </p>
 </details>
 
-- You can then take the media link and paste it into your browser. It should send you to a page that looks similar to this:
+- 그런 다음, 미디어 링크를 가져와 브라우저에 붙여넣을 수 있습니다. 다음과 같은 페이지로 이동해야 합니다.
 
 ![IPFS Village Schem](/docs/assets/nfts/IPFS-village-schem.png)
 
-- If you click on the file called `village-house.schem`, it will download the file.
-- You can then copy the schematics file and paste it into your `minecraft/config/worldedit/schematics` folder.
+- `village-house.schem`이라는 파일을 클릭하면, 해당 파일을 다운로드할 수 있습니다.
+- 그런 다음, 도면 파일을 복사하여 `minecraft/config/worldedit/schematics` 폴더에 붙여넣습니다.
 
-### Loading the Schematics File in Minecraft
+### Minecraft에서 도면 파일 불러오기
 
-- After you've pasted the schematics file into the `minecraft/config/worldedit/schematics` folder, you can then load the schematic into your clipboard by running the following command in your minecraft world:
+- 도면 파일을 `minecraft/config/worldedit/schematics` 폴더에 붙여넣은 후, Minecraft 세계에서 다음 명령을 실행하여 도면을 클립보드에 로드할 수 있습니다.
 
 ```bash
 //schematics load village-house
 ```
 
-- You can now paste the file anywhere in your world by simply using the `//paste` command and voila! You should see something similar to this:
+- 이제 간단하게 `//paste` 명령을 사용하여 세계 어디에나 파일을 붙여넣을 수 있습니다! 다음과 같은 내용이 표시됩니다.
 
 ![Final Village Pasting](/docs/assets/nfts/final-village-pasting.png)
 
-Congratulations! You've just learned how to mint a Mincraft schematic NFT and load it into your world!
+축하합니다! 당신은 방금 Minecraft 도면 NFT를 만들고 그것을 당신의 세계에 로드하는 방법을 배웠습니다!
 
-## Versioning for this article
+## 문서 버전 관리
 
-At the time of this writing, this example works with the following versions:
+이 글을 쓰는 시점에서 이 예제는 다음 버전에서 작동합니다.
 
 - near-cli: `2.1.1`

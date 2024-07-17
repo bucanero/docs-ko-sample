@@ -1,8 +1,9 @@
 ---
 id: approvals
-title: Approvals
-sidebar_label: Approvals
+title: 승인
+sidebar_label: 승인
 ---
+
 import {Github} from "@site/src/components/codetabs"
 
 In this tutorial you'll learn the basics of an approval management system which will allow you to grant others access to transfer NFTs on your behalf.
@@ -13,28 +14,26 @@ This is the backbone of all NFT marketplaces and allows for some complex yet bea
 cd nft-contract-basic/
 ```
 
-:::tip
-If you wish to see the finished code for this _Approval_ tutorial, you can find it on the `nft-contract-approval/` folder.
-:::
+:::tip If you wish to see the finished code for this _Approval_ tutorial, you can find it on the `nft-contract-approval/` folder. :::
 
 ---
 
-## Introduction
+## ## 소개
 
 Up until this point you've created a smart contract that allows users to mint and transfer NFTs as well as query for information using the [enumeration standard](https://nomicon.io/Standards/Tokens/NonFungibleToken/Enumeration). As we've been doing in the previous tutorials, let's break down the problem into smaller, more digestible, tasks.
 
 Let's first define some of the end goals that we want to accomplish as per the [approval management](https://nomicon.io/Standards/Tokens/NonFungibleToken/ApprovalManagement) extension of the standard. We want a user to have the ability to:
 
-- Grant other accounts access to transfer their NFTs on a per token basis.
-- Check if an account has access to a specific token.
-- Revoke a specific account the ability to transfer an NFT.
-- Revoke **all** other accounts the ability to transfer an NFT.
+- 다른 계정에 토큰별로 NFT를 전송할 수 있는 액세스 권한을 부여합니다.
+- 계정에 특정 토큰에 대한 액세스 권한이 있는지 확인합니다.
+- 특정 계정의 NFT 전송 승인을 취소합니다.
+- NFT를 전송할 수 있는 다른 **모든** 계정의 승인을 취소합니다.
 
 If you look at all these goals, they are all on a per token basis. This is a strong indication that you should change the `Token` struct which keeps track of information for each token.
 
 ---
 
-## Allow an account to transfer your NFT
+## 계정에서 NFT 전송 허용
 
 Let's start by trying to accomplish the first goal. How can you grant another account access to transfer an NFT on your behalf?
 
@@ -44,7 +43,7 @@ Before transferring, you would need to clear the list of approved accounts since
 
 <hr className="subsection" />
 
-### The problem {#the-problem}
+### 문제점 {#the-problem}
 
 On the surface, this would work, but if you start thinking about the edge cases, some problems arise. Often times when doing development, a common approach is to think about the easiest and most straightforward solution. Once you've figured it out, you can start to branch off and think about optimizations and edge cases.
 
@@ -81,7 +80,7 @@ If Mike then comes along and purchases the NFT for only 1 NEAR on marketplace B,
 
 <hr className="subsection" />
 
-### The solution {#the-solution}
+### 해결책 {#the-solution}
 
 Now that we've identified a problem with the original solution, let's think about ways that we can fix it. What would happen now if, instead of just keeping track of a list of approved accounts, you introduced a specific ID that went along with each approved account. The new approved accounts would now be a map instead of a list. It would map an account to it's `approval id`.
 
@@ -128,7 +127,7 @@ The marketplace is inserted into the map and the next approval ID is incremented
 
 <hr className="subsection" />
 
-### Expanding the `Token` and `JsonToken` structs
+### `Token` 및 `JsonToken` 구조체 확장
 
 Now that you understand the proposed solution to the original problem of allowing an account to transfer your NFT, it's time to implement some of the logic. The first thing you should do is modify the `Token` and `JsonToken` structs to reflect the new changes. Let's switch over to the `nft-contract-basic/src/metadata.rs` file:
 
@@ -140,7 +139,7 @@ You'll then need to initialize both the `approved_account_ids` and `next_approva
 
 <hr className="subsection" />
 
-### Approving accounts
+### 계정 승인
 
 Now that you've added the support for approved account IDs and the next approval ID on the token level, it's time to add the logic for populating and changing those fields through a function called `nft_approve`. This function should approve an account to have access to a specific token ID. Let's move to the `nft-contract-basic/src/approval.rs` file and edit the `nft_approve` function:
 
@@ -152,112 +151,112 @@ After the assertion comes back with no problems, you get the token object and ma
 
 You then calculate how much storage is being used by adding that new account to the map and increment the tokens `next_approval_id` by 1. After inserting the token object back into the `tokens_by_id` map, you refund any excess storage.
 
-You'll notice that the function contains an optional `msg` parameter. This message can be used by NFT marketplaces. If a message was provided into the function, you're going to perform a cross contract call to the account being given access. This cross contract call will invoke the `nft_on_approve` function which will parse the message and act accordingly.
+You'll notice that the function contains an optional `msg` parameter. This message can be used by NFT marketplaces. 함수에 메시지가 있는 경우, 액세스 권한이 부여된 계정에 대한 교차 컨트랙트 호출(Cross Contract Call)을 수행합니다. 이 교차 컨트랙트 호출은 메시지를 구문 분석하고 그에 따라 작동하는 `nft_on_approve` 함수를 호출합니다.
 
-It is up to the approving person to provide a properly encoded message that the marketplace can decode and use. This is usually done through the marketplace's frontend app which would know how to construct the `msg` in a useful way.
+It is up to the approving person to provide a properly encoded message that the marketplace can decode and use. 이것은 일반적 으로 유용한 방식으로 `msg`를 구성하는 방법을 알고 있는 마켓플레이스의 프론트엔드 앱을 통해 수행됩니다.
 
 <hr className="subsection" />
 
-### Internal functions
+### 내부 함수
 
-Now that the core logic for approving an account is finished, you need to implement the `assert_at_least_one_yocto` and `bytes_for_approved_account` functions. Move to the `nft-contract/src/internal.rs` file and copy the following function right below the `assert_one_yocto` function.
+이제 계정 승인을 위한 핵심 로직이 완료되었으므로 `assert_at_least_one_yocto` 및 `bytes_for_approved_account` 함수를 구현해야 합니다. `nft-contract/src/internal.rs` 파일로 이동하여 `assert_one_yocto` 함수 바로 아래에 다음 함수를 복사합니다.
 
 <Github language="rust" start="49" end="55" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/internal.rs" />
 
-Next, you'll need to copy the logic for calculating how many bytes it costs to store an account ID. Place this function at the very top of the page:
+다음으로 계정 ID를 저장하는 데 드는 비용을 계산하는 로직을 복사해야 합니다. 이 함수를 페이지 맨 위에 두세요.
 
 <Github language="rust" start="1" end="9" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/internal.rs" />
 
-Now that the logic for approving accounts is finished, you need to change the restrictions for transferring.
+이제 계정 승인 로직이 완료되었으므로, 전송 제한을 변경해야 합니다.
 
 
-#### Changing the restrictions for transferring NFTs
+#### NFT 전송 제한 변경
 
-Currently, an NFT can **only** be transferred by its owner. You need to change that restriction so that people that have been approved can also transfer NFTs. In addition, you'll make it so that if an approval ID is passed, you can increase the security and check if both the account trying to transfer is in the approved list **and** they correspond to the correct approval ID. This is to address the problem we ran into earlier.
+현재 NFT는 소유자**만** 전송할 수 있습니다. 승인된 사람들도 NFT를 전송할 수 있도록 해당 제한을 변경해야 합니다. 또한 승인 ID가 통과되면, 보안을 강화하고, 이체하려는 계정이 모두 승인 목록에 있으며 올바른 승인 ID에 해당하는지 확인할 수 있도록 만들 것 입니다. 이것은 이전에 발생한 문제를 해결하기 위한 것입니다.
 
-In the `internal.rs` file, you need to change the logic of the `internal_transfer` method as that's where the restrictions are being made. Change the internal transfer function to be the following:
+`internal.rs` 파일에서 제한이 적용되는 `internal_transfer` 메서드의 로직을 변경해야 합니다. 내부 전송 함수를 다음과 같이 변경합니다.
 
 <Github language="rust" start="130" end="227" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/internal.rs" />
 
-This will check if the sender isn't the owner and then if they're not, it will check if the sender is in the approval list. If an approval ID was passed into the function, it will check if the sender's actual approval ID stored on the contract matches the one passed in.
+보낸 사람이 소유자가 아닌지 확인한 다음, 소유자가 아니면 보낸 사람이 승인 목록에 있는지 확인합니다. 승인 ID가 함수에 전달된 경우 컨트랙트에 저장된 발신자의 실제 승인 ID가 전달된 것과 일치하는지 확인합니다.
 
 <hr className="subsection" />
 
-#### Refunding storage on transfer
+#### 전송 시 스토리지 환불
 
-While you're in the internal file, you're going to need to add methods for refunding users who have paid for storing approved accounts on the contract when an NFT is transferred. This is because you'll be clearing the `approved_account_ids` map whenever NFTs are transferred and so the storage is no longer being used.
+내부 파일에 있는 동안, NFT가 전송될 때 컨트랙트에 승인된 계정을 저장하기 위해 지불한 사용자를 환불하는 방법을 추가해야 합니다. 이는 NFT가 전송될 때마다 `approved_account_ids` 객체를 지우고, 스토리지가 더 이상 사용되지 않기 때문입니다.
 
-Right below the `bytes_for_approved_account_id` function, copy the following two functions:
+`bytes_for_approved_account_id` 함수 바로 아래에서, 다음 두 함수를 복사합니다.
 
 <Github language="rust" start="11" end="29" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/internal.rs" />
 
-These will be useful in the next section where you'll be changing the `nft_core` functions to include the new approval logic.
+이는 새 승인 로직을 포함하도록 `nft_core` 함수를 변경하는 다음 섹션에서 유용합니다.
 
 <hr className="subsection" />
 
-### Changes to `nft_core.rs`
+### `nft_core.rs` 내 변경 사항
 
-Head over to the `nft-contract-basic/src/nft_core.rs` file and the first change that you'll want to make is to add an `approval_id` to both the `nft_transfer` and `nft_transfer_call` functions. This is so that anyone trying to transfer the token that isn't the owner must pass in an approval ID to address the problem seen earlier. If they are the owner, the approval ID won't be used as we saw in the `internal_transfer` function.
+Head over to the `nft-contract-basic/src/nft_core.rs` file and the first change that you'll want to make is to add an `approval_id` to both the `nft_transfer` and `nft_transfer_call` functions. 이는 소유자가 아닌 토큰을 전송하려는 사람이 위에서 본 문제를 해결하기 위해 승인 ID를 전달해야 하기 때문입니다. 소유자인 경우 `internal_transfer` 함수에서 본 승인 ID가 사용되지 않습니다.
 
 <Github language="rust" start="8" end="29" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/nft_core.rs" />
 
-You'll then need to add an `approved_account_ids` map to the parameters of `nft_resolve_transfer`. This is so that you can refund the list if the transfer went through properly.
+그런 다음 `nft_resolve_transfer`의 매개변수에 `approved_account_ids` 맵을 추가해야 합니다. 이는 전송이 제대로 이루어졌을 경우 목록을 환불할 수 있도록 하기 위한 것입니다.
 
 <Github language="rust" start="47" end="66" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/nft_core.rs" />
 
-Moving over to `nft_transfer`, the only change that you'll need to make is to pass in the approval ID into the `internal_transfer` function and then refund the previous tokens approved account IDs after the transfer is finished
+`nft_transfer` 함수로 이동해서, 승인 ID를 `internal_transfer` 함수에 전달한 다음, 전송이 완료된 후 이전 토큰 승인 계정 ID를 환불하기만 하면 됩니다.
 
 <Github language="rust" start="71" end="99" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/nft_core.rs" />
 
-Next, you need to do the same to `nft_transfer_call` but instead of refunding immediately, you need to attach the previous token's approved account IDs to `nft_resolve_transfer` instead as there's still the possibility that the transfer gets reverted.
+다음으로 `nft_transfer_call`에 대해 동일한 작업을 수행해야 하지만, 전송이 취소될 가능성이 있기 때문에, 즉시 환불하는 대신 이전 토큰의 승인된 계정 ID를 `nft_resolve_transfer`에 첨부해야 합니다.
 
 <Github language="rust" start="101" end="158" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/nft_core.rs" />
 
-You'll also need to add the tokens approved account IDs to the `JsonToken` being returned by `nft_token`.
+또한 `nft_token`에서 반환되는 `JsonToken` 토큰에 승인된 계정 ID를 추가해야 합니다.
 
 <Github language="rust" start="160" end="176" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/nft_core.rs" />
 
-Finally, you need to add the logic for refunding the approved account IDs in `nft_resolve_transfer`. If the transfer went through, you should refund the owner for the storage being released by resetting the tokens `approved_account_ids` field. If, however, you should revert the transfer, it wouldn't be enough to just not refund anybody. Since the receiver briefly owned the token, they could have added their own approved account IDs and so you should refund them if they did so.
+마지막으로 `nft_resolve_transfer`에서 승인된 계정 ID를 환불하기 위한 로직을 추가해야 합니다. 이전이 완료되면 토큰 `approved_account_ids` 필드를 재설정하여 해제되는 스토리지에 대해 소유자에게 환불해야 합니다. 그러나 전송을 되돌려야 하는 경우 아무에게도 환불하지 않는 것만으로는 충분하지 않습니다. 수신자가 토큰을 잠시 소유했기 때문에 승인된 자체 계정 ID를 추가할 수 있기 때문입니다. 따라서 그렇게 한 경우, 환불해야 합니다.
 
 <Github language="rust" start="181" end="279" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/nft_core.rs" />
 
-With that finished, it's time to move on and complete the next task.
+완료되면 다음 작업으로 이동하여 완료할 시간입니다.
 
 ---
 
-## Check if an account is approved
+## 계정 승인 확인
 
-Now that the core logic is in place for approving and refunding accounts, it should be smooth sailing from this point on. You now need to implement the logic for checking if an account has been approved. This should take an account and token ID as well as an optional approval ID. If no approval ID was provided, it should simply return whether or not the account is approved.
+이제 계정 승인 및 환불을 위한 핵심 로직이 마련되었으므로, 이 시점부터 원활하게 진행되어야 합니다. 이제 계정이 승인되었는지 확인하는 로직을 구현해야 합니다. 여기에는 계정 및 토큰 ID와 선택적 승인 ID가 필요합니다. 승인 ID가 제공되지 않은 경우, 계정 승인 여부를 반환해야 합니다.
 
-If an approval ID was provided, it should return whether or not the account is approved and has the same approval ID as the one provided. Let's move to the `nft-contract-basic/src/approval.rs` file and add the necessary logic to the `nft_is_approved` function.
+승인 ID가 제공된 경우, 계정이 승인되었는지 여부와 제공된 승인 ID가 동일한지 여부를 반환해야 합니다. Let's move to the `nft-contract-basic/src/approval.rs` file and add the necessary logic to the `nft_is_approved` function.
 
 <Github language="rust" start="98" end="125" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/approval.rs" />
 
-Let's now move on and add the logic for revoking an account
+이제 계속해서 계정 해지 로직을 추가해 보겠습니다.
 
 ---
 
-## Revoke an account
+## 계정 해지
 
-The next step in the tutorial is to allow a user to revoke a specific account from having access to their NFT. The first thing you'll want to do is assert one yocto for security purposes. You'll then need to make sure that the caller is the owner of the token. If those checks pass, you'll need to remove the passed in account from the tokens approved account IDs and refund the owner for the storage being released.
+튜토리얼의 다음 단계는 사용자가 자신의 NFT에 대한 액세스 권한을 갖지 못하도록 특정 계정을 취소하도록 허용하는 것입니다. 가장 먼저 해야 할 일은 보안을 위해 하나의 yocto를 첨부하도록 요구하는 것입니다. 그런 다음 호출자가 토큰의 소유자인지 확인해야 합니다. 이러한 확인 과정을 거치면, 토큰 승인 계정 ID에서 전달된 계정을 제거하고 해제되는 스토리지에 대해 소유자에게 환불해야 합니다.
 
 <Github language="rust" start="127" end="151" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/approval.rs" />
 
 ---
 
-## Revoke all accounts
+## 모든 계정 해지
 
-The final step in the tutorial is to allow a user to revoke all accounts from having access to their NFT. This should also assert one yocto for security purposes and make sure that the caller is the owner of the token. You then refund the owner for releasing all the accounts in the map and then clear the `approved_account_ids`.
+튜토리얼의 마지막 단계는 사용자가 NFT에 대한 액세스 권한이 없는 모든 계정을 취소할 수 있도록 허용하는 것입니다. 이것은 또한 보안 목적을 위해 하나의 yocto를 요구하고 호출자가 토큰의 소유자인지 확인해야 합니다. 그런 다음 소유자에게 맵의 모든 계정을 해제하는 데에 대한 금액을 환불하고, `approved_account_ids`를 비우면 됩니다.
 
 <Github language="rust" start="153" end="173" url="https://github.com/near-examples/nft-tutorial/blob/main/nft-contract-approval/src/approval.rs" />
 
-With that finished, it's time to deploy and start testing the contract.
+완료되면 컨트랙트를 배포하고 테스트를 시작할 때입니다.
 
 ---
 
-## Testing the new changes {#testing-changes}
+## 새 변경 사항 테스트 {#testing-changes}
 
-Since these changes affect all the other tokens and the state won't be able to automatically be inherited by the new code, simply redeploying the contract will lead to errors. For this reason, it's best practice to create a new account and deploy the contract there.
+이러한 변경 사항은 다른 모든 토큰에 영향을 미치고, 상태가 새 코드에 의해 자동으로 상속될 수 없기 때문에 단순히 컨트랙트를 재배포하면 오류가 발생합니다. For this reason, it's best practice to create a new account and deploy the contract there.
 
 <hr className="subsection" />
 
@@ -280,19 +279,19 @@ cargo near deploy $APPROVAL_NFT_CONTRACT_ID with-init-call new_default_meta json
 
 ### Minting {#minting}
 
-Next, you'll need to mint a token. By running this command, you'll mint a token with a token ID `"approval-token"` and the receiver will be your new account.
+다음으로 토큰을 발행해야 합니다. 이 명령을 실행하면 `"approval-token"`이라는 토큰 ID로 토큰을 발행하고, 수신자가 새 계정이 됩니다.
 
 ```bash
 near contract call-function as-transaction $APPROVAL_NFT_CONTRACT_ID nft_mint json-args '{"token_id": "approval-token", "metadata": {"title": "Approval Token", "description": "testing out the new approval extension of the standard", "media": "https://bafybeiftczwrtyr3k7a2k4vutd3amkwsmaqyhrdzlhvpt33dyjivufqusq.ipfs.dweb.link/goteam-gif.gif"}, "receiver_id": "'$APPROVAL_NFT_CONTRACT_ID'"}' prepaid-gas '100.0 Tgas' attached-deposit '0.1 NEAR' sign-as $APPROVAL_NFT_CONTRACT_ID network-config testnet sign-with-legacy-keychain send
 ```
 
-You can check to see if everything went through properly by calling one of the enumeration functions:
+열거 함수 중 하나를 호출하여 모든 것이 제대로 진행되었는지 확인할 수 있습니다.
 
 ```bash
 near contract call-function as-read-only $APPROVAL_NFT_CONTRACT_ID nft_tokens_for_owner json-args '{"account_id": "'$APPROVAL_NFT_CONTRACT_ID'", "limit": 10}' network-config testnet now
 ```
 
-This should return an output similar to the following:
+그러면 다음과 유사한 출력이 반환됩니다.
 
 ```json
 [
@@ -318,27 +317,27 @@ This should return an output similar to the following:
 ]
 ```
 
-Notice how the approved account IDs are now being returned from the function? This is a great sign! You're now ready to move on and approve an account to have access to your token.
+이제 승인된 계정 ID가 함수에서 어떻게 반환되는지 확인해 보세요. 이는 좋은 징조입니다! 이제 토큰에 액세스할 수 있도록 계정을 승인하고 진행할 준비가 되었습니다.
 
 <hr className="subsection" />
 
-### Approving an account {#approving-an-account}
+### 계정 승인 {#approving-an-account}
 
-At this point, you should have two accounts. One stored under `$NFT_CONTRACT_ID` and the other under the `$APPROVAL_NFT_CONTRACT_ID` environment variable. You can use both of these accounts to test things out. If you approve your old account, it should have the ability to transfer the NFT to itself.
+이 시점에서 두 개의 계정이 있어야 합니다. 하나는 환경 변수 `$NFT_CONTRACT_ID` 아래에 저장되고 다른 하나는 환경 변수 `$APPROVAL_NFT_CONTRACT_ID` 아래에 저장됩니다. 이 두 계정을 모두 사용하여 테스트할 수 있습니다. 이전 계정을 승인하면 NFT를 자신에게 전송할 수 있는 기능이 있어야 합니다.
 
-Execute the following command to approve the account stored under `$NFT_CONTRACT_ID` to have access to transfer your NFT with an ID `"approval-token"`. You don't need to pass a message since the old account didn't implement the `nft_on_approve` function. In addition, you'll need to attach enough NEAR to cover the cost of storing the account on the contract. 0.1 NEAR should be more than enough and you'll be refunded any excess that is unused.
+다음 명령을 실행하여 `$NFT_CONTRACT_ID` 내 저장된 계정이 당신의 `"approval-token"` ID로 NFT를 전송할 수 있도록 액세스 권한을 승인합니다. 이전 계정은 `nft_on_approve` 함수를 구현하지 않았으므로 메시지를 전달할 필요가 없습니다. 또한 컨트랙트에 계정을 저장하는 비용을 충당하기에 충분한 NEAR를 첨부해야 합니다. 0.1 NEAR 이상이어야 하며, 사용하지 않은 초과분은 환불됩니다.
 
 ```bash
 near contract call-function as-transaction $APPROVAL_NFT_CONTRACT_ID nft_approve json-args '{"token_id": "approval-token", "account_id": "'$NFT_CONTRACT_ID'"}' prepaid-gas '100.0 Tgas' attached-deposit '0.1 NEAR' sign-as $NFT_CONTRACT_ID network-config testnet sign-with-legacy-keychain send
 ```
 
-If you call the same enumeration method as before, you should see the new approved account ID being returned.
+이전과 동일한 열거 메서드를 호출하면 승인된 새 계정 ID가 반환되는 것을 볼 수 있습니다.
 
 ```bash
 near contract call-function as-read-only $APPROVAL_NFT_CONTRACT_ID nft_tokens_for_owner json-args '{"account_id": "'$APPROVAL_NFT_CONTRACT_ID'", "limit": 10}' network-config testnet now
 ```
 
-This should return an output similar to the following:
+그러면 다음과 유사한 출력이 반환됩니다.
 
 ```json
 [
@@ -366,16 +365,16 @@ This should return an output similar to the following:
 
 <hr className="subsection" />
 
-### Transferring an NFT as an approved account {#transferring-the-nft}
+### 승인된 계정으로 NFT 전송 {#transferring-the-nft}
 
-Now that you've approved another account to transfer the token, you can test that behavior. You should be able to use the other account to transfer the NFT to itself by which the approved account IDs should be reset. Let's test transferring the NFT with the wrong approval ID:
+이제 토큰을 전송하도록 다른 계정을 승인했으므로 해당 동작을 테스트할 수 있습니다. 다른 계정을 사용해서, 승인된 계정 ID를 재설정해야 하는 NFT를 자신에게 전송할 수 있어야 합니다. 잘못된 승인 ID로 NFT 전송을 테스트해 보겠습니다.
 
 ```bash
 near contract call-function as-transaction $APPROVAL_NFT_CONTRACT_ID nft_transfer json-args '{"receiver_id": "'$NFT_CONTRACT_ID'", "token_id": "approval-token", "approval_id": 1}' prepaid-gas '100.0 Tgas' attached-deposit '1 yoctoNEAR' sign-as $NFT_CONTRACT_ID network-config testnet sign-with-legacy-keychain send
 ```
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```bash
@@ -389,13 +388,13 @@ kind: {
 </p>
 </details>
 
-If you pass the correct approval ID which is `0`, everything should work fine.
+올바른 승인 ID인 `0`​​을 전달하면 모든 것이 잘 작동하는 것을 볼 수 있습니다.
 
 ```bash
 near contract call-function as-transaction $APPROVAL_NFT_CONTRACT_ID nft_transfer json-args '{"receiver_id": "'$NFT_CONTRACT_ID'", "token_id": "approval-token", "approval_id": 0}' prepaid-gas '100.0 Tgas' attached-deposit '1 yoctoNEAR' sign-as $NFT_CONTRACT_ID network-config testnet sign-with-legacy-keychain send
 ```
 
-If you again call the enumeration method, you should see the owner updated and the approved account IDs reset.
+열거 메서드를 다시 호출하면 소유자가 업데이트되고 승인된 계정 ID가 재설정되는 것을 볼 수 있습니다.
 
 ```json
 [
@@ -421,7 +420,7 @@ If you again call the enumeration method, you should see the owner updated and t
 ]
 ```
 
-Let's now test the approval ID incrementing across different owners. If you approve the account that originally minted the token, the approval ID should be 1 now.
+이제 다른 소유자 간에 증가하는 승인 ID를 테스트해 보겠습니다. If you approve the account that originally minted the token, the approval ID should be 1 now.
 
 ```bash
 near contract call-function as-transaction $APPROVAL_NFT_CONTRACT_ID nft_approve json-args '{"token_id": "approval-token", "account_id": "'$APPROVAL_NFT_CONTRACT_ID'"}' prepaid-gas '100.0 Tgas' attached-deposit '0.1 NEAR' sign-as $NFT_CONTRACT_ID network-config testnet sign-with-legacy-keychain send
@@ -434,7 +433,7 @@ near contract call-function as-read-only $APPROVAL_NFT_CONTRACT_ID nft_tokens_fo
 ```
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -464,37 +463,37 @@ near contract call-function as-read-only $APPROVAL_NFT_CONTRACT_ID nft_tokens_fo
 </p>
 </details>
 
-With the testing finished, you've successfully implemented the approvals extension to the standard!
+테스트가 완료되면, 표준에 대한 승인 확장을 성공적으로 구현한 것입니다!
 
 ---
 
-## Conclusion
+## 결론
 
-Today you went through a lot of logic to implement the [approvals extension](https://nomicon.io/Standards/Tokens/NonFungibleToken/ApprovalManagement) so let's break down exactly what you did.
+오늘 [승인 확장](https://nomicon.io/Standards/Tokens/NonFungibleToken/ApprovalManagement)을 구현하기 위해 많은 로직을 거쳤으므로, 수행한 작업을 정확히 분석해 보겠습니다.
 
-First, you explored the [basic approach](#basic-solution) of how to solve the problem. You then went through and discovered some of the [problems](#the-problem) with that solution and learned how to [fix it](#the-solution).
+먼저 문제를 해결하는 방법에 대한 [기본 접근 방식](#basic-solution)을 살펴보았습니다. 그런 다음 해당 솔루션의 몇 가지 [문제점](#the-problem)을 살펴보고 [이를 수정](#the-solution)하는 방법을 배웠습니다.
 
-After understanding what you should do to implement the approvals extension, you started to [modify](#expanding-json-and-token) the JsonToken and Token structs in the contract. You then implemented the logic for [approving accounts](#approving-accounts) and saw how [marketplaces](#marketplace-integrations) are integrated.
+승인 확장을 구현하기 위해 수행해야 하는 작업을 이해한 후, 컨트랙트에서 JsonToken 및 Token 구조를 [수정](#expanding-json-and-token)하였습니다. 그런 다음 [계정 승인](#approving-accounts) 로직을 구현하고 [마켓플레이스](#marketplace-integrations)에 통합하는 방법도 확인했습니다.
 
-After implementing the logic behind approving accounts, you went and [changed the restrictions](#changing-restrictions) needed to transfer NFTs. The last step you did to finalize the approving logic was to go back and edit the [nft_core](#nft-core-changes) files to be compatible with the new changes.
+계정 승인 로직을 구현한 후 NFT 전송에 필요한 [제한 사항을 변경](#changing-restrictions)했습니다. 승인 로직을 마무리하기 위해 수행한 마지막 단계는, 돌아가서 새 변경 사항과 호환되도록 [nft_core](#nft-core-changes) 파일을 편집하는 것입니다.
 
-At this point, everything was implemented in order to allow accounts to be approved and you extended the functionality of the [core standard](https://nomicon.io/Standards/Tokens/NonFungibleToken/Core) to allow for approved accounts to transfer tokens.
+이 시점에서 계정을 승인할 수 있기 위한 모든 것이 구현되었으며, 승인된 계정이 토큰을 전송할 수 있도록 [핵심 표준](https://nomicon.io/Standards/Tokens/NonFungibleToken/Core)의 기능을 확장했습니다.
 
-You implemented a view method to [check](#check-if-account-approved) if an account is approved and to finish the coding portion of the tutorial, you implemented the logic necessary to [revoke an account](#revoke-account) as well as [revoke all accounts](#revoke-all-accounts).
+또한, 계정이 승인되었는지 [확인](#check-if-account-approved)하고 튜토리얼의 코딩 파트를 완료하기 위해 view 메서드를 구현하고 [계정을 해지](#revoke-account) 및 [모든 계정을 해지](#revoke-all-accounts)하는 데 필요한 로직을 구현했습니다.
 
 After this, the contract code was finished and it was time to move onto testing where you created an [account](#deployment) and tested the [approving](#approving-an-account) and [transferring](#transferring-the-nft) for your NFTs.
 
 In the [next tutorial](6-royalty.md), you'll learn about the royalty standards and how you can interact with NFT marketplaces.
 
-:::note Versioning for this article
+:::note 문서 버전 관리
 
-At the time of this writing, this example works with the following versions:
+글을 작성하는 시점에서, 해당 예제는 다음 버전에서 작동합니다.
 
 - rustc: `1.77.1`
 - near-cli-rs: `0.11.0`
 - cargo-near `0.6.1`
 - NFT standard: [NEP171](https://nomicon.io/Standards/Tokens/NonFungibleToken/Core), version `1.0.0`
-- Enumeration standard: [NEP181](https://nomicon.io/Standards/Tokens/NonFungibleToken/Enumeration), version `1.0.0`
+- 열거 표준: [NEP181](https://nomicon.io/Standards/Tokens/NonFungibleToken/Enumeration), `1.0.0` 버전
 - Approval standard: [NEP178](https://nomicon.io/Standards/Tokens/NonFungibleToken/ApprovalManagement), version `1.1.0`
 
 :::

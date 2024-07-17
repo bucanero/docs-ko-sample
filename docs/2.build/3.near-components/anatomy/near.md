@@ -7,7 +7,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {WidgetEditor} from "@site/src/components/widget-editor"
 
-The components can use the `Near` object to interact with smart contracts in the NEAR blockchain. There are three methods:
+The components can use the `Near` object to interact with smart contracts in the NEAR blockchain. 세 가지 메서드가 존재합니다.
 
 - [`Near.view`](#nearview)
 - [`Near.block`](#nearblock)
@@ -16,7 +16,9 @@ The components can use the `Near` object to interact with smart contracts in the
 ---
 
 ## Near.view
+
 Queries a read-only method from a NEAR smart contract, returning:
+
 - **`null`**: If the query is still being processed
 - **`undefined`**: If the query is complete and no value was returned by the contract
 - A **value**: If the query is complete and a value was returned by the contract
@@ -36,13 +38,13 @@ return `The contract says: ${greeting}`;
 <details markdown="1">
 <summary> Parameters </summary>
 
-| param              | required     | type            | description                                                                                                                    |
-|--------------------|--------------|-----------------|--------------------------------------------------------------------------------------------------------------------------------|
-| `contractName`     | **required** | string          | Name of the smart contract                                                                                                     |
-| `methodName`       | **required** | string          | Name of the method to call                                                                                                     |
-| `args`             | _optional_   | object instance | Arguments to pass to the method                                                                                                |
-| `blockId/finality` | _optional_   | string          | Block ID or finality of the transaction                                                                                        |
-| `subscribe`        | _optional_   | boolean         | This feature allows users to subscribe to a query, which automatically refreshes the data for all subscribers every 5 seconds. |
+| param              | required     | type            | description                                                                         |
+| ------------------ | ------------ | --------------- | ----------------------------------------------------------------------------------- |
+| `contractName`     | **required** | string          | 스마트 컨트랙트의 이름                                                                        |
+| `methodName`       | **required** | string          | 호출할 메서드 이름                                                                          |
+| `args`             | _optional_   | object instance | 메서드에 전달할 인수                                                                         |
+| `blockId/finality` | _optional_   | string          | 블록 ID 또는 트랜잭션의 완결성                                                                  |
+| `subscribe`        | _optional_   | 부울              | 이 기능을 통해 사용자는 쿼리에 가입할 수 있으며, 이를 통해 5초마다 모든 가입자의 데이터가 자동으로 새로 고쳐집니다. |
 
 </details>
 
@@ -113,18 +115,19 @@ return <>
   <button onClick={onClick}> Set Greeting </button>
 </>;
 ```
+
 </WidgetEditor>
 
 <details markdown="1">
 <summary> Parameters </summary>
 
-| param          | required     | type            | description                                                                 |
-|----------------|--------------|-----------------|-----------------------------------------------------------------------------|
-| `contractName` | **required** | string          | Name of the smart contract to call                                          |
-| `methodName`   | **required** | string          | Name of the method to call on the smart contract                            |
-| `args`         | _optional_   | object instance | Arguments to pass to the smart contract method as an object instance        |
-| `gas`          | _optional_   | string / number | Maximum amount of gas to be used for the transaction (default 300Tg)        |
-| `deposit`      | _optional_   | string / number | Amount of NEAR tokens to attach to the call as deposit (in yoctoNEAR units) |
+| param          | required     | type            | description                                                 |
+| -------------- | ------------ | --------------- | ----------------------------------------------------------- |
+| `contractName` | **required** | string          | 호출할 스마트 컨트랙트의 이름                                            |
+| `methodName`   | **required** | string          | 스마트 컨트랙트에서 호출할 메서드 이름                                       |
+| `args`         | _optional_   | object instance | 스마트 컨트랙트 메서드에 객체 인스턴스의 형태로 전달할 인자                           |
+| `gas`          | _optional_   | 문자열 / 숫자        | 트랜잭션에 사용되는 가스의 최대 양 (기본 300Tg)           |
+| `deposit`      | _optional_   | string / number | 호출에 보증금으로 첨부되는 NEAR 토큰의 양 (yoctoNEAR 단위) |
 
 </details>
 
@@ -149,12 +152,12 @@ return Near.block("optimistic");
 <details markdown="1">
 <summary> Parameters </summary>
 
-| param                   | required   | type | description                                                                                                                                       |
-|-------------------------|------------|------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `blockHeightOrFinality` | _optional_ | any  | The block height or finality level to use for the blockchain query (desired block height, or one of the following strings: `optimistic`, `final`) |
+| param                   | required   | type | description                                                                                                      |
+| ----------------------- | ---------- | ---- | ---------------------------------------------------------------------------------------------------------------- |
+| `blockHeightOrFinality` | _optional_ | 모두   | 블록체인 쿼리에 사용할 블록 높이 또는 완결성 수준(원하는 블록 높이 또는 다음 문자열 중 하나: `optimistic`, `final`) |
 
-- desired block height: The height of the specific block to query, expressed as a positive integer
+- 원하는 블록 높이: 양의 정수로 표현되는 쿼리할 특정 블록의 높이
 - `optimistic`: Uses the latest block recorded on the node that responded to your query (< 1 second delay)
-- `final`: a block that has been validated on at least 66% of the nodes in the network (approx. 2s)
+- `final`: 네트워크 내 노드의 66% 이상에서 검증된 블록(약 2초)
 
 </details>

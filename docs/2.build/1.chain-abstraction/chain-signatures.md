@@ -90,6 +90,7 @@ The same NEAR account and path will always produce the same address on the targe
 We recommend hardcoding the derivation paths in your application to ensure the signature request is made to the correct account
 
 #### v2.multichain-mpc.testnet
+
 `secp256k1:4NfTiv3UsGahebgTaHyD9vF8KYKMBnfd6kh94mK6xv8fGBiJB8TBtFMP5WWXz6B89Ac1fbpzPwAvoyQebemHFwx3`
 
 :::
@@ -105,7 +106,7 @@ Constructing the transaction to be signed (transaction, message, data, etc.) var
     <Github language="js"
       url="https://github.com/near-examples/near-multichain/blob/main/src/services/ethereum.js"
       start="46" end="69" />
-    
+
 In Ethereum, constructing the transaction is simple since you only need to specify the address of the receiver and how much you want to send.
 
 </TabItem>
@@ -129,8 +130,8 @@ Once the transaction is created and ready to be signed, a signature request is m
 
 The method requires two parameters:
 
-  1. The `transaction` to be signed for the target blockchain
-  2. The derivation `path` for the account we want to use to sign the transaction
+1. The `transaction` to be signed for the target blockchain
+2. The derivation `path` for the account we want to use to sign the transaction
 
 <Tabs groupId="code-tabs">
   <TabItem value="Ξ Ethereum">

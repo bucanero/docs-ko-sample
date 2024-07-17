@@ -7,9 +7,9 @@ import {CodeTabs, Language, Github} from "@site/src/components/codetabs"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-NEAR accounts separate their logic (contract's code) from their state (storage), allowing the code to be changed.
+NEAR 계정은 로직(컨트랙트의 코드)을 상태(스토리지)와 분리하여, 코드를 변경할 수 있습니다.
 
-Contract's can be updated in two ways:
+컨트랙트는 두 가지 방법으로 업데이트할 수 있습니다.
 
 1. **Through tools** such as [NEAR CLI](../../../4.tools/cli.md) or [near-api-js](../../../4.tools/near-api-js/quick-reference.md) (if you hold the account's [full access key](../../../1.concepts/protocol/access-keys.md)).
 2. **Programmatically**, by implementing a method that [takes the new code and deploys it](#programmatic-update).
@@ -18,7 +18,7 @@ Contract's can be updated in two ways:
 
 ## Updating Through Tools
 
-Simply re-deploy another contract using your preferred tool, for example, using [NEAR CLI](../../../4.tools/cli.md):
+[NEAR CLI](../../../4.tools/cli.md) 등 선호하는 도구를 사용하여 다른 컨트랙트를 재배포하기만 하면 됩니다.
 
 <Tabs className="language-tabs" groupId="code-tabs">
   <TabItem value="near-cli">
@@ -49,10 +49,12 @@ near contract deploy <accountId> use-file <route_to_wasm> without-init-call netw
 
 ---
 
-## Programmatic Update
-A smart contract can also update itself by implementing a method that:
+## 프로그래밍을 통한 업데이트
+
+스마트 컨트랙트를 다음과 같은 방법을 구현하여 자체적으로 업데이트할 수도 있습니다.
+
 1. Takes the new wasm contract as input
-2. Creates a Promise to deploy it on itself
+2. Promise를 생성하여 자체적으로 배포합니다.
 
 <CodeTabs>
   <Language value="rust" language="rust">
@@ -112,50 +114,48 @@ This is how DAO factories [update their contracts](https://github.com/near-daos/
 
 ## Migrating the State
 
-Since the account's logic (smart contract) is separated from the account's state (storage),
-**the account's state persists** when re-deploying a contract.
+Since the account's logic (smart contract) is separated from the account's state (storage), **the account's state persists** when re-deploying a contract.
 
 Because of this, **adding methods** or **modifying existing ones** will yield **no problems**.
 
-However, deploying a contract that **modifies or removes structures**  stored in the state will raise an
-error: `Cannot deserialize the contract state`, in which case you can choose to:
-1. Use a different account
+However, deploying a contract that **modifies or removes structures**  stored in the state will raise an error: `Cannot deserialize the contract state`, in which case you can choose to:
+
+1. 다른 계정 사용
 2. Rollback to the previous contract code
-3. Add a method to migrate the contract's state
+3. 컨트랙트 상태를 마이그레이션하는 메서드 추가
 
 <hr className="subsection" />
 
-### The Migration Method
+### 마이그레이션 메서드
 
-If you have no option but to migrate the state, then you need to implement a method that:
+상태를 마이그레이션하는 것 외에 다른 옵션이 없는 경우 다음과 같은 메서드를 구현해야 합니다.
+
 1. Reads the current state of the contract
-2. Applies different functions to transform it into the new state
-3. Returns the new state
+2. 새로운 상태로 변환하기 위해 다른 함수를 적용합니다.
+3. 새로운 상태를 반환합니다.
 
 :::tip DAO Update
 
-This is how DAOs [update themselves](https://github.com/near-daos/sputnik-dao-contract/blob/main/sputnikdao2/src/upgrade.rs#L59)
+이것이 DAO가 [스스로를 업데이트](https://github.com/near-daos/sputnik-dao-contract/blob/main/sputnikdao2/src/upgrade.rs#L59)하는 방법입니다.
 
 :::
 
 <hr className="subsection" />
 
-### Example: Guest Book Migration
+### 예제: 방명록 마이그레이션
 
-Imagine you have a Guest Book where you store messages, and the users can pay for such messages
-to be "premium". You keep track of the messages and payments using the following state:
+메시지를 저장하는 방명록이 있고, 사용자가 이러한 메시지에 대해 "프리미엄"으로 지불할 수 있다고 상상해 보세요. 다음과 같은 상태를 사용하여 메시지 및 결제를 추적할 수 있습니다.
 
 <CodeTabs>
   <Language value="js" language="js">
     <Github fname="index.js"
           url="https://github.com/near/near-sdk-js/blob/develop/examples/src/basic-updates-base.js"
-          start="16" end="37" />
-  </Language>
+          start="16" end="37" /></Language>
 
   <Language value="rust" language="rust">
     <Github fname="lib.rs"
         url="https://github.com/near-examples/update-migrate-rust/blob/main/basic-updates/base/src/lib.rs"
-        start="10" end="21" />        
+        start="10" end="21" />
 
 </Language>
 
@@ -170,13 +170,12 @@ so you change the contract to:
   <Language value="js" language="js">
     <Github fname="index.js"
           url="https://github.com/near/near-sdk-js/blob/develop/examples/src/basic-updates-update.js"
-          start="23" end="45" />
-  </Language>
+          start="23" end="45" /></Language>
 
   <Language value="rust" language="rust">
     <Github fname="lib.rs"
         url="https://github.com/near-examples/update-migrate-rust/blob/main/basic-updates/update/src/lib.rs"
-        start="12" end="23" />        
+        start="12" end="23" />
 
 </Language>
 
@@ -186,6 +185,7 @@ so you change the contract to:
 
 If you deploy the update into an initialized account the contract will fail to deserialize the account's state,
 because:
+
 1. There is an extra `payments` vector saved in the state (from the previous contract)
 2. The stored `PostedMessages` are missing the `payment` field (as in the previous contract)
 
@@ -198,8 +198,7 @@ adds the information to the `PostedMessages`:
   <Language value="js" language="js">
     <Github fname="index.js"
           url="https://github.com/near/near-sdk-js/blob/develop/examples/src/basic-updates-update.js"
-          start="7" end="70" />
-  </Language>
+          start="7" end="70" /></Language>
 
   <Language value="rust" language="rust">
     <Github fname="lib.rs"
@@ -214,6 +213,6 @@ Notice that `migrate` is actually an [initialization method](../anatomy/anatomy.
 
 :::tip
 
-You can follow a migration step by step in the [official migration example](https://github.com/near-examples/update-migrate-rust/tree/main/basic-updates/base)  
+You can follow a migration step by step in the [official migration example](https://github.com/near-examples/update-migrate-rust/tree/main/basic-updates/base)\
 Javascript migration example testfile can be found on here: [test-basic-updates.ava.js](https://github.com/near/near-sdk-js/blob/develop/examples/__tests__/test-basic-updates.ava.js), run by this command: `pnpm run test:basic-update` in examples directory.
 :::

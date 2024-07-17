@@ -2,17 +2,18 @@
 id: notifications
 title: Social Notifications
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {WidgetEditor} from "@site/src/components/widget-editor"
 
 Applications such as [NEAR Social](https://near.social) and the [NEAR Dev Portal](https://dev.near.org/) allow components to send notifications to their users.
 
-Notifications are great to inform users in real time that something has happened, and can be [easily incorporated into any web app](../../../3.tutorials/near-components/push-notifications.md).
+Notifications are great to inform users in real time that something has happened, and can be [easily incorporated into any web app](../tutorial/push-notifications.md).
 
 ---
 
-## Sending Notifications 
+## Sending Notifications
 
 Notifications are implemented as a particular case of [indexed actions](./social.md#socialindex).
 
@@ -45,7 +46,6 @@ return <>
 ```
 
 </WidgetEditor>
-
 
 In this example, the account executing the code is notifying `mob.near` that they liked their social post created at the block height `102169725`.
 
@@ -100,7 +100,7 @@ While there is no standard for notifications, we recommend using the following t
   })
 ```
 
-**Reference**: [LikeButton](https://near.org/near/widget/ComponentDetailsPage?src=near/widget/LikeButton&tab=source)
+**Reference**: [LikeButton](https://near.org/near/widget/ComponentDetailsPage?src=near/widget/LikeButton\\&tab=source)
 
 </TabItem>
 
@@ -124,7 +124,7 @@ While there is no standard for notifications, we recommend using the following t
   })
 ```
 
-**Reference**: [CommentButton](https://near.org/near/widget/ComponentDetailsPage?src=near/widget/Comments.Compose&tab=source)
+**Reference**: [CommentButton](https://near.org/near/widget/ComponentDetailsPage?src=near/widget/Comments.Compose\\&tab=source)
 
 </TabItem>
 
@@ -143,7 +143,7 @@ While there is no standard for notifications, we recommend using the following t
   })
 ```
 
-**Reference**: [FollowButton](https://near.org/near/widget/ComponentDetailsPage?src=near/widget/FollowButton&tab=source)
+**Reference**: [FollowButton](https://near.org/near/widget/ComponentDetailsPage?src=near/widget/FollowButton\\&tab=source)
 
 </TabItem>
 
@@ -180,5 +180,5 @@ Please notice that anyone can create a notification for the user, and thus some 
 :::
 
 :::tip
-You can also check how the [Notifications Page](https://near.org/near/widget/ComponentDetailsPage?src=near/widget/NotificationsPage&tab=source) is implemented.
+You can also check how the [Notifications Page](https://near.org/near/widget/ComponentDetailsPage?src=near/widget/NotificationsPage\\&tab=source) is implemented.
 :::

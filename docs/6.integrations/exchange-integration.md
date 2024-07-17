@@ -1,48 +1,44 @@
 ---
 id: exchange-integration
-title: Exchange Integration
-sidebar_label: Exchange Integration
+title: 거래 통합
+sidebar_label: 거래 통합
 ---
 
-## Integration Reference {#integration-reference}
+## 통합 레퍼런스 {#integration-reference}
 
-- [Balance Changes](/integrations/balance-changes)
-- [Accounts](/integrations/accounts)
-- [Fungible Tokens](/integrations/fungible-tokens)
-- [Implicit Accounts](/integrations/implicit-accounts)
+- [잔고 변경](/integrations/balance-changes)
+- [계정](/integrations/accounts)
+- [대체 가능한 토큰 (Fungible Token)](/integrations/fungible-tokens)
+- [암시적 계정(Implicit Account)](/integrations/implicit-accounts)
 
-### Transaction Reference Links {#transaction-reference-links}
+### 트랜잭션 레퍼런스 링크 {#transaction-reference-links}
 
- - [Basics](/concepts/protocol/transactions)
- - [Specifications](https://nomicon.io/RuntimeSpec/Transactions)
- - [Constructing Transactions](/integrations/create-transactions)
+ - [기초](/concepts/protocol/transactions)
+ - [사양](https://nomicon.io/RuntimeSpec/Transactions)
+ - [트랜잭션 구성](/integrations/create-transactions)
 
-## Blocks and Finality {#blocks-and-finality}
+## 블록 및 완결성 {#blocks-and-finality}
 
-Some important pieces of information regarding blocks and finality include:
+블록 및 완결성에 관한 몇 가지 중요한 정보는 다음과 같습니다.
 
-- Expected block time is around 1s and expected time to finality is around 2s. The last final block can be queried by
-  specifying `{"finality": "final"}` in the block query. For example, to get the latest final block on mainnet, one can run
+- 예상 블록 생성 시간은 약 1초이고, 예상 완결 시간은 약 2초입니다. 블록 쿼리에서 `{"finality": "final"}`를 지정하여 마지막 최종 블록을 쿼리할 수 있습니다. 예를 들어, 메인넷에서 최신 최종 블록을 얻으려면 다음을 실행할 수 있습니다.
 
 ```bash
 http post https://rpc.mainnet.near.org method=block params:='{"finality":"final"}' id=123 jsonrpc=2.0
 ```
 
-- Block height are not necessarily continuous and certain heights may be skipped if, for example, a block producer for that height is offline. For example, after a block at height 100 is produced, the block at height 101 may be skipped. When block at height 102 is produced, its previous block is the block at height 100.
+- 블록 높이는 반드시 연속적인 것은 아니며, 예를 들어 해당 높이의 블록 생산자가 오프라인인 경우 특정 높이를 건너뛸 수 있습니다. 예를 들어 높이 100의 블록이 생성된 후 높이 101의 블록을 건너뛸 수 있습니다. 높이 102의 블록이 생성되면, 이전 블록은 높이 100의 블록입니다.
 
-- Some blocks may not include new chunks if, for example, the previous chunk producer is offline. Even though in the RPC
-  return result every block will have non-empty `chunks` field, it does not imply that there is a new chunk included in the block.
-  The way to tell whether the chunk is included in the block is to check whether `height_included` in the chunk is the same
-  as the height of the block.
+- 예를 들어 이전 청크 생성자가 오프라인인 경우 일부 블록에는 새 청크가 포함되지 않을 수 있습니다. RPC 반환 결과에서 모든 블록에는 비어 있지 않은 `chunks` 필드가 있지만, 이는 항상 블록에 포함된 새 청크가 있음을 의미하지는 않습니다. 청크가 블록에 포함되어 있는지 여부를 확인하는 방법은 청크 내 `height_included`가 블록의 높이와 동일한지 확인하는 것입니다.
 
-## Running an Archival Node {#running-an-archival-node}
-Please refer to configuration changes required in `config.json` for archival node by referring to the documentation on [Run an Archival Node](https://near-nodes.io/archival/run-archival-node-with-nearup).
+## 아카이브 노드 구동 {#running-an-archival-node}
+`config.json` 내 [아카이브 노드 실행](https://near-nodes.io/archival/run-archival-node-with-nearup) 문서를 참조하여, 아카이브 노드에 필요한 구성 변경 사항을 참고하세요.
 
-## Staking and Delegation {#staking-and-delegation}
+## 스테이킹 및 위임 {#staking-and-delegation}
 
 - [https://github.com/nearprotocol/stakewars](https://github.com/nearprotocol/stakewars)
 - [https://github.com/near/core-contracts](https://github.com/near/core-contracts)
 
-:::tip Got a question?
+:::tip 질문이 있으신가요?
 <a href="https://stackoverflow.com/questions/tagged/nearprotocol" target="_blank" rel="noopener noreferrer"> Ask it on StackOverflow! </a>
 :::

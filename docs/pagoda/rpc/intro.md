@@ -39,8 +39,8 @@ In addition to the powerful node infrastructure, we also created the Pagoda RPC 
 
 ## RPC Endpoints - Quick Links
 
-| API                                        | Description                                                                  |
-| ------------------------------------------ | ---------------------------------------------------------------------------- |
+| API                                        | Description                                                                                  |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------- |
 | [Access Keys](/api/rpc/access-keys)        | Retrieve information about an account's access keys.                         |
 | [Accounts / Contracts](/api/rpc/contracts) | View details about accounts and contracts as well as perform contract calls. |
 | [Block / Chunk](/api/rpc/block-chunk)      | Query the network and get details about specific blocks or chunks.           |

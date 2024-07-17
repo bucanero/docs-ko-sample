@@ -19,7 +19,7 @@ This smart contract is a piece of the NEAR Multichain project, which makes NEAR 
 - The [MPC recovery service](https://github.com/near/mpc-recovery), also called the _"MPC signer service"_, includes a network of trusted MPC signers, which hold keyshares and cooperatively sign transactions on behalf of the MPC network. It also includes an on-chain component, called the _"MPC signer contract,"_ which accepts on-chain signature requests and returns signatures computed by the MPC network.
 - The [multichain relayer server](multichain-server.md) scans this smart contract for signed transaction payloads and emits them to foreign chain RPCs.
 
-## How it works
+## How does it work?
 
 Currently, relaying one transaction to a foreign chain requires three transactions.
 Three transactions are required because of the gas restrictions imposed by the protocol. Currently (pre-NEP-516), the MPC signing function requires a _lot_ of gas, so dividing up the signing process into three parts is required to maximize the amount of gas available to each signing call.
@@ -74,10 +74,10 @@ You can review the complete smart contract source code in [this GitHub repositor
 
 ### Setup and Administration
 
-1.    Initialize the contract with a call to `new`. The [owner](https://github.com/near/near-sdk-contract-tools/blob/develop/src/owner.rs) is initialized as the predecessor of this transaction. All of the following transactions must be called by the owner.
-2.    Refresh the MPC contract public key by calling `refresh_signer_public_key`.
-3.    Set up foreign chain configurations with `add_foreign_chain`.
-4.    Add paymasters to each foreign chain with `add_paymaster`.
+1. Initialize the contract with a call to `new`. The [owner](https://github.com/near/near-sdk-contract-tools/blob/develop/src/owner.rs) is initialized as the predecessor of this transaction. All of the following transactions must be called by the owner.
+2. Refresh the MPC contract public key by calling `refresh_signer_public_key`.
+3. Set up foreign chain configurations with `add_foreign_chain`.
+4. Add paymasters to each foreign chain with `add_paymaster`.
 
 ### Usage
 
@@ -101,6 +101,7 @@ If you want to try things out, this smart contract is available on `canhazgas.te
 ## Limitations
 
 When using the Multichain Gas relayer solution, some limitations should be consider. Here's a list of potential issues you might encounter, and suggested ways to mitigate them:
+
 - Not enough gas for a cross-chain transaction to get included in time.
   - **Solution:** overcharge for gas at the gas station and when constructing the transaction include more than the average gas price.
 - Slippage violations causing the gas token or foreign chain Fungible Token to get refunded to the user's foreign chain address.

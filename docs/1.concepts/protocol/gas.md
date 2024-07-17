@@ -17,15 +17,17 @@ Gas in NEAR is computed on [**gas units**](#gas-units--gas-price) and charged us
 :::tip Did you know?
 In NEAR, attaching extra gas to a transaction does **not** make it faster. Actions cost a fixed amount of gas, and any extra gas attached is simply sent back to the user
 :::
- 
+
 ---
 
 ## Understanding Gas Fees
+
 For every transaction, users get charged a small $NEAR fee which has to be paid **upfront**. This fee is calculated using deterministic **gas units**, and transformed into a cost in $NEAR using the network's **gas price**.
 
 <hr class="subsection" />
 
 ### Gas Units
+
 Every action in NEAR costs a fixed amount of **gas units**, meaning that the same operation will always cost the **same amount of gas units**.
 
 Gas units were engineered in such a way that they can be translated into compute resources, where `1Tgas` gets you approx. `1ms` of compute time.
@@ -39,6 +41,7 @@ Gas units encapsulate not only compute/CPU time but also bandwidth/network time 
 <hr class="subsection" />
 
 ### Gas Price
+
 To determine the actual $NEAR fee, the cost of all actions in the transaction are multiplied by a **gas price**.
 
 The gas price is **recalculated each block** based on the network's demand and floor at `1Tgas = 0.0001Ⓝ`.
@@ -50,7 +53,6 @@ If the previous block is **more than half full** the price goes up by 1%, otherw
 <summary> What is the gas price now? </summary>
 
 You can query how much a gas unit costs in `yoctoNEAR` (1Ⓝ = `1e24` yocto) through the [`RPC`](/api/rpc/gas#gas-price). To convert in `Tgas` per `NEAR` simply divide by `1e12`.
-
 
 <NearWidget height="40px">
 
@@ -82,24 +84,23 @@ return `Right now, 1 Tgas costs ${Number(yocto) / 1e12}Ⓝ`
 
 Knowing that actions have a fixed cost in gas units, we can calculate the cost of common operations at the minimum gas price of `1Tgas = 0.0001Ⓝ`.
 
-| Action                       | TGas           | Fee (Ⓝ)  |
-|------------------------------|----------------|----------|
-| Create Account               | 0.42           | 0.000042 |
-| Transfer NEAR                | 0.45           | 0.000045 |
-| Add Full Access Key          | 0.42           | 0.000042 |
-| Delete Key                   | 0.41           | 0.000041 |
-| Function Call*               | ≤ 300          | ≤ 0.03   |
-| Deploying a `16`kb contract  | 2.65           | 0.000265 |
-| Deploying a `X`kb contract** | 0.58 + 0.13`X` |          |
-
+| Action                         | TGas                                           | Fee (Ⓝ) |
+| ------------------------------ | ---------------------------------------------- | -------------------------- |
+| Create Account                 | 0.42                           | 0.000042   |
+| Transfer NEAR                  | 0.45                           | 0.000045   |
+| Add Full Access Key            | 0.42                           | 0.000042   |
+| Delete Key                     | 0.41                           | 0.000041   |
+| Function Call\*                | ≤ 300                                          | ≤ 0.03     |
+| Deploying a `16`kb contract    | 2.65                           | 0.000265   |
+| Deploying a `X`kb contract\*\* | 0.58 + 0.13`X` |                            |
 
 _Note that the fee is in $NEAR, to obtain the cost in dollars multiply by the current price of $NEAR_
 
-:::tip Function Calls*
+:::tip Function Calls\*
 The cost of calling a function will depend on how complex the function is, but will be consistent across function calls. Learn more below.
 :::
 
-:::tip Deploying a Contract**
+:::tip Deploying a Contract\*\*
 Note that this covers the gas cost of uploading and writing bytes to storage, but does **not** cover the cost of holding them in storage (which is `1Ⓝ ~ 100kb`).
 :::
 

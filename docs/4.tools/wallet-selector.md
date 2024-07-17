@@ -1,39 +1,38 @@
-# Wallet Selector
+# NEAR 지갑 선택기
 
-An easy-to-navigate modal that allows users to select their preferred wallet to easily interact with the NEAR protocol.
+이는 사용자가 선호하는 지갑을 선택하여 NEAR 프로토콜과 쉽게 상호 작용할 수 있게 하는, 탐색하기 쉬운 도구입니다.
 
-Launched in March 2022 by the NEAR Foundation, this simple modal will appear whenever users are given the option to “Connect Wallet” to the NEAR blockchain.
+NEAR 재단이 2022년 3월에 출시한 이 간단한 도구는 NEAR 블록체인에서 사용자에게 "지갑 연결" 옵션이 제공될 때마다 나타납니다.
 
-![Preview](/docs/assets/wallet-selector-preview.png)
-*Initial screen of [Wallet Selector](https://near.github.io/wallet-selector/)*
+![Preview](/docs/assets/wallet-selector-preview.png) *[지갑 선택기](https://near.github.io/wallet-selector/) 초기 화면*
 
 ---
 
-## Framework agnostic
+## 프레임워크 불가지론
 
-[React](https://reactjs.org/) / [Next.js](https://nextjs.org/) and [Angular](https://angular.io/) variations of the [Guest Book](https://github.com/near-examples/guest-book-examples/) dApp can be found in the [`examples`](https://github.com/near/wallet-selector/tree/main/examples) directory. Developers can use these to gain a concrete understanding of how to integrate NEAR Wallet Selector into their own dApp.
+[React](https://reactjs.org/) / [Next.js](https://nextjs.org/) and [Angular](https://angular.io/) variations of the [Guest Book](https://github.com/near-examples/guest-book-examples/) dApp can be found in the [`examples`](https://github.com/near/wallet-selector/tree/main/examples) directory. 개발자는 이를 사용하여 NEAR 지갑 선택기를 자신의 dApp에 통합하는 방법을 구체적으로 이해할 수 있습니다.
 
-### Unlocking the wallet ecosystem
+### 지갑 생태계 개방
 
-Wallet Selector makes it easy for users to interact with dApps by providing an abstraction over various wallets and wallet types within the NEAR ecosystem.
+지갑 선택기는 NEAR 생태계 내의 다양한 지갑 및 지갑 유형에 대한 추상화를 제공하여, 사용자가 dApp과 쉽게 상호 작용할 수 있도록 합니다.
 
 :::info
 
-You can check the current list of supported wallets in the [README.md](https://github.com/near/wallet-selector/blob/main/README.md) file of near/wallet-selector repository.
+현재 지원되는 지갑 목록은 near/wallet-selector 레퍼지토리의 [README.md](https://github.com/near/wallet-selector/blob/main/README.md) 파일에서 확인할 수 있습니다.
 
 :::
 
-Thanks to NEAR’s open and inclusive approach, other wallet developers can contribute to the NEAR ecosystem by following the documentation and instructions on the [NEAR Github repository](https://github.com/near/wallet-selector) on how to add a new wallets to the Wallet Selector.
+NEAR의 개방적이고 포괄적인 접근 방식 덕분에, 다른 지갑 개발자는 지갑 선택기에 새 지갑을 추가하는 방법에 대한 [NEAR Github 레퍼지토리](https://github.com/near/wallet-selector)의 문서 및 지침에 따라 NEAR 생태계에 기여할 수 있습니다.
 
 :::tip
 
-To learn more on how to include new wallets for Wallet Selector you can check the listing criteria for third party wallets on this [link](https://github.com/near/wallet-selector/blob/main/CONTRIBUTING.md#listing-criteria-for-third-party-wallet-on-wallet-selector).
+지갑 선택기에 새 지갑을 포함하는 방법에 대해 자세히 알아보려면 이 [링크](https://github.com/near/wallet-selector/blob/main/CONTRIBUTING.md#listing-criteria-for-third-party-wallet-on-wallet-selector)에서 타사 지갑에 대한 리스팅 기준을 확인할 수 있습니다.
 
 :::
 
-## Install
+## 설치
 
-The easiest way to use NEAR Wallet Selector is to install the core package from the NPM registry, some packages may require near-api-js v0.44.2 or above check them at packages.
+NEAR 지갑 선택기를 사용하는 가장 쉬운 방법은, NPM 레지스트리에서 핵심 패키지를 설치하는 것입니다. 일부 패키지에는 near-api-js v0.44.2 이상이 필요할 수 있습니다.
 
 ```bash
 npm install near-api-js@^0.44.2
@@ -43,7 +42,7 @@ npm install near-api-js@^0.44.2
 npm install @near-wallet-selector/core
 ```
 
-Next, you'll need to install the wallets you want to support:
+다음으로 지원하려는 지갑을 설치해야 합니다.
 
 ```bash
 npm install \
@@ -62,15 +61,15 @@ npm install \
   @near-wallet-selector/coin98-wallet
 ```
 
-## Setup Wallet Selector
+## 지갑 선택기 설정
 
-Optionally, you can install our [`modal-ui`](https://www.npmjs.com/package/@near-wallet-selector/modal-ui) or [`modal-ui-js`](https://www.npmjs.com/package/@near-wallet-selector/modal-ui-js) package for a pre-built interface that wraps the `core` API and presents the supported wallets:
+선택적으로 `core` API를 래핑하고 지원되는 지갑을 표시하는 미리 빌드된 인터페이스용 [`modal-ui`](https://www.npmjs.com/package/@near-wallet-selector/modal-ui) 또는 [`modal-ui-js`](https://www.npmjs.com/package/@near-wallet-selector/modal-ui-js) 패키지를 설치할 수 있습니다
 
 ```bash
 npm install @near-wallet-selector/modal-ui
 ```
 
-Then use it in your dApp:
+그런 다음 이를 dApp에서 사용하세요.
 
 ```ts
 import { setupWalletSelector } from "@near-wallet-selector/core";
@@ -99,13 +98,13 @@ import "@near-wallet-selector/modal-ui/styles.css"
 
 :::
 
-## API Reference
+## API 참조
 
-The API reference of the selector can be found [`here`](https://github.com/near/wallet-selector/blob/main/packages/core/docs/api/selector.md)
+선택기의 API 참조는 [여기](https://github.com/near/wallet-selector/blob/main/packages/core/docs/api/selector.md)에서 찾을 수 있습니다.
 
-## Wallet API
+## 지갑 API
 
-### Sign in
+### 로그인
 
 ```ts
 // NEAR Wallet.
@@ -115,7 +114,7 @@ The API reference of the selector can be found [`here`](https://github.com/near/
 })();
 ```
 
-### Sign out
+### 로그아웃
 
 ```ts
 (async () => {
@@ -124,7 +123,7 @@ The API reference of the selector can be found [`here`](https://github.com/near/
 })();
 ```
 
-### Get accounts
+### 계정 가져오기
 
 ```ts
 (async () => {
@@ -134,7 +133,7 @@ The API reference of the selector can be found [`here`](https://github.com/near/
 })();
 ```
 
-### Verify Owner
+### 소유자 검증
 
 ```ts
 // MyNearWallet
@@ -146,7 +145,7 @@ The API reference of the selector can be found [`here`](https://github.com/near/
 })();
 ```
 
-### Sign and send transaction
+### 한 개의 트랜잭션 서명 / 전송
 
 ```ts
 (async () => {
@@ -167,7 +166,7 @@ The API reference of the selector can be found [`here`](https://github.com/near/
 })();
 ```
 
-### Sign and send transactions
+### 여러 개의 트랜잭션 서명 / 전송
 
 ```ts
 (async () => {

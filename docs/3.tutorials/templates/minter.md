@@ -22,16 +22,18 @@ This is part of the [Mintbase Templates](https://templates.mintbase.xyz/), a col
 
 This is a simple minter example built on top of **Next.js 14** using some of [@mintbase-js](https://github.com/Mintbase/mintbase-js) packages.
 
-*NOTE: As a standard on Mintbase as we use the latest versions of Next.js we recommend using pnpm, but the package manager is up to your personal choice.*
+_NOTE: As a standard on Mintbase as we use the latest versions of Next.js we recommend using pnpm, but the package manager is up to your personal choice._
 
 if you dont have a store you can [deploy a new contract](https://www.mintbase.xyz/launchpad/contracts/0) on our launchpad
 
 ---
 
 ## Pre-Setup
+
 If you would like the minter to use your own NFT contract you can easily deploy one through the mintbase market UI, additionally if you want to open up minting to be available for any person you will need to connect it to a proxy contract
 
 ### Deploying a Near Contract on Mintbase:
+
 1. Login on Mintbase and access [Contracts Page](https://www.mintbase.xyz/launchpad/contracts/0)
 2. Click on New Contract
 3. Choose Store Name (this will be the contract address to add on your minsta instance, this need to be added on the `process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS` environment variable) and Store Symbol
@@ -42,6 +44,7 @@ If you would like the minter to use your own NFT contract you can easily deploy 
 <hr class="subsection" />
 
 ### Add Proxy Minter Contract
+
 1. Under Contract Settings go to Minters
 2. add `0.drop.proxy.mintbase.near` (this is the contract address that need to be added on `process.env.NEXT_PUBLIC_PROXY_MINTER_CONTRACT_ADDRESS`), and click Add Minters.
 3. Proceed to transaction.
@@ -62,11 +65,11 @@ This method will get the wallet instance used to send the mint transaction. To l
       throw new Error("Failed to retrieve the wallet");
     }
   };
-  ```
+```
 
 <hr class="subsection" />
 
-### Step 2: Use the onSubmit method 
+### Step 2: Use the onSubmit method
 
 Get all the form data and use the onSubmit method to handle the minting process
 
@@ -90,7 +93,7 @@ const onSubmit = async (data: SubmitData) => {
       data.title
     );
   };
-  ```
+```
 
 <hr class="subsection" />
 
@@ -121,51 +124,50 @@ In this case a number of params are included to be able to show a better success
 
 The argument for calling the contracts "mint" function is then built. This transaction will be sent to the proxy contract which then calls the nft contracts nft_batch_mint method
 
+```typescript
+ async function handleMint(
+  reference: string,
+  media: Promise<ArweaveResponse>,
+  activeAccountId: string,
+  wallet: Wallet,
+  mediaUrl: string,
+  nftTitle: string
+) {
+  const callbackArgs = {
+    contractAddress: MintbaseWalletSetup.contractAddress.toString(),
+    amount: 1,
+    ref: `${reference}`,
+    mediaUrl: mediaUrl,
+    title: nftTitle,
+  };
 
-  ```typescript
-   async function handleMint(
-    reference: string,
-    media: Promise<ArweaveResponse>,
-    activeAccountId: string,
-    wallet: Wallet,
-    mediaUrl: string,
-    nftTitle: string
-  ) {
-    const callbackArgs = {
-      contractAddress: MintbaseWalletSetup.contractAddress.toString(),
-      amount: 1,
-      ref: `${reference}`,
-      mediaUrl: mediaUrl,
-      title: nftTitle,
-    };
-
-    if (reference) {
-      await wallet.signAndSendTransaction({
-        signerId: activeAccountId,
-        receiverId: proxyAddress,
-        callbackUrl: cbUrl(reference, callbackArgs),
-        actions: [
-          {
-            type: "FunctionCall",
-            params: {
-              methodName: "mint",
-              args: {
-                metadata: JSON.stringify({
-                  reference,
-                  media: (await media).id,
-                }),
-                nft_contract_id: MintbaseWalletSetup.contractAddress,
-              },
-              gas: "200000000000000",
-              deposit: "10000000000000000000000",
+  if (reference) {
+    await wallet.signAndSendTransaction({
+      signerId: activeAccountId,
+      receiverId: proxyAddress,
+      callbackUrl: cbUrl(reference, callbackArgs),
+      actions: [
+        {
+          type: "FunctionCall",
+          params: {
+            methodName: "mint",
+            args: {
+              metadata: JSON.stringify({
+                reference,
+                media: (await media).id,
+              }),
+              nft_contract_id: MintbaseWalletSetup.contractAddress,
             },
+            gas: "200000000000000",
+            deposit: "10000000000000000000000",
           },
-        ],
-      });
-    }
+        },
+      ],
+    });
   }
+}
 
-  return { form, onSubmit, preview, setPreview };
+return { form, onSubmit, preview, setPreview };
 };
 
 ```
@@ -175,6 +177,7 @@ This sums up the blockchain portion of the code
 <hr class="subsection" />
 
 ### Setup
+
 In the `minter/src/config/setup.ts` file, we define several key configurations for interacting with the Mintbase platform. This setup is crucial for ensuring that our application communicates correctly with Mintbase smart contracts.
 
 ---
@@ -212,8 +215,7 @@ This project is setup using Next.js + @mintbase/js
 You can use this project as a reference to build your own, and use or remove any library you think it would suit your needs.
 
 :::info Get in touch
-You can get in touch with the mintbase team using the following channels:
 
 - Support: [Join the Telegram](https://t.me/mintdev)
 - Twitter: [@mintbase](https://twitter.com/mintbase)
-:::
+  :::

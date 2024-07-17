@@ -1,31 +1,32 @@
 ---
 id: callbacks
-title: Cross-Contract Calls
+title: 교차 컨트랙트 호출
 ---
 
-While writing cross-contract calls there is a significant aspect to keep in mind: all the calls are **independent** and **asynchronous**. In other words:
+모든 호출은 **독립적**이고 **비동기적**입니다. 다시 말해서:
 
-- The method in which you make the call and method for the callback are **independent**.
-- Between the call and the callback, people could interact with the contract.
+- 호출 메서드와 콜백 메서드는 **독립적**입니다.
+- 호출과 콜백 사이에서 사람들은 컨트랙트와 상호 작용할 수 있습니다.
 
-This has important implications on how you should handle the callbacks. Particularly:
+이는 콜백을 처리하는 방법에 중요한 영향을 미칩니다. 특히:
 
-1. Your callback method needs to be public, but you want to make sure only your contract can call it.
-2. Make sure you don't leave the contract in a exploitable state between the call and the callback.
-3. Manually rollback any changes to the state in the callback if the external call failed.
-
----
-
-## Private Callbacks
-In order for your contract to call itself when a cross-contract call is done, you need to make the callback method public. However, most of the times you would want it to be private. You can make it private while keeping it public by asserting that the `predecessor` is `current_account`. In rust this is done automatically by adding the `#[private]` decorator.
+1. 콜백 메서드는 공개되어야 하지만, 이를 컨트랙트만 호출할 수 있도록 할 수 있습니다.
+2. 호출과 콜백 사이에 컨트랙트를 악용 가능한 상태로 두지 않아야 합니다.
+3. 외부 호출이 실패한 경우, 콜백의 상태에 대한 모든 변경 사항을 수동으로 롤백해야 합니다.
 
 ---
 
-## User's Money
-When a method panics, the money attached to that transaction returns to the `predecessor`. This means that, if you make a cross-contract call and it fails, then the money **returns to your contract**. If the money came from a user calling your contract, then you should transfer it back during the callback.
+## 프라이빗 콜백
 
-![img](https://miro.medium.com/max/1400/1*Hp4TOcaBqm9LS0wkgWw3nA.png)
-*If the user attached money, we need to manually return it in the callback*
+교차 컨트랙트 호출이 완료될 때, 컨트랙트가 자체적으로 호출되도록 하려면 콜백 메서드를 공개해야 합니다. 그러나 대부분의 경우 공개되지 않길 원할 것입니다. `predecessor`이 `current_account`임을 assert하여, 메서드를 퍼블릭으로 유지하면서 비공개로 만들 수 있습니다. Rust에서는 `#[private]` 데코레이터를 추가하면 이 작업이 자동으로 수행됩니다.
+
+---
+
+## 사용자의 자금
+
+메서드가 패닉 상태가 되면, 해당 트랜잭션에 첨부된 돈이 `predecessor`에게 반환됩니다. 즉, 교차 컨트랙트 호출을 하고 실패하면, 돈이 **컨트랙트로 돌아갑니다**. 컨트랙트를 호출한 사용자로부터 돈이 나온 경우, 콜백 도중에 이를 반환해야 합니다.
+
+![img](https://miro.medium.com/max/1400/1*Hp4TOcaBqm9LS0wkgWw3nA.png) _사용자가 돈을 첨부한 경우, 콜백에서 수동으로 반환해야 합니다_
 
 :::caution
 Make sure you pass have enough GAS in the callback to make the transfer
@@ -34,14 +35,13 @@ Make sure you pass have enough GAS in the callback to make the transfer
 ---
 
 ## Async Callbacks
-Between a cross-contract call and its callback **any method of your contract can be executed**. Not taking this into account is one of the main sources of exploits. It is so common that it has its own name: reentrancy attacks.
 
-Imagine that we develop a `deposit_and_stake` with the following **wrong logic**: (1) The user sends us money, (2) we add it to its balance, (3) we try to stake it in a validator, (4) if the staking fails, we remove the balance in the callback. Then, a user could schedule a call to withdraw between (2) and (4), and, if the staking failed, we would send money twice to the user.
+교차 컨트랙트 호출과 콜백 사이에서 **컨트랙트의 모든 메서드를 실행할 수 있습니다**. 이것을 고려하지 않는 것은 해킹의 주요 원인 중 하나입니다. 재진입 공격이라는 자체 이름이 있을 정도로, 이는 매우 기본적인 해킹 방식입니다.
 
-![img](https://miro.medium.com/max/1400/1*VweWHQYGLBa70uceiWHLQA.png)
-*Between a cross-contract call and the callback anything could happen*
+비동기 콜백 다음과 같은 **잘못된 로직**으로 `deposit_and_stake`를 개발한다고 상상해 봅시다. (1) 사용자가 우리에게 돈을 보냅니다. (2) 우리는 이를 잔고에 추가합니다. 그러면, 사용자는 (2)와 (4) 사이에 호출을 철회하도록 예약할 수 있으며, 스테이킹에 실패하면 사용자는 두 번 돈을 받게 됩니다.
 
-Luckily for us the solution is rather simple. Instead of immediately adding the money to our user’s balance, we wait until the callback. There we check, and if the staking went well, then we add it to their balance.
+![img](https://miro.medium.com/max/1400/1*VweWHQYGLBa70uceiWHLQA.png) _교차 컨트랙트 호출과 콜백 사이에 무슨 일이든 일어날 수 있습니다_
 
-![img](https://miro.medium.com/max/1400/1*o0YVDCp_7l-L3njJMGhU4w.png)
-*Correct way to handle deposits in a cross-contract call*
+다행스럽게도 솔루션은 다소 간단합니다. 사용자의 잔고에 돈을 즉시 추가하는 대신, 콜백이 올 때까지 기다립니다. There we check, and if the staking went well, then we add it to their balance.
+
+![img](https://miro.medium.com/max/1400/1*o0YVDCp_7l-L3njJMGhU4w.png) _교차 컨트랙트 호출에서 예금을 처리하는 올바른 방법_

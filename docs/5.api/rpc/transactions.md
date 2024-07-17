@@ -1,30 +1,29 @@
 ---
 id: transactions
-title: RPC Endpoints
-sidebar_label: Transactions
+title: RPC 엔드포인트
+sidebar_label: 트랜잭션
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The RPC API enables you to send transactions and query their status.
+RPC API를 사용하면 트랜잭션을 보내고 해당 상태를 쿼리할 수 있습니다.
 
 ---
 
 ## Send transaction {#send-tx}
 
-> Sends transaction.
-> Returns the guaranteed execution status and the results the blockchain can provide at the moment.
+> Sends transaction. Returns the guaranteed execution status and the results the blockchain can provide at the moment.
 
 - method: `send_tx`
-- params: 
+- 매개변수:
   - `signed_tx_base64`: SignedTransaction encoded in base64
   - [Optional] `wait_until`: the required minimal execution level. [Read more here](#tx-status-result). The default value is `EXECUTED_OPTIMISTIC`.
 
 Using `send_tx` with `wait_until = NONE` is equal to legacy `broadcast_tx_async` method.  
 Using `send_tx` with finality `wait_until = EXECUTED_OPTIMISTIC` is equal to legacy `broadcast_tx_commit` method.
 
-Example:
+예시:
 
 <Tabs>
 <TabItem value="json" label="JSON" default>
@@ -63,7 +62,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=send_tx \
 </Tabs>
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -144,9 +143,9 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=send_tx \
 </p>
 </details>
 
-#### What could go wrong? {#what-could-go-wrong-send-tx}
+#### 무엇이 잘못될 수 있나요? {#what-could-go-wrong-send-tx}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -166,11 +165,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `broadcast_tx_commit` method:
+다음은 `broadcast_tx_commit` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다.
 
 <table className="custom-stripe">
   <thead>
@@ -180,15 +179,15 @@ Here is the exhaustive list of the error variants that can be returned by `broad
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td rowspan="2">HANDLER_ERROR</td>
       <td>INVALID_TRANSACTION</td>
-      <td>An error happened during transaction execution</td>
+      <td>트랜잭션 실행 중에 오류가 발생했습니다.</td>
       <td>
         <ul>
           <li>See <code>error.cause.info</code> for details, likely a field in the transaction was invalid</li>
@@ -199,35 +198,35 @@ Here is the exhaustive list of the error variants that can be returned by `broad
     </tr>
     <tr>
       <td>TIMEOUT_ERROR</td>
-      <td>Transaction was routed, but has not been recorded on chain in 10 seconds.</td>
+      <td>트랜잭션이 라우팅되었지만 10초 동안 체인에 기록되지 않았습니다.</td>
       <td>
         <ul>
           <li> Resubmit the request with the identical transaction (in NEAR Protocol unique transactions apply exactly once, so if the previously sent transaction gets applied, this request will just return the known result, otherwise, it will route the transaction to the chain once again)</li>
-          <li>Check that your transaction is valid</li>
-          <li>Check that the signer account id has enough tokens to cover the transaction fees (keep in mind that some tokens on each account are locked to cover the storage cost)</li>
+          <li>트랜잭션이 유효한지 확인하세요.</li>
+          <li>서명자 계정 ID에 트랜잭션 수수료를 충당하기에 충분한 토큰이 있는지 확인하세요(각 계정의 일부 토큰은 스토리지 비용을 충당하기 위해 잠겨 있음을 명심하세요).</li>
         </ul>
       </td>
     </tr>
     <tr className="stripe">
       <td>REQUEST_VALIDATION_ERROR</td>
       <td>PARSE_ERROR</td>
-      <td>Passed arguments can't be parsed by JSON RPC server (missing arguments, wrong format, etc.)</td>
+      <td>전달된 인자는 JSON RPC 서버에서 파싱할 수 없습니다(인자 누락, 잘못된 형식 등).</td>
       <td>
         <ul>
-          <li>Check the arguments passed and pass the correct ones</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>전달된 인수를 확인하고 올바른 인수를 전달하세요.</li>
+          <li><code>error.cause.info</code>자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>INTERNAL_ERROR</td>
       <td>INTERNAL_ERROR</td>
-      <td>Something went wrong with the node itself or overloaded</td>
+      <td>노드 자체에 문제가 있거나 과부하가 걸렸습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
-          <li>Send a request to a different node</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>나중에 다시 시도하세요.</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
@@ -236,21 +235,19 @@ Here is the exhaustive list of the error variants that can be returned by `broad
 
 ---
 
-## Transaction Status {#transaction-status}
+## 트랜잭션 상태 {#transaction-status}
 
-> Queries status of a transaction by hash and returns the final transaction result.
+> 트랜잭션 상태를 해시로 조회하고 최종 트랜잭션 결과를 반환합니다.
 
-- method: `tx`
-- params:
+- 메서드: `tx`
+- 매개변수:
   - `tx_hash` _(see [NearBlocks Explorer](https://testnet.nearblocks.io) for a valid transaction hash)_
   - `sender_account_id` _(used to determine which shard to query for transaction)_
   - [Optional] `wait_until`: the required minimal execution level. Read more [here](/api/rpc/transactions#tx-status-result). The default value is `EXECUTED_OPTIMISTIC`.
 
-A Transaction status request with `wait_until != NONE` will wait until the transaction appears on the blockchain.
-If the transaction does not exist, the method will wait until the timeout is reached.
-If you only need to check whether the transaction exists, use `wait_until = NONE`, it will return the response immediately.
+A Transaction status request with `wait_until != NONE` will wait until the transaction appears on the blockchain. If the transaction does not exist, the method will wait until the timeout is reached. If you only need to check whether the transaction exists, use `wait_until = NONE`, it will return the response immediately.
 
-Example:
+예시:
 
 <Tabs>
 <TabItem value="json" label="JSON" default>
@@ -280,7 +277,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=tx \
 </Tabs>
 
 <details>
-<summary>Example Result:</summary>
+<summary>결과 예시:</summary>
 <p>
 
 ```json
@@ -380,9 +377,9 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=tx \
 </p>
 </details>
 
-#### What could go wrong? {#what-could-go-wrong-2}
+#### 무엇이 잘못될 수 있나요? {#what-could-go-wrong-2}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -402,11 +399,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `tx` method:
+다음은 `tx` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다.
 
 <table className="custom-stripe">
   <thead>
@@ -416,62 +413,62 @@ Here is the exhaustive list of the error variants that can be returned by `tx` m
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td rowspan="3">HANDLER_ERROR</td>
       <td>INVALID_TRANSACTION</td>
-      <td>An error happened during transaction execution</td>
+      <td>트랜잭션 실행 중에 오류가 발생했습니다.</td>
       <td>
         <ul>
-          <li>See <code>error.cause.info</code> for details</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>UNKNOWN_TRANSACTION</td>
-      <td>The requested transaction is not available on the node since it might have not been recorded on the chain yet or has been garbage-collected</td>
+      <td>요청된 트랜잭션은 아직 체인에 기록되지 않았거나 가비지 수집되었기 때문에 노드에서 사용할 수 없습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
+          <li>나중에 다시 시도하세요.</li>
           <li>If the transaction had been submitted more than 5 epochs ago, try to send your request to <a href="https://near-nodes.io/intro/node-types#archival-node" target="_blank" rel="noopener noreferrer">an archival node</a></li>
-          <li>Check the transaction hash</li>
+          <li>트랜잭션 해시를 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>TIMEOUT_ERROR</td>
-      <td>It was unable to wait for the transaction status for reasonable time</td>
+      <td>합리적인 시간 동안 트랜잭션 상태를 기다릴 수 없습니다.</td>
       <td>
         <ul>
-          <li>Send a request to a different node</li>
-          <li>Try again later</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li>나중에 다시 시도하세요.</li>
         </ul>
       </td>
     </tr>
     <tr className="stripe">
       <td>REQUEST_VALIDATION_ERROR</td>
       <td>PARSE_ERROR</td>
-      <td>Passed arguments can't be parsed by JSON RPC server (missing arguments, wrong format, etc.)</td>
+      <td>전달된 인자는 JSON RPC 서버에서 파싱할 수 없습니다(인자 누락, 잘못된 형식 등).</td>
       <td>
         <ul>
-          <li>Check the arguments passed and pass the correct ones</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>전달된 인자를 확인하고 올바른 인수를 전달하세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>INTERNAL_ERROR</td>
       <td>INTERNAL_ERROR</td>
-      <td>Something went wrong with the node itself or overloaded</td>
+      <td>노드 자체에 문제가 있거나 과부하가 걸렸습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
-          <li>Send a request to a different node</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>나중에 다시 시도하세요.</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
@@ -480,22 +477,20 @@ Here is the exhaustive list of the error variants that can be returned by `tx` m
 
 ---
 
-## Transaction Status with Receipts {#transaction-status-with-receipts}
+## Receipt가 있는 트랜잭션 상태 {#transaction-status-with-receipts}
 
-> Queries status of a transaction by hash, returning the final transaction result _and_ details of all receipts.
+> 해시로 트랜잭션 상태를 쿼리하고 최종 트랜잭션 결과 _와_ 모든 Receipt의 세부 정보를 반환합니다.
 
-- method: `EXPERIMENTAL_tx_status`
-- params:
+- 메서드: `EXPERIMENTAL_tx_status`
+- 매개변수:
   - `tx_hash` _(see [NearBlocks Explorer](https://testnet.nearblocks.io) for a valid transaction hash)_
   - `sender_account_id` _(used to determine which shard to query for transaction)_
   - [Optional] `wait_until`: the required minimal execution level. Read more [here](/api/rpc/transactions#tx-status-result). The default value is `EXECUTED_OPTIMISTIC`.
 
-A Transaction status request with `wait_until != NONE` will wait until the transaction appears on the blockchain.
-If the transaction does not exist, the method will wait until the timeout is reached.
-If you only need to check whether the transaction exists, use `wait_until = NONE`, it will return the response immediately.
+A Transaction status request with `wait_until != NONE` will wait until the transaction appears on the blockchain. If the transaction does not exist, the method will wait until the timeout is reached. If you only need to check whether the transaction exists, use `wait_until = NONE`, it will return the response immediately.
 
 
-Example:
+예시:
 
 <Tabs>
 <TabItem value="json" label="JSON" default>
@@ -524,7 +519,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=EXPERIMENTAL_tx_status
 </Tabs>
 
 <details>
-<summary>Example response:</summary>
+<summary>응답 예시:</summary>
 <p>
 
 ```json
@@ -758,9 +753,9 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=EXPERIMENTAL_tx_status
 </p>
 </details>
 
-#### What could go wrong? {#what-could-go-wrong-3}
+#### 무엇이 잘못될 수 있나요? {#what-could-go-wrong-3}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -780,11 +775,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `EXPERIMENTAL_tx_status` method:
+다음은 `EXPERIMENTAL_tx_status` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다.
 
 <table className="custom-stripe">
   <thead>
@@ -794,62 +789,62 @@ Here is the exhaustive list of the error variants that can be returned by `EXPER
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td rowspan="3">HANDLER_ERROR</td>
       <td>INVALID_TRANSACTION</td>
-      <td>An error happened during transaction execution</td>
+      <td>트랜잭션 실행 중에 오류가 발생했습니다.</td>
       <td>
         <ul>
-          <li>See <code>error.cause.info</code> for details</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>UNKNOWN_TRANSACTION</td>
-      <td>The requested transaction is not available on the node since it might have not been recorded on the chain yet or has been garbage-collected</td>
+      <td>요청된 트랜잭션은 아직 체인에 기록되지 않았거나 가비지 수집되었기 때문에 노드에서 사용할 수 없습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
+          <li>나중에 다시 시도하세요.</li>
           <li>If the transaction had been submitted more than 5 epochs ago, try to send your request to <a href="https://near-nodes.io/intro/node-types#archival-node" target="_blank" rel="noopener noreferrer">an archival node</a></li>
-          <li>Check the transaction hash</li>
+          <li>트랜잭션 해시를 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>TIMEOUT_ERROR</td>
-      <td>It was unable to wait for the transaction status for reasonable time</td>
+      <td>합리적인 시간 동안 트랜잭션 상태를 기다릴 수 없습니다.</td>
       <td>
         <ul>
-          <li>Send a request to a different node</li>
-          <li>Try again later</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li>나중에 다시 시도하세요.</li>
         </ul>
       </td>
     </tr>
     <tr className="stripe">
       <td>REQUEST_VALIDATION_ERROR</td>
       <td>PARSE_ERROR</td>
-      <td>Passed arguments can't be parsed by JSON RPC server (missing arguments, wrong format, etc.)</td>
+      <td>전달된 인자는 JSON RPC 서버에서 파싱할 수 없습니다(인자 누락, 잘못된 형식 등).</td>
       <td>
         <ul>
-          <li>Check the arguments passed and pass the correct ones</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>전달된 인자를 확인하고 올바른 인수를 전달하세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>INTERNAL_ERROR</td>
       <td>INTERNAL_ERROR</td>
-      <td>Something went wrong with the node itself or overloaded</td>
+      <td>노드 자체에 문제가 있거나 과부하가 걸렸습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
-          <li>Send a request to a different node</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>나중에 다시 시도하세요.</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
@@ -858,15 +853,15 @@ Here is the exhaustive list of the error variants that can be returned by `EXPER
 
 ---
 
-### Receipt by ID {#receipt-by-id}
+### ID에 따른 Receipt {#receipt-by-id}
 
-> Fetches a receipt by it's ID (as is, without a status or execution outcome)
+> ID로 Receipt를 가져옵니다(상태 또는 실행 결과 없이 있는 그대로).
 
-- method: `EXPERIMENTAL_receipt`
+- 메서드: `EXPERIMENTAL_receipt`
 - params:
   - `receipt_id` _(see [NearBlocks Explorer](https://testnet.nearblocks.io) for a valid receipt id)_
 
-Example:
+예시:
 
 <Tabs>
 <TabItem value="json" label="JSON" default>
@@ -891,7 +886,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=EXPERIMENTAL_receipt p
 </Tabs>
 
 <details>
-<summary>Example response:</summary>
+<summary>응답 예시:</summary>
 <p>
 
 ```json
@@ -925,9 +920,9 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=EXPERIMENTAL_receipt p
 </p>
 </details>
 
-#### What could go wrong? {#what-could-go-wrong-4}
+#### 무엇이 잘못될 수 있나요? {#what-could-go-wrong-4}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -947,11 +942,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `EXPERIMENTAL_receipt` method:
+다음은 `EXPERIMENTAL_receipt` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다.
 
 <table>
   <thead>
@@ -961,42 +956,42 @@ Here is the exhaustive list of the error variants that can be returned by `EXPER
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>HANDLER_ERROR</td>
       <td>UNKNOWN_RECEIPT</td>
-      <td>The receipt with the given <code>receipt_id</code> was never observed on the node</td>
+      <td>주어진 <code>receipt_id</code> Receipt가 노드에서 관찰되지 않았습니다.</td>
       <td>
         <ul>
-          <li>Check the provided <code>receipt_id</code> is correct</li>
-          <li>Send a request on a different node</li>
+          <li>제공된 <code>receipt_id</code>가 올바른지 확인하세요.</li>
+          <li>다른 노드에서 요청을 보내세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>REQUEST_VALIDATION_ERROR</td>
       <td>PARSE_ERROR</td>
-      <td>Passed arguments can't be parsed by JSON RPC server (missing arguments, wrong format, etc.)</td>
+      <td>전달된 인자는 JSON RPC 서버에서 파싱할 수 없습니다(인자 누락, 잘못된 형식 등).</td>
       <td>
         <ul>
-          <li>Check the arguments passed and pass the correct ones</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>전달된 인자를 확인하고 올바른 인수를 전달하세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>INTERNAL_ERROR</td>
       <td>INTERNAL_ERROR</td>
-      <td>Something went wrong with the node itself or overloaded</td>
+      <td>노드 자체에 문제가 있거나 과부하가 걸렸습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
-          <li>Send a request to a different node</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>나중에 다시 시도하세요.</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
@@ -1005,9 +1000,7 @@ Here is the exhaustive list of the error variants that can be returned by `EXPER
 
 ## Transaction Execution Levels {#tx-status-result}
 
-All the methods listed above have `wait_until` request parameter, and `final_execution_status` response value.
-They correspond to the same enum `TxExecutionStatus`.
-See the detailed explanation for all the options:
+All the methods listed above have `wait_until` request parameter, and `final_execution_status` response value. They correspond to the same enum `TxExecutionStatus`. See the detailed explanation for all the options:
 
 ```rust
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -1041,12 +1034,12 @@ pub enum TxExecutionStatus {
 
 > Consider using [`send_tx`](/api/rpc/transactions#send-tx) instead
 
-> Sends a transaction and immediately returns transaction hash.
+> 트랜잭션을 보내고 즉시 트랜잭션 해시를 반환합니다.
 
-- method: `broadcast_tx_async`
-- params: [SignedTransaction encoded in base64]
+- 메서드: `broadcast_tx_async`
+- 매개변수: `[SignedTransaction encoded in base64]`
 
-Example:
+예시:
 
 <Tabs>
 <TabItem value="json" label="JSON" default>
@@ -1075,7 +1068,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=broadcast_
 </TabItem>
 </Tabs>
 
-Example response:
+응답 예시:
 
 ```json
 {
@@ -1085,14 +1078,13 @@ Example response:
 }
 ```
 
-Final transaction results can be queried using [Transaction Status](#transaction-status)
-or [NearBlocks Explorer](https://testnet.nearblocks.io/) using the above `result` hash returning a result similar to the example below.
+Final transaction results can be queried using [Transaction Status](#transaction-status) or [NearBlocks Explorer](https://testnet.nearblocks.io/) using the above `result` hash returning a result similar to the example below.
 
 ![NEAR-Explorer-transactionHash](/docs/assets/NEAR-Explorer-transactionHash.png)
 
-#### What could go wrong? {#what-could-go-wrong}
+#### 무엇이 잘못될 수 있나요? {#what-could-go-wrong}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -1112,11 +1104,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `broadcast_tx_async` method:
+다음은 `broadcast_tx_async` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다.
 
 <table class="custom-stripe">
   <thead>
@@ -1126,19 +1118,19 @@ Here is the exhaustive list of the error variants that can be returned by `broad
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr class="stripe">
       <td>REQUEST_VALIDATION_ERROR</td>
       <td>PARSE_ERROR</td>
-      <td>Passed arguments can't be parsed by JSON RPC server (missing arguments, wrong format, etc.)</td>
+      <td>전달된 인자는 JSON RPC 서버에서 파싱할 수 없습니다(인자 누락, 잘못된 형식 등).</td>
       <td>
         <ul>
-          <li>Check the arguments passed and pass the correct ones</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>전달된 인자를 확인하고 올바른 인수를 전달하세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
@@ -1151,10 +1143,10 @@ Here is the exhaustive list of the error variants that can be returned by `broad
 
 > Consider using [`send_tx`](/api/rpc/transactions#send-tx) instead
 
-> Sends a transaction and waits until transaction is fully complete. _(Has a 10 second timeout)_
+> 트랜잭션을 보내고 트랜잭션이 완전히 완료될 때까지 기다립니다. _(타임아웃 10초 있음)_
 
-- method: `broadcast_tx_commit`
-- params: `[SignedTransaction encoded in base64]`
+- 메서드: `broadcast_tx_commit`
+- 매개변수: `[SignedTransaction encoded in base64]`
 
 Example:
 
@@ -1269,7 +1261,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=broadcast_
 
 #### What could go wrong? {#what-could-go-wrong-1}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -1290,8 +1282,8 @@ When API request fails, RPC server returns a structured error response with a li
 ```
 
 > **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
 Here is the exhaustive list of the error variants that can be returned by `broadcast_tx_commit` method:
 

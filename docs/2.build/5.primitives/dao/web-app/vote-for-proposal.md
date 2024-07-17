@@ -1,5 +1,3 @@
-
-
 ```js
 import { Wallet } from './near-wallet';
 
@@ -18,4 +16,4 @@ await wallet.callMethod({
 Available vote options: `VoteApprove`, `VoteReject`, `VoteRemove`.
 :::
 
-_The `Wallet` object comes from our [quickstart template](https://github.com/near-examples/hello-near-examples/blob/main/frontend/near-wallet.js)_ 
+_The `Wallet` object comes from our [quickstart template](https://github.com/near-examples/hello-near-examples/blob/main/frontend/near-wallet.js)_

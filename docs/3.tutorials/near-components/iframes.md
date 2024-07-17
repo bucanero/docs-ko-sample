@@ -1,56 +1,52 @@
 ---
 id: using-iframes
-title: Using IFrames
+title: IFrame 사용하기
 ---
 
 # Iframes
 
 In this tutorial you'll learn [how to use](#using-iframes-on-bos-vm) the `iframe` VM tag and the [Iframe resizer](#iframe-resizer) library, so you can embed external HTML or use custom DOM elements when building NEAR components.
-You can use it along the rest of approved VM tags to simplify your component development.
-
+승인된 나머지 VM 태그와 함께 이 태그를 사용하여 컴포넌트 개발을 간소화할 수 있습니다.
 
 ## Using IFrames on NEAR VM
 
-Iframes can be used to embed external HTML or to use custom DOM
-elements, for example `canvas`.
+Iframes는 외부 HTML을 포함하거나 사용자 정의 DOM 요소를 사용하는 데 쓰일 수 있습니다(예: `canvas`).
 
-### Properties
+### 속성
 
-The `iframe` tag takes the following properties: `className`, `style`, `src`,
-`srcDoc`, `title`, `message`, and `onMessage`. The iframe has a sandbox property
-set to `sandbox="allow-scripts"`, which only allows scripts.
+`iframe` 태그는 다음 속성을 사용합니다: `className`, `style`, `src`, `srcDoc`, `title`, `message`및 `onMessage`. iframe은 스크립트만을 허용하도록 `sandbox="allow-scripts"`로 설정된 샌드박스 속성을 가지고 있습니다.
 
 :::info
 
-`message` and `onMessage` are used to communicate with this iframe
-instance.
+`message` 및 `onMessage`는 이 iframe 인스턴스와 통신하는 데에 사용됩니다.
 
 :::
 
-| param | description |
-|-------|-------------|
-| `message` | it's passed to the iframe every time the deep equal is different, or the iframe is recreated. The message is passed using `contentWindow.postMessage(message, "*")` on the iframe. |
-| `onMessage(data)` | it's called when the iframe passes a message to `window.top`. Only `event.data` is passed to the `onMessage` |
+| param             | 설명                                                                                                                                                        |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `message`         | deep equal이 다르거나 iframe이 다시 생성될 때마다 iframe에 전달됩니다. 이 메시지는 iframe에서 `contentWindow.postMessage(message, "*")`를 사용하여 전달됩니다. |
+| `onMessage(data)` | iframe이 메시지를 `window.top`으로 전달할 때 호출됩니다. `event.data`만 `onMessage`로 전달됩니다.                                                |
 
-### Events
+### 이벤트
 
-The VM exposes the following `<iframe>` events:
-- `onLoad()`: support for `onLoad` event without any event info
-   ```js
-   <iframe onLoad={() => { console.log('iframe loaded') }}>
-   ```
+VM에서 다음 `<iframe>` 이벤트를 표시합니다:
 
-- `onResized()`: support for `onResized` [Iframe Resizer](#iframe-resizer) event with an object only containing the new `width` and `height`
-   ```js
-   <iframe iframeResizer={{
-      onResized: ({width, height}) => { console.log('iframe resized', width, height) },
-   }}>
-   ```
+- `onLoad()`: 이벤트 정보 없이 `onLoad` 이벤트를 지원합니다.
+  ```js
+  <iframe onLoad={() => { console.log('iframe loaded') }}>
+  ```
 
-### Example
+- 새 `width`와 `height`만 포함하는 객체가 있는 [Iframe Resizer](#iframe-resizer) 이벤트입니다.
+  ```js
+  <iframe iframeResizer={{
+     onResized: ({width, height}) => { console.log('iframe resized', width, height) },
+  }}>
+  ```
 
-The following example demonstrates how you can use an iframe to call
-`eval`:
+### 예시
+
+다음 예시는 `eval`을 호출하는 iframe을 사용하는 방법을 설명합니다.
+
 ```js
 State.init({
   text: `"b" + "a" + +"a" + "a"`,
@@ -108,14 +104,13 @@ return (
 
 ![iframes](https://user-images.githubusercontent.com/470453/216140589-801a49e8-9ff1-4b76-9019-499b375989cc.png)
 
-
 ## Iframe Resizer
 
-[Iframe Resizer](https://github.com/davidjbradshaw/iframe-resizer) is a critical library for rendering responsive iframes. This library automatically resizes the `iframe` to match the child content size to avoid scrollbars on the `iframe` itself.
+[Iframe Resizer](https://github.com/davidjbradshaw/iframe-resizer)는 반응형 iframe을 렌더링하는 중요한 라이브러리입니다. 이 라이브러리는 `iframe`을 자동으로 조정해 `iframe` 자체에 있는 스크롤바를 피하는 자식 컨텐츠 사이즈와 일치하게 만들어 줍니다.
 
-:::caution don't forget 
+:::caution don't forget
 
-The child page rendered by the `iframe` **must include** this script in order for the resizing to work:
+`iframe`에 의해 렌더링되는 자식 페이지는 이 스크립트를 **반드시 포함**해서 사이즈 조정이 동작하도록 해야 합니다:
 
 ```html
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.6/iframeResizer.contentWindow.js"></script>
@@ -129,9 +124,9 @@ NEAR VM uses the React flavor of [this plugin](https://github.com/davidjbradshaw
 
 :::
 
-### Basic Example
+### 기본 예제
 
-You can use the Iframe resizer library like this:
+Iframe resizer 라이브러리는 다음과 같이 사용할 수 있습니다:
 
 ```js
 return (
@@ -144,7 +139,7 @@ return (
 );
 ```
 
-If you need to pass in options to override the default behavior:
+기본 동작을 재정의하는 옵션을 전달해야 하는 경우:
 
 ```js
 return (
@@ -161,13 +156,13 @@ return (
 
 :::tip
 
-You can check [this example](https://near.org/near/widget/ComponentDetailsPage?src=calebjacob.near/widget/IframeResizerTest) to see a complete component using Iframe Resizer.
+[이 예](https://near.org/near/widget/ComponentDetailsPage?src=calebjacob.near/widget/IframeResizerTest)에서 Iframe Resizer를 사용하여 전체 컴포넌트를 확인할 수 있습니다.
 
 :::
 
-### `srcDoc` Example
+### `srcDoc` 예제
 
-An example of a valid `srcDoc` for a secure Iframe using `iframeResizer`:
+`iframeResizer`를 사용하는 안전한 Iframe에 대한 유효한 `srcDoc`의 예:
 
 ```js
 const code = `

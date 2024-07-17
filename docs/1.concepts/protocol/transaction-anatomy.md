@@ -24,6 +24,7 @@ Each transaction has exactly one `Signer` and `Receiver`, but can have multiple 
 ---
 
 ## Actions
+
 Each transaction can have **one or multiple** `Actions`, which are the actual operations to be performed on the `Receiver` account. There are 9 types of actions that can be performed:
 
 1. `FunctionCall`: to invoke a function on a contract (optionally attaching NEAR to the call)
@@ -37,6 +38,7 @@ Each transaction can have **one or multiple** `Actions`, which are the actual op
 9. `Stake`: special action to express interest in becoming a network validator
 
 For example, `bob.near` can bundle the following actions in a single transaction:
+
 - Create the account `contract.bob.near`
 - Transfer 5 NEAR to `contract.bob.near`
 - Deploy a contract in `contract.bob.near`

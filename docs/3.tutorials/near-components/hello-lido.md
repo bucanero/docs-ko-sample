@@ -1,6 +1,6 @@
 ---
 id: lido
-title: Lido Example
+title: Lido 예시
 ---
 
 # Hello Lido!
@@ -19,19 +19,18 @@ The Lido example uses the [Web3Connect component](https://near.org/near/widget/C
 
 :::
 
-
-### Fork the component
+### 구성 요소 포크
 
 1. Navigate to [the component](https://near.org/near/widget/ComponentDetailsPage?src=zavodil.near/widget/Lido)
-2. Select `Fork`
+2. `Fork`를 선택합니다.
 3. Feel free to make any changes
 4. Click on <kbd>Save</kbd> to deploy the component
 
 :::note
-To deploy the component, you'll need to sign in with a NEAR account and to make a deposit of a small amount of NEAR for the storage cost. This is because the components are stored in the NEAR network.
+구성 요소를 배포하려면 NEAR 계정으로 로그인하고 스토리지 비용으로 소량의 NEAR를 예치해야 합니다. This is because the components are stored in the NEAR network.
 :::
 
-### Source code
+### 소스 코드
 
 ```js
 if (
@@ -229,7 +228,7 @@ return (
                 </div>
                 <div className="LidoFormTopContainerLeftContent2">
                   <span>
-                    {state.balance ?? (!state.sender ? "0" : "...")}&nbsp;ETH
+                    {state.balance ?? (!state.sender ? "0" : "...")}&amp;amp;nbsp;ETH
                   </span>
                 </div>
               </div>
@@ -258,7 +257,7 @@ return (
             <div className="LidoFormTopContainerLeftContent2">
               <span>
                 {state.stakedBalance ?? (!state.sender ? "0" : "...")}
-                &nbsp;stETH
+                &amp;amp;nbsp;stETH
               </span>
             </div>
           </div>
@@ -364,13 +363,13 @@ return (
 );
 ```
 
-#### Fork the component
+#### 구성 요소 포크
 
 1. Navigate to [the component](https://near.org/near/widget/ComponentDetailsPage?src=zavodil.near/widget/Lido)
-2. Select `Fork`
+2. `Fork`를 선택합니다.
 3. Feel free to make any changes
 4. Click on <kbd>Save</kbd> to deploy the component
 
 :::note
-To deploy the component, you'll need to sign in with a NEAR account and to make a deposit of a small amount of NEAR for the storage cost. This is because NEAR components are stored in the NEAR network.
+구성 요소를 배포하려면 NEAR 계정으로 로그인하고 스토리지 비용으로 소량의 NEAR를 예치해야 합니다. This is because NEAR components are stored in the NEAR network.
 :::

@@ -1,24 +1,24 @@
 ---
 id: actions
-title: Transfers & Actions
+title: 전송 & Action
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Smart contracts can perform specific `Actions` such as transferring NEAR, or calling other contracts.
+스마트 컨트랙트는 NEAR 전송 또는 다른 컨트랙트 호출과 같은 특정 `Actions`를 수행할 수 있습니다.
 
-An important property of `Actions` is that they can be batched together when acting on the same contract. **Batched actions** act as a unit: they execute in the same [receipt](../../../1.concepts/protocol/transactions.md#receipt-receipt), and if **any fails**, then they **all get reverted**.
+`Actions`의 중요한 속성은, 동일한 컨트랙트에서 작업할 때 일괄적으로 처리될 수 있다는 것입니다. **Batched actions** act as a unit: they execute in the same [receipt](../../../1.concepts/protocol/transactions.md#receipt-receipt), and if **any fails**, then they **all get reverted**.
 
 :::info
-`Actions` can be batched only when they act on the **same contract**. You can batch calling two methods on a contract,
-but **cannot** call two methods on different contracts.
+`Actions`는 **동일한 컨트랙트**에 따라 행동하는 경우에만 일괄 처리될 수 있습니다. 컨트랙트에서 두 메서드를 일괄적으로 호출할 수 있지만, 서로 다른 컨트랙트에서 두 메서드를 일괄적으로 호출 할 수는 **없습니다**.
 :::
 
 ---
 
-## Transfer NEAR Ⓝ
+## NEAR Ⓝ 전송
 
-You can send $NEAR from your contract to any other account on the network. The Gas cost for transferring $NEAR is fixed and is based on the protocol's genesis config. Currently, it costs `~0.45 TGas`.
+컨트랙트에서 $NEAR를 네트워크의 다른 계정으로 보낼 수 있습니다. $NEAR 전송에 대한 가스 비용은 고정되어 있으며, 프로토콜의 기본 구성을 기반으로 합니다. 현재 비용은 `~0.45 TGas`입니다.
 
 <Tabs className="language-tabs" groupId="code-tabs">
   <TabItem value="js" label="🌐 JavaScript">
@@ -60,18 +60,19 @@ You can send $NEAR from your contract to any other account on the network. The G
 </Tabs>
 
 :::tip Why is there no callback?
-The only case where a transfer will fail is if the receiver account does **not** exist.
+:::tip 전송이 실패하는 유일한 경우는 수신자 계정이 존재 하지 **않는** 경우입니다 .
 :::
 
 :::caution
-Remember that your balance is used to cover for the contract's storage. When sending money, make sure you always leave enough to cover for future storage needs.
+:::caution
+당신의 잔고가 컨트랙트 스토리지를 충당하는 데 사용된다는 점을 기억하세요. 돈을 보낼 때 항상 향후 스토리지 요구 사항을 만족할 수 있도록 충분한 금액을 남겨 두시기 바랍니다.
 :::
 
 ---
 
-## Function Call
+## 함수 호출
 
-Your smart contract can call methods in another contract. In the snippet below we call a method
+스마트 컨트랙트는 다른 컨트랙트의 메서드를 호출할 수 있습니다. In the snippet below we call a method
 in a deployed [Hello NEAR](../quickstart.md) contract, and check if everything went
 right in the callback.
 
@@ -164,18 +165,18 @@ right in the callback.
 </Tabs>
 
 :::warning
-The snippet showed above is a low level way of calling other methods. We recommend make calls to other contracts as explained in the [Cross-contract Calls section](crosscontract.md).
+위에 표시된 스니펫은 다른 메서드를 호출하는 낮은 수준의 방법입니다. [교차 컨트랙트 호출 섹션](crosscontract.md)에 설명된 방식대로 다른 컨트랙트를 호출하는 것이 좋습니다 .
 :::
 
 ---
 
-## Create a Sub Account
-Your contract can create direct sub accounts of itself, for example, `user.near` can create `sub.user.near`.
+## 하위 계정 생성
 
-Accounts do **NOT** have control over their sub-accounts, since they have their own keys. 
+`user.near`라는 컨트랙트를 예로 들면, `sub.user.near`라는 하위 계정을 만들 수 있습니다.
 
-Sub-accounts are simply useful for organizing your accounts (e.g. `dao.project.near`, `token.project.near`).
+각 계정에는 자체 키가 있으므로, 컨트랙트는 하위 계정을 제어할 수 **없습니다**.
 
+하위 계정은 계정을 구성하는 데 유용합니다(예시 : `dao.project.near`, `token.project.near`).
 
 <Tabs className="language-tabs" groupId="code-tabs">
   <TabItem value="js" label="🌐 JavaScript">
@@ -227,12 +228,13 @@ Sub-accounts are simply useful for organizing your accounts (e.g. `dao.project.n
 </Tabs>
 
 :::tip
-  Notice that in the snippet we are transferring some money to the new account for storage
+:::tip
+스니펫에서 스토리지를 위해 새 계정에 자금을 전송하고 있다는 것을 참고하세요.
 :::
 
 :::caution
 
-When you create an account from within a contract, it has no keys by default. If you don't explicitly [add keys](#add-keys) to it or [deploy a contract](#deploy-a-contract) on creation then it will be [locked](../../../1.concepts/protocol/access-keys.md#locked-accounts).
+컨트랙트 내에서 계정을 생성하면 기본적으로 키가 없습니다. If you don't explicitly [add keys](#add-keys) to it or [deploy a contract](#deploy-a-contract) on creation then it will be [locked](../../../1.concepts/protocol/access-keys.md#locked-accounts).
 
 :::
 
@@ -240,10 +242,9 @@ When you create an account from within a contract, it has no keys by default. If
 
 #### Creating `.testnet` / `.near` Accounts
 
-Accounts can only create immediate sub-accounts of themselves.
+계정은 자신의 직접적인 하위 계정만 만들 수 있습니다.
 
-If your contract wants to create a `.mainnet` or `.testnet` account, then it needs to [call](#function-call)
-the `create_account` method of `near` or `testnet` root contracts.
+컨트랙트에서 `.mainnet` 또는 `.testnet` 계정을 만들려면, 컨트랙트에서 `near` 또는 `testnet` 루트 컨트랙트의 `create_account` 메서드를 [호출](#함수-호출)해야 합니다.
 
 <Tabs className="language-tabs" groupId="code-tabs">
   <TabItem value="js" label="🌐 JavaScript">
@@ -307,7 +308,7 @@ the `create_account` method of `near` or `testnet` root contracts.
 
 ## Deploy a Contract
 
-When creating an account you can also batch the action of deploying a contract to it. Note that for this, you will need to pre-load the byte-code you want to deploy in your contract.
+계정을 생성할 때 컨트랙트 배포 작업을 일괄 처리할 수도 있습니다. 해당 작업을 위해서, 컨트랙트에 배포하려는 바이트 코드를 미리 로드해야 합니다.
 
 <Tabs className="language-tabs" groupId="code-tabs">
   <TabItem value="rust" label="🦀 Rust">
@@ -339,18 +340,19 @@ When creating an account you can also batch the action of deploying a contract t
 </Tabs>
 
 :::tip
-If an account with a contract deployed does **not** have any access keys, this is known as a locked contract. When the account is locked, it cannot sign transactions therefore, actions can **only** be performed from **within** the contract code.
+:::tip 컨트랙트가 배포된 계정에 액세스 키가 **없는** 경우 이를 잠긴 컨트랙트라고 합니다. 계정이 잠겨 있으면 트랜잭션에 서명할 수 없으므로, 컨트랙트 코드 **내에서만** 작업을 수행 할 수 있습니다.
 :::
 
 ---
 
-## Add Keys
+## 키 추가
 
 When you use actions to create a new account, the created account does not have any [access keys](../../../1.concepts/protocol/access-keys.md), meaning that it **cannot sign transactions** (e.g. to update its contract, delete itself, transfer money).
 
-There are two options for adding keys to the account:
-1. `add_access_key`: adds a key that can only call specific methods on a specified contract.
-2. `add_full_access_key`: adds a key that has full access to the account.
+계정에 키를 추가하려면, 다음 두 가지 옵션 중 하나를 사용하면 됩니다.
+
+1. `add_access_key`: 지정된 컨트랙트에서 특정 메서드만 호출할 수 있는 키를 추가합니다.
+2. `add_full_access_key`: 계정에 대한 전체 액세스 권한이 있는 키를 추가합니다.
 
 <br/>
 
@@ -408,19 +410,20 @@ There are two options for adding keys to the account:
 
 </Tabs>
 
-Notice that what you actually add is a "public key". Whoever holds its private counterpart, i.e. the private-key, will be able to use the newly access key.
+실제로 추가하는 것은 "공개 키"입니다. 즉, 개인 키를 보유한 사람은 새로운 액세스 키를 사용할 수 있습니다.
 
 :::tip
-If an account with a contract deployed does **not** have any access keys, this is known as a locked contract. When the account is locked, it cannot sign transactions therefore, actions can **only** be performed from **within** the contract code.
+:::tip 컨트랙트가 배포된 계정에 액세스 키가 **없는** 경우 이를 잠긴 컨트랙트라고 합니다. 계정이 잠겨 있으면 트랜잭션에 서명할 수 없으므로, 컨트랙트 코드 **내에서만** 작업을 수행 할 수 있습니다.
 :::
 
 ---
 
-## Delete Account
+## 계정 삭제
 
-There are two scenarios in which you can use the `delete_account` action:
-1. As the **last** action in a chain of batched actions.
-2. To make your smart contract delete its own account.
+`delete_account` 작업은 다음 두 가지 시나리오에서 사용할 수 있습니다.
+
+1. 일괄 Action의 **마지막** 작업으로 계정을 삭제합니다.
+2. 스마트 컨트랙트로 하여금 자체 계정을 삭제하도록 합니다.
 
 <Tabs className="language-tabs" groupId="code-tabs">
   <TabItem value="js" label="🌐 JavaScript">
@@ -490,5 +493,5 @@ If the beneficiary account does not exist the funds will be [**dispersed among v
 :::
 
 :::warning Token Loss
-Do **not** use `delete` to try fund a new account. Since the account doesn't exist the tokens will be lost.
+:::warning 토큰 손실 새 계정에 자금을 조달하는 데 `delete`를 사용하지 **마세요**. 계정이 존재하지 않기 때문에, 토큰을 잃게 될 것입니다.
 :::

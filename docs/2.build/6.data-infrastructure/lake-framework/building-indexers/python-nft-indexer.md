@@ -1,9 +1,8 @@
 ---
-sidebar_label: "NFT indexer for Python"
+sidebar_label: Python용 NFT 인덱서
 ---
 
-# Building an NFT indexer for Python
-
+# Python용 NFT 인덱서 구축
 
 :::note Source code for the tutorial
 
@@ -11,19 +10,20 @@ sidebar_label: "NFT indexer for Python"
 
 :::
 
-## The Goal
+## 목표
 
 This tutorial ends with a working NFT indexer built on top [NEAR Lake Framework for Python](/concepts/advanced/near-lake-framework). The indexer is watching for `nft_mint` [Events](https://nomicon.io/Standards/EventsFormat) and prints some relevant data:
-- `receipt_id` of the [Receipt](/build/data-infrastructure/lake-data-structures/receipt) where the mint has happened
-- Marketplace
-- NFT owner account name
-- Links to the NFTs on the marketplaces
+
+- `receipt_id` of the [Receipt](https://docs.near.org/develop/lake/structures/receipt) where the mint has happened
+- 마켓플레이스
+- NFT 소유자 계정 이름
+- 마켓플레이스 내 NFT로의 링크
 
 The final source code is available on the GitHub [`frolvanya/near-lake-nft-indexer`](https://github.com/frolvanya/near-lake-nft-indexer)
 
-## Motivation
+## 동기
 
-NEAR Protocol had introduced a nice feature [Events](https://nomicon.io/Standards/EventsFormat). The Events allow a contract developer to add standardized logs to the [`ExecutionOutcomes`](/build/data-infrastructure/lake-data-structures/execution-outcome) thus allowing themselves or other developers to read those logs in more convenient manner via API or indexers.
+NEAR Protocol had introduced a nice feature [Events](https://nomicon.io/Standards/EventsFormat). The Events allow a contract developer to add standardized logs to the [`ExecutionOutcomes`](https://docs.near.org/develop/lake/structures/execution-outcome) thus allowing themselves or other developers to read those logs in more convenient manner via API or indexers.
 
 The Events have a field `standard` which aligns with NEPs. In this tutorial we'll be talking about [NEP-171 Non-Fungible Token standard](https://github.com/near/NEPs/discussions/171).
 
@@ -33,11 +33,11 @@ As the example we will be building an indexer that watches all the NFTs minted f
 
 We will use Python version of [NEAR Lake Framework](/concepts/advanced/near-lake-framework) in this tutorial. Though the concept is the same for Rust, but we want to show more people that it's not that complex to build your own indexer.
 
-## Preparation
+## 준비
 
 :::danger Credentials
 
-Please, ensure you've the credentials set up as described on the [Credentials](../running-near-lake/credentials.md) page. Otherwise you won't be able to get the code working.
+Please, ensure you've the credentials set up as described on the [Credentials](credentials.md) page. Otherwise you won't be able to get the code working.
 
 :::
 
@@ -48,7 +48,7 @@ mkdir lake-nft-indexer && cd lake-nft-indexer
 touch main.py
 ```
 
-## Set up NEAR Lake Framework
+## NEAR Lake 프레임워크 설정
 
 In the `main.py` let's import `stream` function and `near_primitives` from `near-lake-framework`:
 
@@ -83,7 +83,6 @@ while True:
     streamer_message = await streamer_messages_queue.get()
 ```
 
-
 And an actual start of our indexer in the end of the `main.py`
 
 ```python title=main.py
@@ -97,7 +96,7 @@ The final `main.py` at this moment should look like the following:
 from near_lake_framework import LakeConfig, streamer, near_primitives
 async def main():
     print("Starting NFT indexer")
-    
+
     config = LakeConfig.mainnet()
     config.start_block_height = 69030747
     config.aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
@@ -118,19 +117,19 @@ async def handle_streamer_message(streamer_message: near_primitives.StreamerMess
     pass
 ```
 
-## Events and where to catch them
+## 이벤트와 이를 감지할 수 있는 곳
 
 First of all let's find out where we can catch the Events. We hope you are familiar with how the [Data Flow in NEAR Blockchain](/concepts/data-flow/near-data-flow), but let's revise our knowledge:
+
 - Mint an NFT is an action in an NFT contract (doesn't matter which one)
-- Actions are located in a [Receipt](/build/data-infrastructure/lake-data-structures/receipt)
-- A result of the Receipt execution is [ExecutionOutcome](/build/data-infrastructure/lake-data-structures/execution-outcome)
-- `ExecutionOutcome` in turn, catches the logs a contract "prints"
-- [Events](https://nomicon.io/Standards/EventsFormat) built on top of the logs
+- Actions are located in a [Receipt](https://docs.near.org/develop/lake/structures/receipt)
+- A result of the Receipt execution is [ExecutionOutcome](https://docs.near.org/develop/lake/structures/execution-outcome)
+- `ExecutionOutcome`는 따라서, 차례로 컨트랙트가 "출력"하는 로그를 잡습니다.
+- [Events](https://nomicon.io/Standards/EventsFormat)는 로그 내에 존재합니다.
 
 This leads us to the realization that we can watch only for ExecutionOutcomes and ignore everything else `StreamerMessage` brings us.
 
-
-## Catching only the data we need
+## 필요한 데이터만 포착
 
 Inside the callback function `handle_streamer_message` we've prepared in the [Preparation](#preparation) section let's start filtering the data we need:
 
@@ -142,7 +141,7 @@ async def handle_streamer_message(streamer_message: near_primitives.StreamerMess
                 pass
 ```
 
-We have iterated through the logs of all ExecutionOutcomes of [Shards](/build/data-infrastructure/lake-data-structures/shard) (in our case we don't care on which Shard did the mint happen)
+We have iterated through the logs of all ExecutionOutcomes of [Shards](https://docs.near.org/develop/lake/structures/shard) (in our case we don't care on which Shard did the mint happen)
 
 Now we want to deal only with those ExecutionOutcomes that contain logs of Events format. Such logs start with `EVENT_JSON:` according to the [Events docs](https://nomicon.io/Standards/EventsFormat#events).
 
@@ -164,9 +163,9 @@ async def handle_streamer_message(streamer_message: near_primitives.StreamerMess
 
 Let us explain what we are doing here:
 
-1. We are walking through the logs in ExecutionOutcomes
-2. We are filtering ExecutionOutcomes that contain logs of Events format
-3. In order to collect the Events we are iterating through the ExecutionOutcome's logs trying to parse Event using `json.loads`
+1. ExecutionOutcomes 내 로그를 확인 중입니다.
+2. 이벤트 형식의 로그를 포함하는 ExecutionOutcomes를 필터링하고 있습니다.
+3. 이벤트를 수집하기 위해, `json.loads`을 사용하여 이벤트를 파싱하려는 ExecutionOutcome의 로그를 반복하고 있습니다.
 
 The goal for our indexer is to return the useful data about a minted NFT that follows NEP-171 standard. We need to drop irrelevant standard Events:
 
@@ -178,7 +177,7 @@ The goal for our indexer is to return the useful data about a minted NFT that fo
         continue
 ```
 
-## Almost done
+## 거의 완료
 
 So far we have collected everything we need corresponding to our requirements.
 
@@ -222,19 +221,19 @@ python3 main.py
 
 :::note
 
-Having troubles running the indexer? Please, check you haven't skipped the [Credentials](../running-near-lake/credentials.md) part :)
+Having troubles running the indexer? Please, check you haven't skipped the [Credentials](credentials.md) part :)
 
 :::
 
 Not so fast! Remember we were talking about having the links to the marketplaces to see the minted tokens? We're gonna extend our data with links whenever possible. At least we're gonna show you how to deal with the NFTs minted on [Paras](https://paras.id) and [Mintbase](https://mintbase.io).
 
-## Crafting links to Paras and Mintbase for NFTs minted there
+## Paras와 Mintbase에서 발행된 NFT 링크 제작
 
 At this moment we have an access to logs that follows NEP-171 standard. We definitely know that all the data we have at this moment are relevant for us, and we want to extend it with the links to that minted NFTs at least for those marketplaces we know.
 
 We know and love Paras and Mintbase.
 
-### Paras token URL
+### Paras 토큰 URL
 
 We did the research for you and here's how the URL to token on Paras is crafting:
 
@@ -244,9 +243,9 @@ https://paras.id/token/[1]::[2]/[3]
 
 Where:
 
-- [1] - Paras contract address (`x.paras.near`)
-- [2] - First part of the `token_id` (`parsed_log["data"]` for Paras is an array of objects with `token_ids` key in it. Those IDs represented by numbers with column `:` between them)
-- [3] - `token_id` itself
+- [1] - Paras 컨트랙트 주소 (`x.paras.near`)
+- [2] - `token_id`의 첫 번째 부분 (Paras의 `EventLogData.data`는 `token_ids` 키가 있는 객체 배열입니다. 해당 ID는 사이에 `:` 열이 있는 숫자들로 표현됩니다.)
+- [3] - `token_id` 자체
 
 Example:
 
@@ -254,7 +253,7 @@ Example:
 https://paras.id/token/x.paras.near::387427/387427:373
 ```
 
-### Mintbase token URL
+### Mintbase 토큰 URL
 
 And again we did the research for you:
 
@@ -264,8 +263,8 @@ https://www.mintbase.io/thing/[1]:[2]
 
 Where:
 
-- [1] - `meta_id` (`parsed_log["data"]` for Mintbase is an array of stringified JSON that contains `meta_id`)
-- [2] - Store contract account address (basically Receipt's receiver ID)
+- [1] - `meta_id` ( Mintbase의 `EventLogData.data`는 `meta_id`를 포함하는 문자열화된 JSON 배열입니다.)
+- [2] - 컨트랙트 계정 주소 저장(기본적으로 Receipt의 수신자 ID)
 
 Example:
 
@@ -324,7 +323,7 @@ if receipt_execution_outcome.receipt.receiver_id.endswith(
 
 A few words about what is going on here. If the Receipt's receiver account name ends with `.paras.near` (e.g. `x.paras.near`) we assume it's from Paras marketplace, so we are changing the corresponding variable.
 
-Mintbase turn, we hope [Nate](https://twitter.com/nategeier) and his team have [migrated to NEAR Lake Framework](../migrating-to-near-lake-framework.md) already, saying "Hi!" and crafting the link:
+Mintbase turn, we hope [Nate](https://twitter.com/nategeier) and his team have [migrated to NEAR Lake Framework](migrating-to-near-lake-framework.md) already, saying "Hi!" and crafting the link:
 
 ```python title=main.py
     elif re.search(
@@ -345,8 +344,8 @@ Almost the same story as with Paras, but a little bit more complex. The nature o
 
 After we have defined that the ExecutionOutcome receiver is from Mintbase we are doing the same stuff as with Paras:
 
-1. Setting the `marketplace` variable to Mintbase
-2. Collecting the list of NFTs with owner and crafted links
+1. `marketplace` 변수 변경
+2. 소유자 및 제작된 링크가 포함된 NFT 목록 수집
 
 And make it print the output to the terminal:
 
@@ -443,7 +442,7 @@ python3 main.py
 
 :::note
 
-Having troubles running the indexer? Please, check you haven't skipped the [Credentials](../running-near-lake/credentials.md) part :)
+Having troubles running the indexer? Please, check you haven't skipped the [Credentials](credentials.md) part :)
 
 :::
 
@@ -472,14 +471,14 @@ Example output:
 }
 ```
 
-## Conclusion
+## 결론
 
 What a ride, yeah? Let's sum up what we have done:
 
-- You've learnt about [Events](https://nomicon.io/Standards/EventsFormat)
-- Now you understand how to follow for the Events
-- Knowing the fact that as a contract developer you can use Events and emit your own events, now you know how to create an indexer that follows those Events
-- We've had a closer look at NFT minting process, you can experiment further and find out how to follow `nft_transfer` Events
+- [이벤트](https://nomicon.io/Standards/EventsFormat)에 대해 배웠습니다.
+- 이제 이벤트를 팔로우하는 방법을 이해했습니다.
+- 컨트랙트 개발자로서 이벤트를 사용하고 자신의 이벤트를 내보낼 수 있다는 사실을 알았으므로, 이제 해당 이벤트를 추적하는 인덱서를 만드는 방법에 대해 알게 되었습니다.
+- NFT 민팅 프로세스를 자세히 살펴보았으며, 추가 실험을 통해 `nft_transfer` 이벤트를 추적하는 방법을 알아볼 수 있습니다.
 
 The material from this tutorial can be extrapolated for literally any event that follows the [Events format](https://nomicon.io/Standards/EventsFormat)
 
@@ -492,4 +491,3 @@ Let's go hunt doo, doo, doo 🦈
 [`near-examples/near-lake-nft-indexer`](https://github.com/near-examples/near-lake-nft-indexer): source code for this tutorial
 
 :::
-

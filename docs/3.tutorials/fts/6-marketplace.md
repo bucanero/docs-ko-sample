@@ -1,23 +1,24 @@
 ---
 id: marketplace
-title: Integrating FT Payments into an NFT Marketplace
-sidebar_label: Adding FTs to a Marketplace
+title: NFT 마켓플레이스에 FT 결제 통합하기
+sidebar_label: 마켓플레이스에 FT 추가하기
 ---
+
 import {Github} from "@site/src/components/codetabs"
 
-In this tutorial, you'll learn the basics of how an NFT marketplace contract works and how you can modify it to allow for purchasing NFTs using Fungible Tokens. In the previous tutorials, you went through and created a fully fledged FT contract that incorporates all the standards found in the [FT standard](https://nomicon.io/Standards/Tokens/FungibleToken/Core).
+이 튜토리얼에서는 NFT 마켓플레이스 컨트랙트가 작동하는 방식과 대체 가능한 토큰(FT)을 사용하여 NFT를 구매할 수 있도록 컨트랙트를 수정하는 방법에 대한 기본 사항을 배웁니다. 이전 튜토리얼에서는 [FT 표준](https://nomicon.io/Standards/Tokens/FungibleToken/Core)에 있는 모든 표준을 통합하는 본격적인 FT 컨트랙트를 작성했습니다.
 
 ---
 
-## Introduction
+## 소개
 
-Throughout this tutorial, you'll learn how a marketplace contract could work on NEAR. This is meant to be an example and there is no canonical implementation. Feel free to branch off and modify this contract to meet your specific needs.
+이 튜토리얼을 통해 마켓플레이스 컨트랙트가 NEAR에서 작동하는 방법을 배우게 됩니다. 이것은 예시용이며 표준 구현은 없습니다. 당신의 요구에 맞게 이 컨트랙트를 자유롭게 나누고 수정하세요.
 
-Using the same repository as the previous tutorials, if you visit the `market-contract` directory, you should have the necessary files to complete the tutorial.
+이전 튜토리얼과 동일한 레퍼지토리를 사용하여 `market-contract` 디렉토리를 들어가면, 튜토리얼을 완료하는 데 필요한 파일이 있어야 합니다.
 
 ---
 
-## File structure {#file-structure}
+## 파일 구조 {#file-structure}
 
 This directory contains the actual contract code and dependencies as outlined below.
 
@@ -36,14 +37,14 @@ market-contract
     └── sale_views.rs
 ```
 
-Let's start by building both the finished FT contract and the marketplace contract. Make sure you're in the root directory and run the following command in your terminal:
+완성된 FT 컨트랙트와 마켓플레이스 컨트랙트를 모두 구축하는 것으로 시작하겠습니다. 루트 디렉터리에 있는지 확인하고 터미널에서 다음 명령을 실행합니다.
 
 
 ```bash
 cd market-contract && cargo near build && cd ..
 ```
 
-This will install the dependencies for the marketplace contract as well as the FT contract. Note that there's also `ft-tutorial/out` directory with pre-build nft contract wasm file which you'll use to place the NFTs for sale.
+이렇게 하면 마켓플레이스 컨트랙트와 FT 컨트랙트에 대한 의존성이 설치됩니다. Note that there's also `ft-tutorial/out` directory with pre-build nft contract wasm file which you'll use to place the NFTs for sale.
 
 ```
 ft-tutorial
@@ -53,53 +54,53 @@ ft-tutorial
 
 ---
 
-## Understanding the contract
+## 컨트랙트 이해하기
 
-The marketplace contract used in this tutorial is a modified version of the contract created at the end of the NFT zero to hero tutorial. If you'd like to learn about the backbone of how the NFTs are put for sale and the process by which they are minted / sold, check out the [NFT zero to hero tutorial](/tutorials/nfts/marketplace).
+이 튜토리얼에서 사용되는 마켓플레이스 컨트랙트는 NFT Zero to Hero 튜토리얼 마지막에 생성된 컨트랙트의 수정된 버전입니다. NFT가 판매되는 방식의 근간과 NFT가 발행/판매되는 프로세스에 대해 알아보려면 [NFT zero to hero 튜토리얼](/tutorials/nfts/marketplace)을 확인하세요.
 
-The core functionalities are the same in the sense that both this contract and the marketplace contract built in the NFT zero to hero have the following features:
-- Users can put NFTs for sale and specify sale conditions
-- Users must pay for storage deposit to put NFTs for sale and they can withdraw the storage at any time
-- Users can update the price of an NFT or remove the sale entirely
-- Buyers can purchase the NFTs by calling `offer`.
+핵심 기능은 이 컨트랙트와 NFT Zero to Hero에 구축된 마켓플레이스 컨트랙트 모두 다음과 같은 기능을 가지고 있다는 점에서 동일합니다.
+- 사용자는 NFT를 판매하고 판매 조건을 지정할 수 있습니다.
+- 사용자는 NFT를 판매하기 위해 스토리지 보증금을 지불해야 하며, 언제든지 보증금을 인출할 수 있습니다.
+- 사용자는 NFT 가격을 업데이트하거나 판매를 완전히 제거할 수 있습니다.
+- 구매자는 `offer`를 호출하여 NFT를 구매할 수 있습니다
 
-The only difference is that this marketplace has removed the ability to purchase NFTs for `$NEAR` and instead allows users to buy them with Fungible Tokens. The fungible token is specified when the contract is initialized and only **1 type of fungible token** can be used to purchase NFTs. You can't, for example, offer 100 Team Tokens for an NFT and 5000 Mike Tokens for another.
+유일한 차이점은 이 마켓플레이스에서 `$NEAR`로 NFT를 구매할 수 있는 기능을 제거하고, 대신 사용자가 대체 가능한 토큰으로 NFT를 구매할 수 있다는 것입니다. 대체 가능한 토큰은 컨트랙트가 초기화될 때 지정되며, NFT 구매에는 **1가지 유형의 대체 가능한 토큰**만 사용할 수 있습니다. 예를 들어 NFT에 100개의 팀 토큰을 제공하고 다른 NFT에 5000개의 Mike 토큰을 제공할 수 없습니다.
 
-In addition, the marketplace does **not** support royalties. This is because FT transfers are less Gas efficient than regular $NEAR transfers. In addition, each user would have to be registered and it's much easier to say "hey seller, make sure you're registered before your NFT is sold" rather than enforcing that the seller and **all** accounts in the payout object are registered. When an NFT is sold, the entire price is sent directly to the seller.
+또한 마켓플레이스는 로열티를 지원하지 **않습니다**. 이는 FT 전송이 일반 $NEAR 전송보다 가스 효율성이 떨어지기 때문입니다. 또한 각 사용자를 등록해야 하며 "판매자님, NFT가 판매되기 전에 등록했는지 확인하세요"라고 말하는 것이 지불 대상의 판매자와 **모든** 계정을 등록하도록 강요하는 것보다 훨씬 쉽습니다. NFT가 판매되면 전체 가격이 판매자에게 직접 전송됩니다.
 
 <hr className="subsection" />
 
-### Purchasing Flow
+### 구매 흐름
 
-In order to purchase an NFT, the contract utilizes the "transfer and call" workflow that the FT contract provides. The marketplace contract implements the `ft_on_transfer` method that is called whenever someone transfers FTs to the marketplace contract.
+NFT를 구매하기 위해 컨트랙트는 FT 컨트랙트가 제공하는 "전송 및 호출" 워크플로우를 활용합니다. 마켓플레이스 컨트랙트는 누군가가 마켓플레이스 컨트랙트로 FT를 전송할 때마다 호출되는 `ft_on_transfer` 메서드를 구현합니다.
 
-The marketplace keeps track of a balance for each user that outlines how many FTs they've sent to the contract. Each time `ft_on_transfer` is called, the marketplace contract will update the balance for the user. When that user wishes to purchase an NFT, they call `offer` and pass in the amount of tokens they're willing to spend. The marketplace will then decrement from their balance and transfer the NFT to the buyer / send the FTs to the seller.
+마켓플레이스는 각 사용자가 컨트랙트에 보낸 FT 수를 요약한 잔액을 추적합니다. `ft_on_transfer`가 호출될 때마다, 마켓플레이스 컨트랙트가 사용자의 잔액을 업데이트합니다. 해당 사용자가 NFT를 구매하기를 원하면, `offer`를 호출하여 사용하려는 토큰의 양을 전달합니다. 그런 다음 마켓플레이스는 잔액에서 해당 금액을 차감하고, NFT를 구매자에게 전송하거나 FT를 판매자에게 보냅니다.
 
-It's important to note that the seller **must** be registered in the FT contract before a sale is made otherwise the `ft_transfer` method will panic and the seller won't receive any tokens.
+판매가 이루어지기 전에 판매자가 FT 컨트랙트에 등록되어 있어야 **한다는** 점에 유의하는 것이 중요합니다. 그렇지 않으면 `ft_transfer` 메서드는 패닉 상태가 되고, 판매자는 어떠한 토큰도 받을 수 없습니다.
 
 ---
 
-## Looking at the Code
+## 코드 살펴보기
 
-Most of the code is the same as what's been outlined in the [NFT zero to hero tutorial](/tutorials/nfts/marketplace) but we'll go through a refresher in case you're new or have forgotten some of the details.
-
-<hr className="subsection" />
-
-### Main Library File
-
-Starting at the `lib.rs` file, this outlines what information is stored on the contract as well as some other crucial functions that you'll learn about below.
+대부분의 코드는 [NFT zero to hero 튜토리얼](/tutorials/nfts/marketplace)에 설명된 것과 동일하지만, 처음 사용하거나 일부 세부 정보를 잊은 경우를 대비하여 다시 살펴보겠습니다.
 
 <hr className="subsection" />
 
-### Initialization function {#initialization-function}
+### 메인 라이브러리 파일
 
-The first function you'll look at is the initialization function. This takes an `owner_id` as well as the `ft_id` as the parameters and will default all the storage collections to their default values. The `ft_id` outlines the account ID for the fungible token that the contract will allow.
+`lib.rs` 파일에서 시작하여, 컨트랙트에 저장되는 정보와 아래에서 배우게 될 기타 중요한 기능에 대해 설명합니다.
+
+<hr className="subsection" />
+
+### 초기화 함수 {#initialization-function}
+
+처음으로 살펴볼 함수는 초기화 함수입니다. 이것은 매개변수로 `owner_id`뿐만 아니라 `ft_id`를 취하며, 모든 스토리지 컬렉션을 기본값으로 설정합니다. `ft_id`는 컨트랙트에서 허용하는 대체 가능한 토큰의 계정 ID를 설명합니다.
 
 <Github language="rust" start="93" end="114" url="https://github.com/near-examples/ft-tutorial/blob/main/market-contract/src/lib.rs" />
 
 <hr className="subsection" />
 
-### Storage management model {#storage-management-model}
+### 스토리지 관리 모델 {#storage-management-model}
 
 Next, let's talk about the storage management model chosen for this contract. Users will need to deposit $NEAR onto the marketplace to cover the storage costs. Whenever someone puts an NFT for sale, the marketplace needs to store that information which costs $NEAR. Users can either deposit a large amount of $NEAR so that they never have to worry about storage again or they can deposit the minimum amount to cover 1 sale on an as-needed basis.
 
@@ -107,69 +108,69 @@ You might be thinking about the scenario when a sale is purchased. What happens 
 
 **Scenario A**
 
-- Benji wants to list his NFT on the marketplace but has never paid for storage.
-- He deposits exactly 0.01 NEAR using the `storage_deposit` method. This will cover 1 sale.
-- He lists his NFT on the marketplace and is now using up 1 out of his prepaid 1 sales and has no more storage left. If he were to call `storage_withdraw`, nothing would happen.
-- Dorian loves his NFT and quickly purchases it before anybody else can. This means that Benji's sale has now been taken down (since it was purchased) and Benji is using up 0 out of his prepaid 1 sales. In other words, he has an excess of 1 sale or 0.01 NEAR.
-- Benji can now call `storage_withdraw` and will be transferred his 0.01 NEAR back. On the contract's side, after withdrawing, he will have 0 sales paid for and will need to deposit storage before trying to list anymore NFTs.
+- Benji는 마켓플레이스에 자신의 NFT를 리스팅하고 싶지만, 스토리지 비용을 지불한 적이 없습니다.
+- 그는 `storage_deposit` 메서드를 사용하여 정확히 0.01 NEAR를 예치합니다. 이것은 한 번의 판매를 커버할 것입니다.
+- 그는 마켓플레이스에 자신의 NFT를 리스팅하고, 현재 선불 판매 1개 중 1개를 사용하고 있기 때문에 더 이상 스토리지 공간이 남아 있지 않습니다. 그가 `storage_withdraw`를 호출하면 아무 일도 일어나지 않을 것입니다.
+- Dorian은 Benji의 NFT를 좋아하고, 다른 사람보다 먼저 빠르게 구매했습니다. 이는 Benji의 판매가 이제 중단되었으며(구매한 이후) Benji는 선불 판매 1개 중 0개를 사용하고 있음을 의미합니다. 즉, 그는 1 판매 또는 0.01 NEAR가 남습니다.
+- Benji는 이제 `storage_withdraw` 호출을 할 수 있으며, 그의 0.01 NEAR를 다시 돌려받을 것입니다. 컨트랙트 측면에서, 그는 출금 후 판매 금액이 0이 되며, 이제 NFT를 리스팅하기 전에 스토리지를 예치해야 합니다.
 
 **Scenario B**
 
-- Dorian owns one hundred beautiful NFTs and knows that he wants to list all of them.
-- To avoid having to call `storage_deposit` everytime he wants to list an NFT, he calls it once. Since Dorian is a baller, he attaches 10 NEAR which is enough to cover 1000 sales. He now has an excess of 9 NEAR or 900 sales.
-- Dorian needs the 9 NEAR for something else but doesn't want to take down his 100 listings. Since he has an excess of 9 NEAR, he can easily withdraw and still have his 100 listings. After calling `storage_withdraw` and being transferred 9 NEAR, he will have an excess of 0 sales.
+- Dorian은 100개의 아름다운 NFT를 소유하고 있으며, 모든 NFT를 리스팅하고 싶습니다.
+- NFT를 나열할 때마다 `storage_deposit`를 호출할 필요가 없도록, 그는 한 번만 호출하였습니다. Dorian은 성공한 사람이기 때문에 1000개의 판매를 커버하기에 충분한 10개의 NEAR를 첨부하였습니다. 이후, 그는 이제 9 NEAR 또는 900 판매를 초과했습니다.
+- Dorian은 다른 일을 위해 9 NEAR가 필요하지만, 100개의 리스팅을 삭제하고 싶지는 않습니다. 그는 9 NEAR가 남았기 때문에 쉽게 인출할 수 있고 여전히 100개의 목록을 보유할 수 있습니다. `storage_withdraw` 호출을 하고 9 NEAR를 받으면 그는 0개의 판매 가능 수량을 가지게 될 것입니다.
 
 With this behavior in mind, the following two functions outline the logic.
 
 <Github language="rust" start="119" end="182" url="https://github.com/near-examples/ft-tutorial/blob/main/market-contract/src/lib.rs" />
 
-In this contract, the storage required for each sale is 0.01 NEAR but you can query that information using the `storage_minimum_balance` function. In addition, if you wanted to check how much storage a given account has paid, you can query the `storage_balance_of` function.
+이 컨트랙트에서 각 판매에 필요한 스토리지는 0.01 NEAR이지만, `storage_minimum_balance` 함수를 사용하여 해당 정보를 쿼리할 수 있습니다. 또한, 해당 계정이 지불한 스토리지 공간을 확인하려면 `storage_balance_of` 함수로 쿼리할 수 있습니다.
 
 ---
 
-## FT Deposits
+## FT 보증금
 
-If you want to learn more about how NFTs are put for sale, check out the [NFT zero to hero tutorial](/tutorials/nfts/marketplace). Once NFTs are put for sale, the owner has three options:
-- Update the price of the NFT
-- Remove the sale from the marketplace
-- Wait for somebody to purchase it
+NFT가 판매되는 방법에 대해 자세히 알아보려면 [NFT zero to hero 튜토리얼](/tutorials/nfts/marketplace)을 확인하세요. NFT가 판매되면 소유자는 세 가지 옵션이 있습니다.
+- NFT 가격 업데이트
+- 시장에서 리스팅 제거
+- 누군가의 구매를 대기
 
-In order to purchase NFTs, buyers need to deposit FTs in the contract and call the `offer` function. All the logic for FT deposits is outlined in the `src/ft_balances.rs` file. Starting with the `ft_on_transfer` function, this is called when a user transfers FTs to the marketplace contract. The logic can be seen below.
+NFT를 구매하기 위해서는 구매자가 컨트랙트에 FT를 예치하고 `offer` 함수를 호출해야 합니다. FT 보증금에 대한 모든 로직은 `src/ft_balances.rs` 파일에 요약되어 있습니다. Starting with the `ft_on_transfer` function, this is called when a user transfers FTs to the marketplace contract. 로직은 아래에서 볼 수 있습니다.
 
 <Github language="rust" start="39" end="77" url="https://github.com/near-examples/ft-tutorial/blob/main/market-contract/src/ft_balances.rs" />
 
-Once FTs are deposited into the contract, users can either withdraw their FTs or they can use them to purchase NFTs. The withdrawing flow is outlined in the `ft_withdraw` function. It's important to note that you should decrement the user's balance **before** calling the `ft_transfer` function to avoid a common exploit scenario where a user spams the `ft_withdraw`. If you were to decrement their balance in the callback function (if the transfer was successful), they could spam the `ft_withdraw` during the time it takes the callback function to execute. A better pattern is to decrement their balance before the transfer and then if the promise was **unsuccessful**, revert the balance back to what it was before.
+FT가 컨트랙트에 입금되면, 사용자는 FT를 인출하거나 이를 사용하여 NFT를 구매할 수 있습니다. 인출 흐름은 `ft_withdraw` 함수에 설명되어 있습니다. `ft_transfer` 함수를 호출하기 **전에** 사용자의 잔액을 차감해야 한다는 것(전송이 성공한 경우)을 기억해야 합니다. 이는 `ft_withdraw_`를 스팸 공격하는 일반적인 해킹 시나리오를 피하기 위함입니다. A better pattern is to decrement their balance before the transfer and then if the promise was **unsuccessful**, revert the balance back to what it was before.
 
 <Github language="rust" start="79" end="154" url="https://github.com/near-examples/ft-tutorial/blob/main/market-contract/src/ft_balances.rs" />
 
 ---
 
-## Purchasing NFTs
+## NFT 구매
 
-Now that you're familiar with the process of both adding storage and depositing FTs on the marketplace, let's go through what you can do once a sale has been listed. The `src/sale.rs` file outlines the functions for updating the price, removing, and purchasing NFTs. In this tutorial, we'll focus **only** on the purchasing flow. If you'd like to learn about the sale objects, updating the price, and removing a sale, check out the [NFT zero to hero tutorial](/tutorials/nfts/marketplace).
+이제 스토리지를 추가하고 시장에 FT를 예치하는 프로세스에 익숙해졌으므로 판매가 리스팅되면 수행할 수 있는 작업에 대해 살펴보겠습니다. 이 `src/sale.rs` 파일은 가격 업데이트, 제거 및 NFT 구매 기능을 설명합니다. 이 튜토리얼에서는 구매 흐름**에만** 초점을 맞춥니다. 판매 대상, 가격 업데이트 및 판매 제거에 대해 알아보려면 [NFT zero to hero 튜토리얼](/tutorials/nfts/marketplace)을 확인하세요.
 
-For purchasing NFTs, you must call the `offer` function. It takes an `nft_contract_id`, `token_id`, and the amount you wish to offer as parameters. Behind the scenes, this function will make sure your offer amount is greater than the list price and also that you have enough FTs deposited. It will then call a private method `process_purchase` which will perform a cross-contract call to the NFT contract to invoke the `nft_transfer` function where the NFT will be transferred to the seller.
+NFT를 구매하려면 `offer` 함수를 호출해야 합니다. 이를 위해, `nft_contract_id`, `token_id` 및 매개변수로 제공하려는 금액이 필요합니다. 내부적으로 이 함수는 제안 금액이 정가보다 크고 충분한 FT가 예치되었는지 확인합니다. 그런 다음 NFT 컨트랙트에 대한 교차 컨트랙트 호출을 수행하여 NFT가 판매자에게 전송되는 `nft_transfer` 함수를 호출하는 프라이빗 메서드 `process_purchase`를 호출합니다.
 
 <Github language="rust" start="68" end="145" url="https://github.com/near-examples/ft-tutorial/blob/main/market-contract/src/sale.rs" />
 
-Once the transfer is complete, the contract will call `resolve_purchase` where it will check the status of the transfer.If the transfer succeeded, it will send the FTs to the seller. If the transfer didn't succeed, it will increment the buyer's FT balance (acting as a refund).
+전송이 완료되면, 컨트랙트가 전송 상태를 확인하는 `resolve_purchase`를 호출합니다. 이는 전송이 성공하면 판매자에게 FT를 보내고, 전송에 실패하면 구매자의 FT 잔액이 증가합니다(환불).
 
 
 <Github language="rust" start="147" end="191" url="https://github.com/near-examples/ft-tutorial/blob/main/market-contract/src/sale.rs" />
 
-## View Methods
+## View 메서드
 
-There are several view functions that the marketplace contract exposes. All of these functions are the same as the [NFT zero to hero tutorial](/tutorials/nfts/marketplace) except for one extra function we've added. In the `src/ft_balances.rs` file, we've added the `ft_balance_of` function. This function returns the balance of a given account.
+마켓플레이스 컨트랙트가 노출하는 몇 가지 view 함수가 있습니다. 이러한 모든 함수들은 우리가 추가한 하나의 추가 함수를 제외하고는 [NFT zero to hero 튜토리얼](/tutorials/nfts/marketplace)과 동일합니다. `src/ft_balances.rs` 파일에 `ft_balance_of` 함수를 추가했습니다. 이 함수는 주어진 계정의 잔액을 반환합니다.
 
 ---
 
-## Testing
+## 테스트
 
-Now that you *hopefully* have a good understanding of how the marketplace contract works and how you can use the powers of the FT standard to purchase NFTs, let's move onto testing everything.
+이제 마켓플레이스 컨트랙트의 작동 방식과 FT 표준의 권한을 사용하여 NFT를 구매할 수 있는 방법을 *잘* 이해했으므로 모든 것을 테스트해 보겠습니다.
 
-### Deploying and Initializing the Contracts
+### 컨트랙트 배포 및 초기화
 
-The first thing you'll want to do is deploy a new FT, NFT, and marketplace contract.
+가장 먼저 할 일은 새로운 FT, NFT 및 마켓플레이스 컨트랙트를 배포하는 것입니다.
 
 ```bash
 cd market-contract && cargo near build && cd ..
@@ -183,7 +184,7 @@ near create-account $FT_CONTRACT --useFaucet
 cd 5.transfers/ && cargo near deploy $FT_CONTRACT with-init-call new_default_meta json-args '{"owner_id": "'$FT_CONTRACT'", "total_supply": "1000000000000000000000000000"}' prepaid-gas '100.0 Tgas' attached-deposit '0 NEAR' network-config testnet sign-with-keychain send && cd ../
 ```
 
-Next, you'll deploy the NFT and marketplace contracts.
+다음으로 NFT 및 마켓플레이스 컨트랙트를 배포합니다.
 
 ```bash
 export NFT_CONTRACT=<new-nft-account-id>
@@ -197,12 +198,12 @@ near create-account $MARKETPLACE_CONTRACT --useFaucet
 cd market-contract/ && cargo near deploy $MARKETPLACE_CONTRACT with-init-call new json-args '{"owner_id": "'$MARKETPLACE_CONTRACT'", "ft_id": "'$FT_CONTRACT'"}' prepaid-gas '100.0 Tgas' attached-deposit '0 NEAR' network-config testnet sign-with-keychain send && cd ../
 ```
 
-Check and see if your environment variables are all correct by running the following command. Each output should be different.
+다음 명령을 실행하여 환경 변수가 모두 올바른지 확인하세요. 각 출력은 달라야 합니다.
 
 ```bash
 echo $FT_CONTRACT && echo $MARKETPLACE_CONTRACT && echo $NFT_CONTRACT
 ```
-An example output is:
+출력 예는 다음과 같습니다.
 
 ```bash
 ft-contract.testnet
@@ -216,12 +217,12 @@ Once that's finished, go ahead and initialize NFT contract by running the follow
 near call $NFT_CONTRACT new_default_meta '{"owner_id": "'$NFT_CONTRACT'"}' --accountId $NFT_CONTRACT
 ```
 
-Let's check if each contract was initialized correctly. You can do this by checking the metadata of the FT and NFT contracts:
+각 컨트랙트가 제대로 초기화되었는지 확인해 봅시다. FT 및 NFT 컨트랙트의 메타데이터를 확인하여 이를 수행할 수 있습니다.
 
 ```bash
 near view $FT_CONTRACT ft_metadata && near view $NFT_CONTRACT nft_metadata
 ```
-In addition, you can check the sales of the marketplace contract and it should return 0.
+또한 Marketplace 컨트랙트의 판매를 확인할 수 있으며 0을 반환해야 합니다.
 
 ```bash
 near view $MARKETPLACE_CONTRACT get_supply_sales
@@ -229,9 +230,9 @@ near view $MARKETPLACE_CONTRACT get_supply_sales
 
 <hr className="subsection" />
 
-### Placing a Token For Sale
+### 토큰 판매 리스팅
 
-Now that the marketplace and NFT contracts are initialized, let's place a token for sale. Start by creating a new buyer and seller account by running the following command. In this case, we'll create a sub-account of the FT contract.
+이제 마켓플레이스와 NFT 컨트랙트가 초기화되었으므로 판매용 토큰을 배치해 보겠습니다. 다음 명령을 실행하여 새 구매자 및 판매자 계정을 생성하여 시작하세요. 이 경우 FT 컨트랙트의 하위 계정(sub-account)을 생성합니다.
 
 ```bash
 near create-account buyer.$FT_CONTRACT --masterAccount $FT_CONTRACT --initialBalance 2 && export BUYER_ID=buyer.$FT_CONTRACT
@@ -241,45 +242,45 @@ near create-account buyer.$FT_CONTRACT --masterAccount $FT_CONTRACT --initialBal
 near create-account seller.$FT_CONTRACT --masterAccount $FT_CONTRACT --initialBalance 2 && export SELLER_ID=seller.$FT_CONTRACT
 ```
 
-Check if everything went well by running the following command.
+다음 명령을 실행하여 모든 것이 잘 되었는지 확인합니다.
 
 ```bash
 echo $BUYER_ID && echo $SELLER_ID
 ```
-This should return something similar to:
+이는 다음과 유사한 결과를 반환해야 합니다.
 ```bash
 buyer.ft-contract.testnet
 seller.ft-contract.testnet
 ```
 
-The next thing you'll want to do is mint a token to the seller.
+다음으로 해야 할 일은 판매자에게 토큰을 발행하는 것입니다.
 
 ```bash
 near call $NFT_CONTRACT nft_mint '{"token_id": "market-token", "metadata": {"title": "Marketplace Token", "description": "testing out the marketplace", "media": "https://bafybeiftczwrtyr3k7a2k4vutd3amkwsmaqyhrdzlhvpt33dyjivufqusq.ipfs.dweb.link/goteam-gif.gif"}, "receiver_id": "'$SELLER_ID'"}' --accountId $NFT_CONTRACT --amount 0.1
 ```
-Now you'll need to place the token for sale. This requires paying for storage as well as calling the `nft_approve` function.
+이제 토큰을 판매용으로 배치해야 합니다. 이를 위해서는 스토리지 비용을 지불하고 `nft_approve` 함수를 호출해야 합니다.
 
 ```bash
 near call $MARKETPLACE_CONTRACT storage_deposit --accountId $SELLER_ID --amount 0.1
 ```
-In this case, we'll place the token for sale for `10 gtNEAR`.
+이 경우 우리는 토큰을 `10 gtNEAR`에 판매할 것입니다.
 ```bash
 near call $NFT_CONTRACT nft_approve '{"token_id": "market-token", "account_id": "'$MARKETPLACE_CONTRACT'", "msg": "{\"sale_conditions\":\"10000000000000000000000000\"}"}' --accountId $SELLER_ID --amount 0.1
 ```
 
-If you now query for the supply of sales again on the marketplace, it should be 1.
+이제 마켓플레이스에서 판매 공급량을 다시 쿼리하면 1이어야 합니다.
 
 ```bash
 near view $MARKETPLACE_CONTRACT get_supply_sales
 ```
 
-In addition, if you query for the sales by the owner ID, it should reflect the `10 gtNEAR` price.
-    
+또한 소유자 ID로 판매를 쿼리하면 `10 gtNEAR`라는 가격이 반영되어야 합니다.
+
 ```bash
 near view $MARKETPLACE_CONTRACT get_sales_by_owner_id '{"account_id": "'$SELLER_ID'"}'
 ```
 
-Expected output:
+예상 출력:
 
 ```bash
 [
@@ -295,9 +296,9 @@ Expected output:
 
 <hr className="subsection" />
 
-### Deposit FTs into the Marketplace
+### 마켓플레이스에 FT 입금
 
-Now that you have an NFT up for sale for `10 gtNEAR` on the marketplace contract, the buyer needs to deposit some FTs. The first thing you need to do is register both the marketplace contract and the buyer on the FT contract otherwise you won't be able to transfer any FTs.
+마켓플레이스 컨트랙트에서 `10 gtNEAR`에 판매할 NFT가 있으므로, 구매자는 일부 FT를 예치해야 합니다. 가장 먼저 해야 할 일은 마켓플레이스 컨트랙트와 구매자를 모두 FT 컨트랙트에 등록하는 것입니다. 그렇지 않으면 FT를 전송할 수 없습니다.
 
 ```bash
 near call $FT_CONTRACT storage_deposit '{"account_id": "'$MARKETPLACE_CONTRACT'"}' --accountId $FT_CONTRACT --amount 0.1
@@ -305,19 +306,19 @@ near call $FT_CONTRACT storage_deposit '{"account_id": "'$MARKETPLACE_CONTRACT'"
 ```bash
 near call $FT_CONTRACT storage_deposit '{"account_id": "'$BUYER_ID'"}' --accountId $FT_CONTRACT --amount 0.1
 ```
-After this, you should transfer the buyer some FTs so that they can deposit at least `10 gtNEAR`. Lets start with 50 `gtNEAR`. Run the following command to send the buyer FTs on behalf of the FT contract owner.
+그런 다음, 몇 개의 FT를 구매자에게 보내서 최소 `10 gtNEAR`를 예치할 수 있도록 하여야 합니다. `50 gtNEAR`부터 시작하겠습니다. 다음 명령을 실행하여 FT 컨트랙트 소유자를 대신하여 구매자 FT를 보냅니다.
 
 ```bash
 near call $FT_CONTRACT ft_transfer '{"receiver_id": "'$BUYER_ID'", "amount": "50000000000000000000000000", "memo": "Go Team!"}' --accountId $FT_CONTRACT --depositYocto 1
 ```
 
-You'll now need to deposit those tokens into the marketplace contract.
+이제 해당 토큰을 마켓플레이스 컨트랙트에 예치해야 합니다.
 
 ```bash
 near call $FT_CONTRACT ft_transfer_call '{"receiver_id": "'$MARKETPLACE_CONTRACT'", "amount": "50000000000000000000000000", "msg": "Wooooooo!"}' --accountId $BUYER_ID --depositYocto 1 --gas 200000000000000
 ```
 
-If you now query for your balance on the marketplace contract, it should be `50 gtNEAR`.
+이제 마켓플레이스 컨트랙트에서 잔액을 쿼리하면, `50 gtNEAR`가 되어야 합니다.
 
 ```bash
 near view $MARKETPLACE_CONTRACT ft_deposits_of '{"account_id": "'$BUYER_ID'"}'
@@ -325,26 +326,26 @@ near view $MARKETPLACE_CONTRACT ft_deposits_of '{"account_id": "'$BUYER_ID'"}'
 
 <hr className="subsection" />
 
-### Purchasing the NFT
+### NFT 구매
 
-Now that the buyer has deposited FTs into the marketplace and the token is up for sale, let's go ahead and make an offer! If you try to offer more FTs than what you have, the contract will panic. Similarly, if you try to offer lower than the sale price, the contract will also panic. Since the sale price is `10 gtNEAR`, let's try to offer `20 gtNEAR` and see what happens. The expected outcome is:
-- The NFT will be transferred to the buyer
-- `20 gtNEAR` will be sent to the seller
-- The buyer will have `30 gtNEAR` left to withdraw.
+이제 구매자가 FT를 마켓플레이스에 입금했고, 토큰이 판매 중이므로 계속해서 제안을 합시다! 가지고 있는 것보다 더 많은 FT를 제공하려고 하면 컨트랙트가 패닉 상태가 됩니다. 마찬가지로 판매 가격보다 낮게 제안하려고 해도, 컨트랙트가 패닉 상태가 됩니다. 판매 가격이 `10 gtNEAR`이므로, `20 gtNEAR`를 제안하고 어떤 일이 일어나는지 봅시다. 예상 결과는 다음과 같습니다.
+- NFT는 구매자에게 전송됩니다.
+- 판매자에게 `20 gtNEAR`를 보냅니다.
+- 구매자에게는 `30 gtNEAR`가 남아있을 것입니다.
 
-There is one thing we're forgetting, however. We need to make sure that the seller is registered on the FT contract so let's go ahead and do that now.
+그런데 우리가 잊고 있는 것이 하나 있습니다. 판매자가 FT 컨트랙트에 등록되어 있는지 확인해야 하므로 지금 진행하겠습니다.
 
 ```bash
 near call $FT_CONTRACT storage_deposit '{"account_id": "'$SELLER_ID'"}' --accountId $FT_CONTRACT --amount 0.1
 ```
 
-Now let's make an offer!
+이제 제안을 해봅시다!
 
 ```bash
 near call $MARKETPLACE_CONTRACT offer '{"nft_contract_id": "'$NFT_CONTRACT'", "token_id": "market-token", "amount": "20000000000000000000000000"}' --accountId $BUYER_ID --depositYocto 1 --gas 300000000000000
 ```
 
-If everything went well, you should see 2 events in your terminal. One event is the NFT transfer coming from the NFT contract when the token was transferred from the seller to the buyer. The other event is the FT transfer for when the seller receives their fungible tokens.
+모든 것이 잘 되었다면 터미널에 2개의 이벤트가 표시되어야 합니다. 하나의 이벤트는 토큰이 판매자에서 구매자로 전송될 때, NFT 컨트랙트에서 오는 NFT 전송입니다. 다른 이벤트는 판매자가 대체 가능한 토큰을 받을 때의 FT 전송입니다.
 
 ```bash
 Log [dev-1660831638497-73655245450834]: Memo: payout from market
@@ -353,19 +354,19 @@ Receipt: BBvHig5zg1n2vmxFPTpxED4FNCAU1ZzZ3H8EBqqaeRw5
 Log [dev-1660831638497-73655245450834]: EVENT_JSON:{"standard":"nep141","version":"1.0.0","event":"ft_transfer","data":[{"old_owner_id":"dev-1660831638497-73655245450834","new_owner_id":"seller.dev-1660831615048-16894106456797","amount":"20000000000000000000000000","memo":"Sale from marketplace"}]}
 ```
 
-Let's call some view methods to double check if everything went well. First let's check if the seller now has `20 gtNEAR`.
+모든 것이 잘 되었는지 다시 확인하기 위해 몇 가지 view 메서드를 호출해 봅시다. 먼저 판매자가 현재 `20 gtNEAR`을 가지고 있는지 확인해 봅시다.
 
 ```bash
 near view $FT_CONTRACT ft_balance_of '{"account_id": "'$SELLER_ID'"}'
 ```
 
-Next, let's check if the buyer has `30 gtNEAR` left to withdraw.
+다음으로 구매자의 출금 가능 금액이 `30 gtNEAR`만큼 남았는지 확인합시다.
 
 ```bash
 near view $MARKETPLACE_CONTRACT ft_deposits_of '{"account_id": "'$BUYER_ID'"}'
 ```
 
-Finally, let's check if the NFT is now owned by the buyer.
+마지막으로 NFT가 이제 구매자의 소유인지 확인합시다.
 
 ```bash
 near view $NFT_CONTRACT nft_token '{"token_id": "market-token"}'
@@ -373,27 +374,27 @@ near view $NFT_CONTRACT nft_token '{"token_id": "market-token"}'
 
 <hr className="subsection" />
 
-### Withdrawing the Excess Deposits
+### 초과입금액 출금
 
-Now that the buyer purchased the NFT with `20 gtNEAR`, they should have `30 gtNEAR` left to withdraw. If they withdraw the tokens, they should be left with a balance of `30 gtNEAR` on the FT contract.
+이제 구매자가 `20 gtNEAR`로 NFT를 구매했으므로, 출금 가능 금액이  `30 gtNEAR`만큼 남았어야 합니다. 토큰을 인출하면, FT 컨트랙트에 `30 gtNEAR`만큼의 잔액이 남아 있어야 합니다.
 
 ```bash
 near call $MARKETPLACE_CONTRACT ft_withdraw '{"amount": "30000000000000000000000000"}' --accountId $BUYER_ID --depositYocto 1 --gas 300000000000000
 ```
 
-If you now query for the buyer's balance, it should be `30 gtNEAR`.
+이제 구매자의 잔액을 쿼리하면 `30 gtNEAR`이어야 합니다.
 
 ```bash
 near view $FT_CONTRACT ft_balance_of '{"account_id": "'$BUYER_ID'"}'
 ```
 
-And just like that you're finished! You went through and put an NFT up for sale and purchased it using fungible tokens! **Go team 🚀**
+이렇게 하면 작업이 완료됩니다! NFT를 판매하고 대체 가능한 토큰을 사용하여 구매했습니다! **화이팅** 🚀
 
 ---
 
-## Conclusion
+## 결론
 
-In this tutorial, you learned about the basics of a marketplace contract and how it works. You went through the core logic both at a high level and looked at the code. You deployed an NFT, marketplace, and FT contract, initialized them all and then put an NFT for sale and sold it for fungible tokens! What an amazing experience! Go forth and expand these contracts to meet whatever needs you have. The world is your oyster and thank you so much for following along with this tutorial series. Don't hesitate to ask for help or clarification on anything in our discord or social media channels. **Go Team!**
+이 튜토리얼에서는 마켓플레이스 컨트랙트의 기본 사항과 작동 방식에 대해 배웠습니다. 높은 수준에서 핵심 로직을 살펴보고 코드를 살펴보았습니다. NFT, 마켓플레이스 및 FT 컨트랙트를 배포하고, 모두 초기화한 다음, NFT를 판매용으로 넣고 대체 가능한 토큰으로 판매했습니다! 정말 놀라운 경험이었습니다! 필요한 모든 것들을 구현하고 싶다면, 이러한 컨트랙트를 확장하세요. 세상은 당신의 것입니다! 이 튜토리얼 시리즈를 따라 주셔서 대단히 감사합니다. 저희 디스코드나 소셜 미디어 채널에서 무엇이든 주저하지 말고 도움이나 설명을 요청하세요. **화이팅!**
 
 ---
 

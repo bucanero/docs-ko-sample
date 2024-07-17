@@ -1,29 +1,30 @@
 ---
 id: interaction
-title: Smart Contract Interaction
+title: 스마트 컨트랙트 상호작용
 ---
 
-Your frontend can interact with different blockchains using the built-in BOS API. Let's see how to create an application that reads and stores a greeting from a NEAR smart contract. 
+프론트엔드는 내장된 Discovery API를 사용하여 다양한 블록체인과 상호 작용할 수 있습니다. NEAR 스마트 컨트랙트에서 인사말을 읽고 저장하는 애플리케이션을 만드는 방법에 대해 알아보겠습니다.
 
-![widgets](/docs/hello-near-logedin.png)
-*View of our Hello Near app when the user is logged-in*
+![widgets](/docs/hello-near-logedin.png) _사용자가 로그인했을 때 Hello Near 앱 보기_
 
 :::info
-Check the finished example at [near.social code page](https://near.social/#/mob.near/widget/WidgetSource?src=gagdiez.near/widget/HelloNear).
+[near.social 코드 페이지](https://near.social/#/mob.near/widget/WidgetSource?src=gagdiez.near/widget/HelloNear)에서 완성된 코드를 확인하세요.
 :::
 
 ---
 
 ## The Contract
 
-We have deployed a `Hello World` smart contract in the NEAR network at `hello.near-examples.near`. The contract exposes two methods:
-- `set_greeting(greeting: string): void`, which accepts a greeting and stores it in the contract state.
-- `get_greeting(): string` which returns the stored greeting.
+`Hello.near=example.near`의 NEAR 네트워크에 `Hello World` 스마트 컨트랙트를 구축했습니다. The contract exposes two methods:
+
+- `set_greeting(greeting: string): void`: 인사말을 받아 컨트랙트 상태 내에 저장합니다.
+- `get_greeting(): string`: 저장된 인사말을 반환합니다.
 
 ---
 
-## Retrieving the Greeting
-Since we want to interact with the NEAR network, we will use the `Near` object from the BOS API.
+## 인사말 반환
+
+NEAR 네트워크와 상호 작용하기를 원하므로 Discovery API의 `Near` 객체를 사용합니다.
 
 ```ts
 const contract = "hello.near-examples.near";
@@ -32,7 +33,7 @@ const greeting = Near.view(contract, "get_greeting", {});
 return <div>{greeting} World</div>;
 ```
 
-Assuming the contract is storing `"Hello"`, this will render a simple:
+컨트랙트에 `"Hello"`가 저장되어 있다고 가정하면 다음과 같은 간단한 정보가 제공됩니다:
 
 ```json
 Hello World
@@ -40,17 +41,20 @@ Hello World
 
 ---
 
-## Changing the Greeting
-To modify the greeting, we simply need to use `Near.call` to call the `set_greeting` method. This however, requires us to have a frontend in which the user can input the new greeting.
+## 인사말 변경
 
-Lets create it in two steps:
-1. Build the HTML that will be rendered
+인사말을 수정하려면 `Near.call`을 사용하여 `set_greeting` 메서드를 호출하기만 하면 됩니다. 그러나 이를 위해서는 사용자가 새 인사말을 입력할 수 있는 프론트엔드가 필요합니다.
+
+다음 두 단계를 통해 생성합니다:
+
+1. 렌더링할 HTML 작성
 2. Add the logic to handle the function call
 
 <hr className="subsection" />
 
-### 1. HTML Components
-Use the following code to create a simple frontend, composed by a title, an input form to change the greeting, and a button to submit the change.
+### 1. HTML 컴포넌트
+
+다음 코드를 사용하여 제목, 인사말을 변경하는 입력 양식 및 변경사항을 제출하는 버튼로 구성된 간단한 프론트엔드를 만듭니다.
 
 ```js
 const contract = "hello.near-examples.near";
@@ -90,23 +94,24 @@ return (
 );
 ```
 
-:::info Relevant HTML
-There are two important things to notice in the code above:
+:::info :::info 관련 HTML
 
-1. **onChange & onClick**: We have prepared our `<input>` and `<button>` to act when something happens. Particularly, we will build two methods: one when the input changes, and one when the button is pressed.
+1. **onChange & onClick**: 우리는 어떤 일이 발생했을 때 행동할 수 있도록 우리의 `<input>`와 `<button>`을 준비했습니다. 특히, 우리는 두 가지 메서드를 만들 것입니다: 하나는 입력이 바뀔 때, 하나는 버튼을 눌렀을 때.
 
-2. **context.accountId**: We check if `context.accountId` is set, which tells us if the user has logged in using their NEAR account, and thus can interact with NEAR contracts.
-:::
+2. 이를 통해 사용자가 NEAR 계정을 사용하여 로그인했는지 여부를 알 수 있으므로 NEAR 컨트랙트와 상호 작용할 수 있습니다.
+   :::
 
 <hr className="subsection" />
 
-### 2. Handling User's Input
-Having our component's view ready, we now need to define the logic for when the user inputs a new greeting and presses the `Submit` button. This is, we need to define the `onInputChange` and `onBtnClick` methods.
+### 2. 사용자 입력 처리
+
+컴포넌트의 보기를 준비했으므로 이제 사용자가 새 인사말을 입력하고 `Submit` 버튼을 누를 때의 로직을 정의해야 합니다. 즉, `onInputChange` 및 `onBtnClick` 메서드를 정의해야 합니다.
 
 #### onInputChange
-When the user inputs a new greeting, we want to store it somewhere until the `Submit` button is pressed, for this, we can use the [application's State](../../2.build/3.near-components/anatomy/state.md).
 
-In BOS, the state is initialized through `State.init`, updated with `State.update`, and accessed through the `state` variable (notice the lowercase). Lets store the new greeting in the App's state:
+사용자가 새 인사말을 입력할 때 `Submit` 버튼을 누를 때까지 어딘가에 저장하려고 합니다.
+
+Discovery에서는 `State.init`를 통해 상태가 초기화되고 `State.update`로 업데이트되며 `state` 변수를 통해 액세스됩니다(소문자 구분). 새 인사말을 앱의 상태로 저장합니다:
 
 ```js
 State.init({ new_greeting: "" });
@@ -117,7 +122,8 @@ const onInputChange = ({ target }) => {
 ```
 
 #### onBtnClick
-The only thing left to do, is to handle when the user clicks the `Submit` button. What we want is to check if the user changed the greeting, and submit it to the contract.
+
+이제 사용자가 `Submit` 버튼을 클릭할 때 처리해야 합니다. 우리가 원하는 것은 사용자가 인사말을 변경했는지 확인하고 컨트랙트에 제출하는 것입니다.
 
 ```js
 const onBtnClick = () => {
@@ -133,11 +139,13 @@ const onBtnClick = () => {
 
 ---
 
-## Complete Example
-We have deployed a complete version of this example on the NEAR blockchain, so you can see its code and play with it.
+## 완전한 예제
+
+이 예제의 전체 버전을 NEAR 블록체인에 배포했으므로 코드를 확인하고 사용할 수 있습니다.
 
 :::tip
-- **Code**: Check the code of this example at the [near.social code page](https://near.social/#/mob.near/widget/WidgetSource?src=gagdiez.near/widget/HelloNear).
 
-- **Try It**: Interact with the application at the [near.social page](https://near.social/#/gagdiez.near/widget/HelloNear).
-:::
+- **코드**: [near.social code page](https://near.social/#/mob.near/widget/WidgetSource?src=gagdiez.near/widget/HelloNear)에서 이 예제의 코드를 확인하세요.
+
+- **연습**: [near.social page](https://near.social/#/gagdiez.near/widget/HelloNear)에서 애플리케이션과 상호 작용해 보세요.
+  :::

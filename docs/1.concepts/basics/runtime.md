@@ -1,13 +1,13 @@
 ---
 id: runtime
-title: Runtime
+title: 런타임
 ---
 
-This section contains videos that explore the core Runtime, its operation, and how it implements cross-contract calls.
+이 섹션에는 핵심 런타임, 작동 방식 및 교차 컨트랙트 호출(cross-contract call)을 구현하는 방법을 탐색하는 비디오가 포함되어 있습니다.
 
 ## Runtime Overview
 
-An in-depth code overview of NEAR Runtime.
+NEAR 런타임의 심화 코드 개요입니다.
 
 <iframe
   width="560"
@@ -20,7 +20,7 @@ An in-depth code overview of NEAR Runtime.
 
 ## Runtime Action and Data Receipts
 
-An in-depth code review of how NEAR Runtime implements cross contract calls.
+NEAR Runtime이 교차 컨트랙트 호출을 구현하는 방법에 대한 심층 코드 검토입니다.
 
 <iframe
   width="560"
@@ -33,7 +33,7 @@ An in-depth code review of how NEAR Runtime implements cross contract calls.
 
 ## Runtime State
 
-An in-depth overview of how NEAR runtime operates with its state.
+NEAR 런타임이 해당 상태와 함께 작동하는 방식에 대한 심층 개요입니다.
 
 <iframe
   width="560"

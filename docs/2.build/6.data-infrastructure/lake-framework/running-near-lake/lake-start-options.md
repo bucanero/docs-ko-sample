@@ -1,35 +1,36 @@
 ---
-sidebar_label: "Start options"
+sidebar_label: 시작 옵션
 ---
 
-# Extending Lake indexer with start options
+# 시작 옵션으로 Lake 인덱서 확장
 
-
-## The End
+## 끝
 
 This tutorial ends with the example code of the simple indexer built on top of [NEAR Lake Framework](/concepts/advanced/near-lake-framework) that can start:
-- from specified block height (out of the box)
+
+- 지정된 블록 높이에서(기본적으로)
   ```bash
   ./target/release/indexer mainnet from-block 65359506
   ```
-- from the latest final block from the network
+- 네트워크의 최신 최종 블록에서
   ```bash
   ./target/release/indexer mainnet from-latest
   ```
-- from the block indexer has indexed the last before it was interrupted
+- 중단되기 전에 마지막으로 인덱싱한 블록에서
   ```bash
   ./target/release/indexer mainnet from-interruption
   ```
 
-## Motivation
+## 목표
 
 To find out whether you need an indexer for you project and to create one means you're covering only one side of things - the development.
 
 There is another important side - the maintenance. This involves:
-- indexer needs to be upgraded with a newer version of dependencies
-- indexer needs to be updates with a new features you've made
-- your server needs some maintenance
-- incident had happened
+
+- 인덱서를 최신 버전의 의존성(dependency)으로 업그레이드해야 함
+- 인덱서를 사용자가 만든 새 기능으로 업데이트해야 함
+- 사용하는 서버에 약간의 유지 관리가 필요함
+- 사건이 발생
 - etc.
 
 Almost in all of the above cases you might want to start or restart your indexer not only from the specific block you need to provide, but from the block it was stopped, or from the latest final block in the network.
@@ -46,7 +47,7 @@ Though, the possibility to start indexer from the latest block or from the block
 
 Also, during [the April Data Platform Community Meeting](https://github.com/near/indexers-docs/blob/main/blog/2022-05-11-community-meeting-record.mdx) we had a question whether we plan to add this feature to the library. We've promised to create a tutorial showing how to do it by your own. So here it is.
 
-## Preparation
+## 준비
 
 In this tutorial we're not going to focus our attention on the indexer itself, but on the start options instead.
 
@@ -155,15 +156,15 @@ fn init_tracing() {
 
 This code is not going to build yet. Meanwhile let's have a quick look of what we've copy/pasted for now:
 
-- We have imported [`clap`](https://docs.rs/clap/latest/clap/) to set up what command line arguments we're going to accept
-- Also, we've important necessary stuff like `futures` and `tracing_subscriber`
-- `init_tracing` in the end of the file is a helper function that subscribes our application to the logs from `near-lake-framework`
-- An asynchronous `main` function with the indexer boilerplate code, but missing the `LakeConfig` creation part we're going to cover in the tutorial.
-- You can find a few `// TODO: ...` sections we've marked for you to find places to write the code from this tutorial.
+- 수락할 명령줄 인자를 설정하기 위해 [`clap`](https://docs.rs/clap/latest/clap/)을 가져왔습니다.
+- 또한 `futures`와 `tracing_subscriber` 같은 중요한 필수 항목이 있습니다.
+- 파일 끝의 `init_tracing`는 애플리케이션을 `near-lake-framework`의 로그에 등록하는 헬퍼 함수입니다.
+- 인덱서 상용구 코드가 있는 비동기 `main` 함수는 `LakeConfig` 생성 파트가 없습니다.
+- 이 튜토리얼 코드를 작성할 위치를 찾을 수 있도록 표시된 몇 가지 `// TODO: ...` 섹션을 찾을 수 있습니다.
 
 OK, all the preparations are done. Let's move on.
 
-## Design the `StartOptions`
+## `StartOptions` 디자인
 
 So we want to be able to pass a command that defines the way our indexer should start. In this tutorial we'll be using `clap`.
 
@@ -207,9 +208,9 @@ Now we want to create a `StartOptions` structure that will allow us to tell our 
 
 Our variants are:
 
-- `from-block N`, where `N` is the block height to start from
-- `from-latest` to start from latest final block in the network
-- `from-interruption` to start from the block indexer was previously interrupted
+- `from-block N` (`N`은 시작할 블록 높이)
+- `from-latest` (네트워크의 최신 최종 블록에서 시작)
+- `from-interruption` (이전에 중단된 블록 인덱서에서 시작)
 
 Let's replace the comment `// TODO: StartOptions` with the enum:
 
@@ -224,7 +225,7 @@ pub(crate) enum StartOptions {
 
 Pretty simple and straightforward, agree?
 
-## Creating a `LakeConfig`
+## `LakeConfig` 생성
 
 In order to create `LakeConfig` we're going to use a config builder [`LakeConfigBuilder`](https://docs.rs/near-lake-framework/0.3.0/near_lake_framework/struct.LakeConfigBuilder.html). Fotunately, we've imported it already.
 
@@ -259,7 +260,7 @@ The only parameter left to set is the most important for us in this tutorial `st
 
 Normally, we just pass the block height number `u64` but we're implementing the start options here.
 
-## Start options logic
+## 시작 옵션 로직
 
 Let's create a separate function that will hold the logic of identification the `start_block_height` and call it `get_start_block_height`.
 
@@ -428,7 +429,7 @@ async fn final_block_height(rpc_url: &str) -> u64 {
 
 You may have noticed the `FromInterruption` and a comment about the placeholder. The reason we've made is to be able to build the application right now to test out that `FromLatest` works as expected.
 
-### Testing `FromLatest`
+### `FromLatest` 테스트
 
 :::danger Credentials
 
@@ -509,11 +510,11 @@ async fn get_start_block_height(opts: &Opts) -> u64 {
 
 What we are doing here:
 
-- Trying to read the file `last_indexed_block`
-- If the `Result` is `Ok`, we are reading the `contents` and parsing it
-- If the `Result` is `Err` we print a message about the error and call `last_block_height` to get the final block from the network (the fallback we were talking earlier)
+- `last_indexed_block` 파일을 읽으려고 합니다.
+- `Result`가 `Ok`인 경우, `contents`를 읽고 파싱합니다.
+- `Result`가 `Err`인 경우, 오류에 대한 메시지를 출력하고 `last_block_height`를 호출하여 네트워크에서 최종 블록을 가져옵니다(이전에 이야기한 fallback).
 
-### Testing `FromInterruption`
+### `FromInterruption` 테스트
 
 In order to ensure everything works as expected we will start index from the genesis to store the last indexed block. And then we will start it from interruption to ensure we're not starting from latest.
 
@@ -564,9 +565,8 @@ You should see the indexer logs beginning from the block you've memorized.
 
 Perfect! It's all done. Now you can adjust the code you got in the result to your needs and use it in your indexers.
 
-## Summary
+## 요약
 
 You've seen the way how you can empower your indexer with the starting options. As you can see there is nothing complex here.
-
 
 You can find the source code in the [`near-examples/lake-indexer-start-options`](https://github.com/near-examples/lake-indexer-start-options)

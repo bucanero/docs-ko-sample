@@ -16,8 +16,8 @@ In order to use the RPC API you will need to setup the correct RPC endpoints:
 - `JSON RPC 2.0`
 - `id: "dontcare"`
 - Endpoint URL varies by network
-  -  testnet: `https://near-testnet.api.pagoda.co/rpc/v1/`
-  -  mainnet: `https://near-mainnet.api.pagoda.co/rpc/v1/`
+  - testnet: `https://near-testnet.api.pagoda.co/rpc/v1/`
+  - mainnet: `https://near-mainnet.api.pagoda.co/rpc/v1/`
 
 :::note
 
@@ -35,9 +35,9 @@ For the best development experience, we recommend that you [sign up for a free A
 
 With a dedicated API key, developers are able to:
 
--    Access higher request throughput and increased concurrent requests
--    Query data from [Enhanced APIs](api.md), gaining access to free processed data for NFT, FT and NEAR balances, ownership, and metadata
--    Utlize dedicated, individualized usage metrics
+- Access higher request throughput and increased concurrent requests
+- Query data from [Enhanced APIs](api.md), gaining access to free processed data for NFT, FT and NEAR balances, ownership, and metadata
+- Utlize dedicated, individualized usage metrics
 
 ### Test your API keys
 
@@ -60,7 +60,6 @@ You only need to configure two things:
 
 After that is set up, just copy/paste the `JSON object` example snippets below into the `body` of your request, on Postman, and click `send`.
 
-
 ## Command-line Setup
 
 ### NEAR CLI
@@ -77,7 +76,7 @@ After that is set up, just copy/paste the `JSON object` example snippets below i
 
 ### HTTPie Setup {#httpie-setup}
 
-If you prefer to use a command line interface, we have provided RPC examples you can use with [HTTPie](https://httpie.org/). 
+If you prefer to use a command line interface, we have provided RPC examples you can use with [HTTPie](https://httpie.org/).
 Please note that params take either an object or array passed as a string.
 
 ```bash
@@ -171,5 +170,6 @@ The block IDs of transactions shown in [NEAR Explorer](https://explorer.testnet.
 ## Using `finality` param {#using-finality-param}
 
 The `finality` param has two options: `optimistic` and `final`.
+
 1. `optimistic` uses the latest block recorded on the node that responded to your query _(&lt;1 second delay after the transaction is submitted)_
 2. `final` is for a block that has been validated on at least 66% of the nodes in the network _(usually takes 2 blocks / approx. 2 second delay)_

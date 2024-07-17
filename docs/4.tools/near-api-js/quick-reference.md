@@ -1,54 +1,49 @@
 ---
 id: quick-reference
-title: Using JavaScript API to interact with NEAR
-sidebar_label: Using JavaScript API
+title: JavaScript API를 사용하여 NEAR와 상호 작용
+sidebar_label: JavaScript API 사용
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## Quick Reference
+## 빠른 참고
 
-- [Installation](#install)
-- [Interacting with the Wallet](naj-wallet.md)
-- [Accounts](naj-account.md)
-- [Contracts](naj-contract.md)
-- [Utilities](naj-utils.md)
+- [설치](#install)
+- [지갑과의 상호작용](naj-wallet.md)
+- [계정](naj-account.md)
+- [컨트랙트](naj-contract.md)
+- [유틸리티](naj-utils.md)
 
-## What is `near-api-js`
+## `near-api-js`란 무엇인가요?
 
-`near-api-js` is a complete library to interact with the NEAR blockchain. You can use it in the browser, or in Node.js runtime.
+`near-api-js`는 NEAR 블록체인과 상호 작용하는 완전한 라이브러리입니다. 이는 브라우저 또는 Node.js 런타임에서 사용될 수 있습니다.
 
-You'll typically first create a connection to NEAR with [`connect`](#connect) using a [`KeyStore`](#key-store).
-With the connection object you now can:
+일반적으로 [`KeyStore`](#key-store)를 사용한 [`connect`](#connect)로 연결을 생성할 수 있습니다. 연결 객체를 통해, 다음과 같은 것들을 할 수 있습니다.
 
-- Interact with the [Wallet](naj-wallet.md) in a browser.
-- Instantiate an [Account](naj-account.md) object to:
-  - Send tokens
-  - Deploy contracts
-  - Inspect, create or delete accounts
-  - Manage keys for accounts.
-- Instantiate a [Contract](naj-contract.md) object to call smart contract methods.
+- 브라우저에서 [지갑](naj-wallet.md)과 상호 작용.
+- 다음과 같은 것들을 위해 [계정](naj-account.md) 객체 인스턴스화:
+  - 토큰 전송
+  - 컨트랙트 배포
+  - 계정 검사, 생성 또는 삭제
+  - 계정 키 관리
+- [컨트랙트](naj-contract.md) 객체를 인스턴스화하여 스마트 컨트랙트 메서드 호출
 
-The library also contains some [utility functions](naj-utils.md).
+라이브러리에는 일부 [utils](naj-utils.md) 함수도 포함되어 있습니다.
 
-:::tip
-To quickly get started with integrating NEAR in a web browser, read our [Web Frontend integration](/build/web3-apps/integrate-contracts) article.
-:::
+:::tip To quickly get started with integrating NEAR in a web browser, read our [Web Frontend integration](/build/web3-apps/integrate-contracts) article. :::
 
-:::info
-Note the difference between `near-api-js` and `near-sdk-js`:
+:::info `near-api-js`와 `near-sdk-js`의 차이점에 유의하세요:
 
-The JavaScript _SDK_ is a library for developing smart contracts. It contains classes and functions you use to write your smart contract code.
+JavaScript _SDK_ 는 스마트 컨트랙트 개발을 위한 라이브러리입니다. 여기에는 스마트 컨트랙트 코드를 작성하는 데 사용하는 클래스와 함수가 포함되어 있습니다.
 
-The JavaScript _API_ is a complete library for all possible commands to interact with NEAR. It’s a wrapper for the RPC endpoints, a library to interact with NEAR Wallet in the browser, and a tool for keys management.
-:::
+JavaScript _API_ 는 NEAR와 상호 작용할 수 있는 모든 가능한 명령을 위한 완전한 라이브러리입니다. 이는 RPC 엔드포인트 래퍼, 브라우저에서 NEAR 지갑과 상호 작용하는 라이브러리, 키 관리 도구입니다. :::
 
 ---
 
-## Install {#install}
+## 설치 {#install}
 
-Include `near-api-js` as a dependency in your package.
+패키지에 `near-api-js`를 의존성(dependency)으로 포함합니다.
 
 ```bash
 npm i --save near-api-js
@@ -56,8 +51,7 @@ npm i --save near-api-js
 
 ## Import {#import}
 
-You can use the API library in the browser, or in Node.js runtime. Some features are available only in one of the environments.
-For example, the `WalletConnection` is only for the browser, and there are different `KeyStore` providers for each environment.
+브라우저 또는 Node.js 런타임에서 API 라이브러리를 사용할 수 있습니다. 일부 기능은 여러 환경 중 하나에서만 사용할 수 있습니다. 예를 들어 `WalletConnection`는 브라우저 전용이며, 각 환경마다 서로 다른 `KeyStore` 공급자가 존재합니다.
 
 <Tabs>
 <TabItem value="Browser" label="Browser" default>
@@ -76,9 +70,9 @@ const nearAPI = require("near-api-js");
 </TabItem>
 </Tabs>
 
-## Key Store {#key-store}
+## 키 저장소(Key Store) {#key-store}
 
-If you sign transactions, you need to create a _Key Store_. In the browser, the LocalStorage KeyStore will be used once you ask your user to Sign In with the Wallet.
+트랜잭션에 서명하는 경우 _키 저장소_ 를 생성해야 합니다. 브라우저에서 사용자에게 지갑으로 로그인하도록 요청하면, LocalStorage KeyStore가 사용됩니다.
 
 <Tabs>
 <TabItem value="browser" label="Using Browser" default>
@@ -162,10 +156,9 @@ await myKeyStore.setKey("testnet", "example-account.testnet", keyPair);
 </TabItem>
 </Tabs>
 
-## Connecting to NEAR {#connect}
+## NEAR에 연결 {#connect}
 
-The object returned from `connect` is your entry-point for all commands in the API.
-To sign a transaction you'll need a [`KeyStore`](#key-store) to create a connection.
+`connect`에서 반환된 객체는 API의 모든 명령에 대한 진입점입니다. 트랜잭션에 서명하려면 연결을 만들기 위한 [`KeyStore`](#key-store)가 필요합니다.
 
 <Tabs>
 <TabItem value="testnet" label="TestNet" default>
@@ -218,7 +211,7 @@ const nearConnection = await connect(connectionConfig);
 </TabItem>
 </Tabs>
 
-[<span className="typedoc-icon typedoc-icon-module"></span> Module `connect`](https://near.github.io/near-api-js/modules/near_api_js.connect.html)
+[<span className="typedoc-icon typedoc-icon-module"></span> `connect` 모듈](https://near.github.io/near-api-js/modules/near_api_js.connect.html)
 
 ## RPC Failover
 
@@ -254,5 +247,4 @@ await connect({
 
 </Tabs>
 
-
-[<span className="typedoc-icon typedoc-icon-class"></span> Class `FailoverRpcProvider `](https://near.github.io/near-api-js/classes/near_api_js.providers_failover_rpc_provider.FailoverRpcProvider.html)
+[<span className="typedoc-icon typedoc-icon-class"></span> Class `FailoverRpcProvider`](https://near.github.io/near-api-js/classes/near_api_js.providers_failover_rpc_provider.FailoverRpcProvider.html)

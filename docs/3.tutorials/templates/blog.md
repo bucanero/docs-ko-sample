@@ -22,7 +22,7 @@ This is part of the [Mintbase Templates](https://templates.mintbase.xyz/), a col
 
 Within the framework of blogchain, every blog manifests as an nft contract deployed from the Mintbase contract factory, while each individual blog post is uniquely represented as a non-fungible token (NFT).
 
-*NOTE: As a standard on Mintbase as we use the latest versions of Next.js we recommend using pnpm, but the package manager is up to your personal choice.*
+_NOTE: As a standard on Mintbase as we use the latest versions of Next.js we recommend using pnpm, but the package manager is up to your personal choice._
 
 ---
 
@@ -254,7 +254,7 @@ query GET_POST_METADATA($metadataId: String!) {
   }`;
 ```
 
-Presently, this template exclusively functions within the testnet environment. To transition to a different network the configuration must be changed in ```<MintbaseWalletContextProvider>``` and every 'testnet' instance.
+Presently, this template exclusively functions within the testnet environment. To transition to a different network the configuration must be changed in `<MintbaseWalletContextProvider>` and every 'testnet' instance.
 
 ---
 
@@ -264,8 +264,7 @@ This project is setup using Next.js + @mintbase/js
 You can use this project as a reference to build your own, and use or remove any library you think it would suit your needs.
 
 :::info Get in touch
-You can get in touch with the mintbase team using the following channels:
 
 - Support: [Join the Telegram](https://t.me/mintdev)
 - Twitter: [@mintbase](https://twitter.com/mintbase)
-:::
+  :::

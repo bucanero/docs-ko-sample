@@ -4,7 +4,7 @@ title: Migrate from NEAR Lake framework
 sidebar_label: Migrate from Lake framework
 ---
 
-In this article you'll learn how to migrate your [NEAR Lake Framework](../../../1.concepts/3.advanced/near-lake-framework.md) JavaScript indexer to [Near QueryAPI](intro.md), a fully managed solution to build indexer functions,
+In this article you'll learn how to migrate your [NEAR Lake Framework](../../1.concepts/3.advanced/near-lake-framework.md) JavaScript indexer to [Near QueryAPI](intro.md), a fully managed solution to build indexer functions,
 extract on-chain data, store it in a database, and be able to query it using GraphQL endpoints.
 
 :::info Supported languages
@@ -12,9 +12,9 @@ Currently QueryAPI only supports JavaScript, so if your indexer code uses TypeSc
 :::
 
 ## Basic migration
-build/near-data-infrastructure/lake-framework/building-indexers/js-lake-indexer
-Let's take a [basic JS indexer](../lake-framework/building-indexers/js-lake-indexer.md) built with NEAR Lake Framework as an example.
-This indexer simply logs the Block height and the number of shards for each indexed block, using an [indexer handler](../lake-framework/building-indexers/js-lake-indexer.md#create-indexer-handler) function `handleStreamerMessage`.
+
+Let's take a [basic JS indexer](../../3.tutorials/indexer/js-lake-indexer.md) built with NEAR Lake Framework as an example.
+This indexer simply logs the Block height and the number of shards for each indexed block, using an [indexer handler](../../3.tutorials/indexer/js-lake-indexer.md#create-indexer-handler) function `handleStreamerMessage`.
 
 Migrating this basic indexer to QueryAPI is simple. You only need to migrate the code from the `handleStreamerMessage` function:
 
@@ -67,7 +67,7 @@ That's all! The basic Lake Framework JS indexer has been migrated to QueryAPI, a
 
 ### Database storage
 
-If you want to take advantage of QueryAPI's database features, you can also store the indexer results in a Postgres DB. 
+If you want to take advantage of QueryAPI's database features, you can also store the indexer results in a Postgres DB.
 
 1. First, create the database schema:
 
@@ -82,7 +82,6 @@ CREATE TABLE
 
 2. In your indexer JavaScript code, use the [`context.db`](context.md#db) object  to store the results:
 
-
 ```js
     const basicData = {
       block_height: streamerMessage.block.header.height,
@@ -94,7 +93,7 @@ CREATE TABLE
 
 ## Advanced migration
 
-For this example, let's take the TypeScript [NFT indexer](../lake-framework/building-indexers/nft-indexer.md) built with NEAR Lake Framework as reference. This indexer is watching for `nft_mint` [Events](https://nomicon.io/Standards/EventsFormat) and prints some relevant data about minted NFTs.
+For this example, let's take the TypeScript [NFT indexer](../../3.tutorials/indexer/nft-indexer.md) built with NEAR Lake Framework as reference. This indexer is watching for `nft_mint` [Events](https://nomicon.io/Standards/EventsFormat) and prints some relevant data about minted NFTs.
 
 As with the previous example, moving this NFT indexer to QueryAPI requires to migrate the code from the [`handleStreamerMessage`](https://github.com/near-examples/near-lake-nft-indexer/blob/5acd543c54ce8025bdc9a88d111df43d8d4d05b8/index.ts#L32) function. But since it was done in TypeScript, it also needs some additional work as it needs to re-written in JavaScript.
 
@@ -190,7 +189,7 @@ We caught freshly minted NFTs!
 
 ### Database storage
 
-If you want to take advantage of QueryAPI's database features, you can also store the indexer results in a Postgres DB. 
+If you want to take advantage of QueryAPI's database features, you can also store the indexer results in a Postgres DB.
 
 1. First, create the database schema:
 
@@ -208,7 +207,6 @@ CREATE TABLE
 ```
 
 2. In your indexer JavaScript code, use the [`context.db`](context.md#db) object  to store the results:
-
 
 ```js
 // ... previous code ...

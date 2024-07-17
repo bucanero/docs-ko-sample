@@ -1,7 +1,8 @@
 ---
 id: what-is
-title: What is Data Infrastructure? 
+title: What is Data Infrastructure?
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {CodeTabs, Language, Github} from "@site/src/components/codetabs"
@@ -11,10 +12,11 @@ NEAR offers ready-to-use solutions to access and monitor on-chain data easily. T
 ![img](/docs/assets/welcome-pages/data-lake.png)
 
 NEAR offers three main solutions to access and monitor on-chain data: [**BigQuery Public Dataset**](#bigquery-public-dataset), [**QueryAPI**](#queryapi-indexers-made-simple), and [**NEAR Lake**](#near-lake). Each of these solutions is designed to fit different needs and use cases, and can be used in combination to create a complete data infrastructure for your application.
- 
+
 ---
 
-## [BigQuery: Public Dataset](./big-query.md)
+## [BigQuery: Public Dataset](/bos/queryapi/big-query)
+
 A large dataset with on-chain data publicly available on Google Cloud Platform. Obtain near real-time blockchain data using simple SQL queries. **All the data, zero setup**.
 
 - Instant insights: Historic on-chain data queried at scale. No need to run your own infrastructure.
@@ -23,7 +25,7 @@ A large dataset with on-chain data publicly available on Google Cloud Platform. 
 
 <hr subclass="subsection" />
 
-## [QueryAPI: Indexers Made Simple](./query-api/intro.md)
+## [QueryAPI: Indexers Made Simple](/bos/queryapi/intro)
 
 A fully managed solution to build indexer functions, extract on-chain data, and easily query it using GraphQL endpoints and subscriptions.
 
@@ -33,7 +35,8 @@ A fully managed solution to build indexer functions, extract on-chain data, and 
 
 <hr subclass="subsection" />
 
-## [NEAR Lake](./lake-framework/near-lake.md)
+## [NEAR Lake](/tools/near-lake)
+
 A solution that watches over the NEAR network and stores all the events for your easy access.
 
 - Cost-efficient solution: Cost-efficient solution for building self-hosted indexers in Rust, JavaScript, Python, Go and other languages

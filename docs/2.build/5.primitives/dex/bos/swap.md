@@ -25,4 +25,5 @@ const result = Near.call(
 ```json
 "5019606679394603179450"
 ```
+
 </details>

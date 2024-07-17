@@ -5,6 +5,7 @@ const tokenPriceResult = await fetch(
 );
 const tokenPriceValue = await tokenPriceResult.json();
 ```
+
 _The `Wallet` object comes from our [quickstart template](https://github.com/near-examples/hello-near-examples/blob/main/frontend/near-wallet.js)_
 
 <details>

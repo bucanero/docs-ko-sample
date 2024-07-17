@@ -1,24 +1,23 @@
 ---
 id: reentrancy
-title: Reentrancy Attacks
+title: 재진입 공격
 ---
 
-Between a cross-contract call and its callback **any method of your contract can be executed**. Not taking this into account is one of the main sources of exploits. It is so common that it has its own name: **reentrancy attacks**.
+교차 컨트랙트 호출과 콜백 사이에서 **컨트랙트의 모든 메서드를 실행할 수 있습니다**. 이것을 고려하지 않는 것은 해킹의 주요 소스 중 하나입니다. **재진입 공격**이라는 자체 이름이 있을 정도로, 이는 매우 기본적인 해킹 방식입니다.
 
-Always make sure to keep your state in a consistent state after a method finishes executing. Assume that:
+메서드 실행이 완료된 후에는 항상 상태를 일관된 상태로 유지해야 합니다. Assume that:
 
-- Any method could be executed between a method execution and its callback.
-- The same method could be executed again before the callback kicks in.
+- 메서드 실행과 해당 콜백 사이에서 모든 메서드를 실행할 수 있습니다.
+- 콜백이 시작되기 전에 동일한 메서드를 다시 실행할 수 있습니다.
 
 ---
 
-### Example
-Imagine that we develop a `deposit_and_stake` with the following **wrong logic**: (1) The user sends us money, (2) we add it to its balance, (3) we try to stake it in a validator, (4) if the staking fails, we remove the balance in the callback. Then, a user could schedule a call to withdraw between (2) and (4), and, if the staking failed, we would send money twice to the user.
+### 예시
 
-![img](https://miro.medium.com/max/1400/1*VweWHQYGLBa70uceiWHLQA.png)
-*Between a cross-contract call and the callback anything could happen*
+다음과 같은 상황을 가정해 봅시다. 다음과 같은 **잘못된 로직**으로 `deposit_and_stake`를 개발한다고 상상해 봅시다. (1) 사용자가 우리에게 돈을 보냅니다. (2) 우리는 그것을 잔고에 추가합니다. 그러면, 사용자는 (2)와 (4) 사이에 호출을 철회하도록 예약할 수 있으며, 스테이킹에 실패하면 사용자는 두 번 돈을 받게 됩니다.
 
-Luckily for us the solution is rather simple. Instead of immediately adding the money to our user’s balance, we wait until the callback. There we check, and if the staking went well, then we add it to their balance.
+![img](https://miro.medium.com/max/1400/1*VweWHQYGLBa70uceiWHLQA.png) _교차 컨트랙트 호출과 콜백 사이에 무슨 일이든 일어날 수 있습니다_
 
-![img](https://miro.medium.com/max/1400/1*o0YVDCp_7l-L3njJMGhU4w.png)
-*Correct way to handle deposits in a cross-contract call*
+다행스럽게도 솔루션은 다소 간단합니다. 사용자의 잔고에 돈을 즉시 추가하는 대신, 콜백이 올 때까지 기다립니다. There we check, and if the staking went well, then we add it to their balance.
+
+![img](https://miro.medium.com/max/1400/1*o0YVDCp_7l-L3njJMGhU4w.png) _교차 컨트랙트 호출 사이에 금액을 다루는 올바른 방법_

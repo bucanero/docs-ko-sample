@@ -23,7 +23,6 @@ You can find more information on Github: [GitHub link](https://github.com/Mintba
 
 A live demo of the marketplace can be found here: [Live demo link](https://marketplace-template.mintbase.xyz/)
 
-
 ### Setup
 
 ```bash
@@ -226,8 +225,7 @@ This project is setup using Next.js + @mintbase/js
 You can use this project as a reference to build your own, and use or remove any library you think it would suit your needs.
 
 :::info Get in touch
-You can get in touch with the mintbase team using the following channels:
 
 - Support: [Join the Telegram](https://t.me/mintdev)
 - Twitter: [@mintbase](https://twitter.com/mintbase)
-:::
+  :::

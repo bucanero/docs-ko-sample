@@ -1,30 +1,24 @@
 ---
 id: tokens
-title: Tokens
+title: 토큰
 ---
 
-# NEAR Token
-This is the native token used in NEAR Protocol.
-It has multiple use cases:
-- Secures the network through staking
-- Provides a unit of account - NEAR is used for processing transactions and storing data
-- Serves as a medium of exchange
+# NEAR 토큰
+이는 NEAR 프로토콜에서 사용되는 기본 토큰입니다. 이에 대한 여러 사용 사례가 있습니다.
+- 스테이킹을 통해 네트워크 보안을 강화합니다.
+- 계정의 단위를 제공합니다 - NEAR는 트랜잭션 처리 및 데이터 저장에 사용됩니다.
+- 교환의 매개체 역할을 합니다.
 
-### Securing the Network
-NEAR Protocol is a proof-of-stake (PoS) network, which means that resistance from various attacks comes from staking NEAR.
-Staked NEAR represents the decentralized infrastructure of servers that maintain the network and process transactions for applications and users on NEAR.
-Rewards for providing this service are received in NEAR.
+### 네트워크 보안 강화
+NEAR 프로토콜은 지분증명(PoS) 네트워크로, NEAR를 스테이킹함으로써 다양한 공격에 대해 저항력을 갖출 수 있습니다. 스테이킹된 NEAR는 네트워크를 유지하고 NEAR의 애플리케이션 및 사용자에 대한 트랜잭션을 처리하는 서버의 분산형 인프라를 나타냅니다. 이 서비스 제공에 대한 보상은 NEAR에서 받습니다.
 
-## Providing a Unit of Account
-NEAR is used to price computation and storage on the NEAR infrastructure.
-The network charges transaction fees in NEAR to process changes and transactions.
+## 계정의 단위 제공
+NEAR는 NEAR 인프라에서 컴퓨팅 및 스토리지의 가격을 책정하는 데 사용됩니다. 네트워크는 변경 및 거래를 처리하기 위해 NEAR에서 거래 수수료를 부과합니다.
 
-## Medium of Exchange
-NEAR is readily available on the protocol level, so it can be used to transfer value between NEAR applications and accounts.
-This means that applications can use NEAR to charge for various functions, like access to data or other complex transactions.
-Entities can also easily exchange NEAR between each other, without the need for trusted third parties to clear and settle transactions.
+## 교환의 매개체
+NEAR는 프로토콜 수준에서 쉽게 사용할 수 있으므로, NEAR 애플리케이션과 계정 간 가치를 전송하는 데 사용할 수 있습니다. 이는 애플리케이션이 NEAR를 사용하여 데이터 액세스 또는 기타 복잡한 트랜잭션과 같은 다양한 기능에 대해 비용을 청구할 수 있음을 의미합니다. 신뢰할 수 있는 제3자가 거래를 청산하고 정산할 필요 없이 NEAR 프로토콜 내 객체드은 서로 간에 NEAR를 쉽게 교환할 수 있습니다.
 
 
-For a deeper dive on NEAR Economics: [https://near.org/blog/near-protocol-economics](https://near.org/blog/near-protocol-economics)
+NEAR 경제에 대한 딥다이브: [https://near.org/blog/near-protocol-economics](https://near.org/blog/near-protocol-economics)
 
-For more information about the NEAR token, visit [NEAR Token Supply and Distribution](https://near.org/blog/near-token-supply-and-distribution/) or [Nomicon](https://nomicon.io).
+NEAR 토큰에 대한 자세한 내용은 [NEAR 토큰 공급 및 배포](https://near.org/blog/near-token-supply-and-distribution/) 또는 [Nomicon](https://nomicon.io)을 방문하세요.

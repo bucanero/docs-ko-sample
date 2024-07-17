@@ -1,6 +1,6 @@
 ---
 sidebar_position: 3
-sidebar_label: Get API Keys 
+sidebar_label: Get API Keys
 title: Get Pagoda API Keys
 ---
 
@@ -31,6 +31,7 @@ Please be advised that these tools and services will be discontinued soon.
 5. Connect to Pagoda RPC Node
 
    Follow the instructions on the screen to set up your Pagoda RPC Access, we have created a quick setup guide for all NEAR tools.
+
    - `https://near-testnet.api.pagoda.co/rpc/v1/`
    - `https://near-mainnet.api.pagoda.co/rpc/v1/`
 

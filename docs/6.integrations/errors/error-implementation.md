@@ -1,23 +1,23 @@
 ---
 id: error-implementation
-title: Source Code Survey
-sidebar_label: Source Code Survey
+title: 소스 코드 조사
+sidebar_label: 소스 코드 조사
 ---
 
-This page provides a very high level, sometimes "pseudocode", view of error types and related messages as implemented by the NEAR platform.
+이 페이지는 NEAR 플랫폼에 의해 구현된 오류 유형 및 관련 메시지에 대한 매우 높은 수준의 "의사 코드(pseudocode)"를 제공합니다.
 
-Errors raised by the NEAR platform are implemented in the following locations in `nearcore`:
+NEAR 플랫폼에서 발생한 오류는 `nearcore` 내 다음 위치에서 구현됩니다.
 
 - [nearcore/core/primitives/src/errors.rs](https://github.com/near/nearcore/blob/master/core/primitives/src/errors.rs)
 - [nearcore/runtime/near-vm-errors/src/lib.rs](https://github.com/near/nearcore/blob/master/runtime/near-vm-errors/src/lib.rs)
 
 ---
 
-## RuntimeError and subtypes {#runtimeerror-and-subtypes}
+## RuntimeError 및 하위 유형 {#runtimeerror-and-subtypes}
 
 ### RuntimeError {#runtimeerror}
 
-#### Definition {#definition}
+#### 정의 {#definition}
 
 ```rust
 /// Error returned from `Runtime::apply`
@@ -35,13 +35,13 @@ pub enum RuntimeError {
 }
 ```
 
-#### Error Messages {#error-messages}
+#### 오류 메시지 {#error-messages}
 
 - see below: `InvalidTxError`, `StorageError` and `BalanceMismatchError`
 
 ### InvalidTxError {#invalidtxerror}
 
-#### Definition {#definition-1}
+#### 정의 {#definition-1}
 
 ```rust
 /// An error happened during TX execution
@@ -83,7 +83,7 @@ pub enum InvalidTxError {
 ```
 
 
-#### Error Messages {#error-messages-1}
+#### 오류 메시지 {#error-messages-1}
 
 ```rust
 InvalidTxError::InvalidSignerId { signer_id }
@@ -124,7 +124,7 @@ InvalidTxError::ActionsValidation(error)
 
 ### StorageError {#storageerror}
 
-#### Definition {#definition-2}
+#### 정의 {#definition-2}
 
 ```rust
 pub enum StorageError {
@@ -143,7 +143,7 @@ pub enum StorageError {
 
 ### BalanceMismatchError {#balancemismatcherror}
 
-#### Definition {#definition-3}
+#### 정의 {#definition-3}
 
 ```rust
 /// Happens when the input balance doesn't match the output balance in Runtime apply.
@@ -166,7 +166,7 @@ pub struct BalanceMismatchError {
 }
 ```
 
-#### Error Messages {#error-messages-2}
+#### 오류 메시지 {#error-messages-2}
 
 ```rust
 "Balance Mismatch Error. The input balance {} doesn't match output balance {}\n\
@@ -189,7 +189,7 @@ Outputs:\n\
 
 ### InvalidAccessKeyError {#invalidaccesskeyerror}
 
-#### Definition {#definition-4}
+#### 정의 {#definition-4}
 
 ```rust
 pub enum InvalidAccessKeyError {
@@ -213,7 +213,7 @@ pub enum InvalidAccessKeyError {
 }
 ```
 
-#### Error Messages {#error-messages-3}
+#### 오류 메시지 {#error-messages-3}
 
 ```rust
 InvalidAccessKeyError::AccessKeyNotFound { account_id, public_key }
@@ -239,7 +239,7 @@ InvalidAccessKeyError::DepositWithFunctionCall
 
 ### ActionsValidationError {#actionsvalidationerror}
 
-#### Definition {#definition-5}
+#### 정의 {#definition-5}
 
 ```rust
 /// Describes the error for validating a list of actions.
@@ -265,43 +265,43 @@ pub enum ActionsValidationError {
 }
 ```
 
-#### Error Messages {#error-messages-4}
+#### 오류 메시지 {#error-messages-4}
 
 ```rust
 ActionsValidationError::TotalPrepaidGasExceeded     { total_prepaid_gas, limit }
      "The total prepaid gas {} exceeds the limit {}"
-     
+
 ActionsValidationError::TotalNumberOfActionsExceeded {total_number_of_actions, limit }
      "The total number of actions {} exceeds the limit {}"
-     
+
 ActionsValidationError::AddKeyMethodNamesNumberOfBytesExceeded { total_number_of_bytes, limit }
      "The total number of bytes in allowed method names {} exceeds the maximum allowed number {} in a AddKey action"
-     
+
 ActionsValidationError::AddKeyMethodNameLengthExceeded { length, limit }
      "The length of some method name {} exceeds the maximum allowed length {} in a AddKey action"
-     
+
 ActionsValidationError::IntegerOverflow
      "Integer overflow during a compute"
-     
+
 ActionsValidationError::InvalidAccountId { account_id }
      "Invalid account ID `{}`"
-     
+
 ActionsValidationError::ContractSizeExceeded { size, limit }
      "The length of the contract size {} exceeds the maximum allowed size {} in a DeployContract action"
-     
+
 ActionsValidationError::FunctionCallMethodNameLengthExceeded { length, limit }
      "The length of the method name {} exceeds the maximum allowed length {} in a FunctionCall action"
-     
+
 ActionsValidationError::FunctionCallArgumentsLengthExceeded { length, limit }
      "The length of the arguments {} exceeds the maximum allowed length {} in a FunctionCall action"
-     
+
 ```
 
 ## TxExecutionError and subtypes {#txexecutionerror-and-subtypes}
 
 ### TxExecutionError {#txexecutionerror}
 
-#### Definition {#definition-6}
+#### 정의 {#definition-6}
 ```rust
 /// Error returned in the ExecutionOutcome in case of failure
 pub enum TxExecutionError {
@@ -314,7 +314,7 @@ pub enum TxExecutionError {
 
 ### ActionError {#actionerror}
 
-#### Definition {#definition-7}
+#### 정의 {#definition-7}
 
 ```rust
 ActionError
@@ -329,7 +329,7 @@ pub struct ActionError {
 
 ### ActionErrorKind {#actionerrorkind}
 
-#### Definition {#definition-8}
+#### 정의 {#definition-8}
 
 ```rust
 pub enum ActionErrorKind {
@@ -377,7 +377,7 @@ pub enum ActionErrorKind {
 }
 ```
 
-#### Error Messages {#error-messages-5}
+#### 오류 메시지 {#error-messages-5}
 
 ```rust
 ActionErrorKind::AccountAlreadyExists { account_id } 
@@ -422,7 +422,7 @@ ActionErrorKind::NewReceiptValidationError(e)
 
 ### ReceiptValidationError {#receiptvalidationerror}
 
-#### Definition {#definition-9}
+#### 정의 {#definition-9}
 
 ```rust
 /// Describes the error for validating a receipt.
@@ -444,7 +444,7 @@ pub enum ReceiptValidationError {
 }
 ```
 
-#### Error Messages {#error-messages-6}
+#### 오류 메시지 {#error-messages-6}
 
 ```rust
 ReceiptValidationError::InvalidPredecessorId { account_id } 
@@ -469,11 +469,11 @@ ReceiptValidationError::ActionsValidation(e)
 ```
 
 
-## VMError and subtypes {#vmerror-and-subtypes}
+## VMError 및 하위 유형 {#vmerror-and-subtypes}
 
 ### VMError {#vmerror}
 
-#### Definition {#definition-10}
+#### 정의 {#definition-10}
 
 ```rust
 pub enum VMError {
@@ -486,7 +486,7 @@ pub enum VMError {
 }
 ```
 
-#### Error Messages {#error-messages-7}
+#### 오류 메시지 {#error-messages-7}
 
 ```rust
 VMError::ExternalError
@@ -495,7 +495,7 @@ VMError::ExternalError
 
 ### FunctionCallError {#functioncallerror}
 
-#### Definition {#definition-11}
+#### 정의 {#definition-11}
 
 ```rust
 pub enum FunctionCallError {
@@ -507,7 +507,7 @@ pub enum FunctionCallError {
 }
 ```
 
-#### Error Messages {#error-messages-8}
+#### 오류 메시지 {#error-messages-8}
 
 ```rust
 FunctionCallError::WasmTrap
@@ -516,7 +516,7 @@ FunctionCallError::WasmTrap
 
 ### MethodResolveError {#methodresolveerror}
 
-#### Definition {#definition-12}
+#### 정의 {#definition-12}
 
 ```rust
 pub enum MethodResolveError {
@@ -529,7 +529,7 @@ pub enum MethodResolveError {
 
 ### CompilationError {#compilationerror}
 
-#### Definition {#definition-13}
+#### 정의 {#definition-13}
 
 ```rust
 pub enum CompilationError {
@@ -538,7 +538,7 @@ pub enum CompilationError {
     WasmerCompileError { msg: String },
 }
 ```
-#### Error Messages {#error-messages-9}
+#### 오류 메시지 {#error-messages-9}
 
 ```rust
 CompilationError::CodeDoesNotExist
@@ -553,7 +553,7 @@ CompilationError::WasmerCompileError
 
 ### PrepareError {#prepareerror}
 
-#### Definition {#definition-14}
+#### 정의 {#definition-14}
 
 ```rust
 /// Error that can occur while preparing or executing Wasm smart-contract.
@@ -582,7 +582,7 @@ pub enum PrepareError {
 }
 ```
 
-#### Error Messages {#error-messages-10}
+#### 오류 메시지 {#error-messages-10}
 
 ```rust
 Serialization
@@ -609,7 +609,7 @@ Memory
 
 ### HostError {#hosterror}
 
-#### Definition {#definition-15}
+#### 정의 {#definition-15}
 
 ```rust
 pub enum HostError {
@@ -673,7 +673,7 @@ pub enum HostError {
     ContractSizeExceeded { size: u64, limit: u64 },
 }
 ```
-#### Error Messages {#error-messages-11}
+#### 오류 메시지 {#error-messages-11}
 ```rust
 BadUTF8 
   "String encoding is bad UTF-8 sequence."
@@ -767,7 +767,7 @@ ContractSizeExceeded { size, limit }
 
 ### VMLogicError {#vmlogicerror}
 
-#### Definition {#definition-16}
+#### 정의 {#definition-16}
 
 ```rust
 pub enum VMLogicError {
@@ -781,7 +781,7 @@ pub enum VMLogicError {
 
 ### InconsistentStateError {#inconsistentstateerror}
 
-#### Definition {#definition-17}
+#### 정의 {#definition-17}
 
 ```rust
 pub enum InconsistentStateError {
@@ -790,20 +790,20 @@ pub enum InconsistentStateError {
 }
 ```
 
-#### Error Messages {#error-messages-12}
+#### 오류 메시지 {#error-messages-12}
 ```rust
 InconsistentStateError::IntegerOverflow
     "Math operation with a value from the state resulted in a integer overflow."
 ```
 
 
-## RPC interface {#rpc-interface}
+## RPC 인터페이스 {#rpc-interface}
 
-- error name
-- error subtype(s)
-- error properties
+- 오류 이름
+- 오류 하위 유형
+- 오류 특성
 
-### Error Schema {#error-schema}
+### 오류 구조 {#error-schema}
 
 ```json
 {
@@ -1441,6 +1441,6 @@ InconsistentStateError::IntegerOverflow
 }
 ```
 
-:::tip Got a question?
+:::tip 질문이 있으신가요?
 <a href="https://stackoverflow.com/questions/tagged/nearprotocol" target="_blank" rel="noopener noreferrer"> Ask it on StackOverflow! </a>
 :::

@@ -1,31 +1,29 @@
 ---
 sidebar_position: 3
-sidebar_label: "Seed phrase logic"
-title: "Implementing the seed phrase logic from the necessary libraries"
+sidebar_label: "시드 문구 로직"
+title: "필수 라이브러리부터 시드 문구 로직 구현"
 ---
 
-# Seed phrase and key derivation
+# 시드 문구 및 키 파생
 
-There are two separate things we'll want to do:
+우리가 하고자 하는 두 가지 별도의 작업이 있습니다.
 
-1. **Create a random seed phrase** for the user when they visit the crossword puzzle. This will be used if they win and don't have a NEAR account and wish to create one. They can then paste this seed phrase into NEAR Wallet afterward to import their account (which is basically like "logging in" and is currently possible at https://testnet.mynearwallet.com/recover-seed-phrase).
-2. **Turn the crossword solution into a key pair**, instead of just hashing it.
+1. 사용자가 십자말풀이 퍼즐을 방문할 때 사용자를 위한 임의의 **시드 문구를 생성**합니다. 이것은 그들이 게임에서 이겼을 때 NEAR 계정이 없고, 계정을 만들고자 하는 경우에 사용됩니다. They can then paste this seed phrase into NEAR Wallet afterward to import their account (which is basically like "logging in" and is currently possible at https://testnet.mynearwallet.com/recover-seed-phrase).
+2. 십자말풀이 정답을 해싱하는 대신 **키 쌍으로 전환**합니다.
 
-## near-seed-phrase library
+## near-seed-phrase 라이브러리
 
-We can add the `near-seed-phrase` package to our project with:
+다음을 사용하여 `near-seed-phrase` 패키지를 프로젝트에 추가할 수 있습니다.
 
 ```bash
 npm install near-seed-phrase --save
 ```
 
-:::note Code snippets for this chapter
-At this point in the tutorial, it's more difficult to share code snippets that are both meaningful and meant to be copy/pasted into a project.
+:::note 이 챕터의 코드 스니펫 튜토리얼의 이 시점에서는 의미 있는 동시에 프로젝트에 복사/붙여넣기할 코드 스니펫을 공유하기가 더 어렵습니다.
 
-The snippets provided might differ slightly from the implementation of the [completed code for chapter 3](https://github.com/near-examples/crossword-tutorial-chapter-3), which might be the best place to look for the functioning code.
-:::
+제공된 스니펫은 작동하는 코드를 찾기에 가장 좋은 위치인 [3장의 완성된 코드](https://github.com/near-examples/crossword-tutorial-chapter-3)구현과 약간 다를 수 있습니다. :::
 
-## Generate random seed phrase for new account creation (if the winner doesn't already have an account)
+## 새 계정 생성을 위한 임의의 시드 문구 생성(승자가 아직 계정이 없는 경우)
 
 ```js
 import { generateSeedPhrase } from 'near-seed-phrase';
@@ -35,9 +33,9 @@ let seedPhrase = generateSeedPhrase(); // generateSeedPhrase() returns an object
 localStorage.setItem('playerKeyPair', JSON.stringify(seedPhrase));
 ```
 
-## Parse solution as seed phrase
+## 정답을 시드 구문으로 파싱
 
-(This security measure prevents front-running.)
+(이 보안 조치는 프론트러닝을 방지합니다.)
 
 ```js
 import { parseSeedPhrase } from 'near-seed-phrase';
@@ -61,22 +59,20 @@ const crosswordAccount = await near.account(nearConfig.contractName);
 let transaction = await crosswordAccount.functionCall(…);
 ```
 
-The last line should look familiar. We did something similar in the last chapter, except we used the `WalletConnection`'s account to do the function call.
+마지막 줄은 익숙해 보일 것입니다. 우리는 함수 호출을 하기 위해 `WalletConnection`의 계정을 사용한 것을 제외하고는 지난 장에서 비슷한 일을 했습니다.
 
-This time we're using an `InMemoryKeyStore` instead of the browser, as you can see toward the middle of the snippet.
+이번에는 스니펫의 중간 부분에서 볼 수 있듯이, 브라우저 대신 `InMemoryKeyStore`를 사용합니다.
 
-### Key stores
+### 키 저장소(Key Store)
 
-We have now used almost all the key stores available in `near-api-js`:
+이제 `near-api-js`에서 사용할 수 있는 거의 모든 키 저장소를 사용했습니다.
 
-1. `UnencryptedFileSystemKeyStore` — early on, when we used the NEAR CLI command `near login`, this created a file in our operating system's home directory containing a private, full-access key to our account.
-2. `BrowserLocalStorageKeyStore` — in the last chapter, when the user first logs in, the function-call access key is saved in the browser's local storage.
-3. `InMemoryKeyStore` — for this chapter, we'll simply use the computer's memory to store the private key derived from the crossword solution.
+1. `UnencryptedFileSystemKeyStore` — 초기에 NEAR CLI 명령 `near login`을 사용했을 때, 이는 운영 체제의 홈 디렉토리에 계정에 대한 개인 전체 액세스 키가 포함된 파일을 생성했습니다.
+2. `BrowserLocalStorageKeyStore` — 마지막 챕터에서 사용자가 처음 로그인하면, 함수 호출 액세스 키가 브라우저의 로컬 스토리지에 저장됩니다.
+3. `InMemoryKeyStore` — 이 챕터에서는 단순히 컴퓨터의 메모리를 사용하여 십자말풀이 정답에서 파생된 개인 키를 저장합니다.
 
-:::tip You can have multiple key stores
-Technically, there's another type of key store called the `MergeKeyStore`.
+:::tip 여러 개의 키 저장소를 가질 수 있습니다 기술적으로는, `MergeKeyStore`라고 부르는 키 저장소가 또 하나 있습니다.
 
-Say you want to look for private keys in various directories. You can essentially have a list of `UnencryptedFileSystemKeyStore` key stores that look in different places.
+다양한 디렉토리에서 개인 키를 찾고 싶다고 가정해 보겠습니다. 기본적으로 다른 위치에서 보이는 `UnencryptedFileSystemKeyStore` 키 저장소 목록을 가질 수 있습니다.
 
-Use the `MergeKeyStore` when you might want to look for a private key in more than one place.
-:::
+둘 이상의 위치에서 개인 키를 찾고 싶다면, `MergeKeyStore`를 사용하세요. :::

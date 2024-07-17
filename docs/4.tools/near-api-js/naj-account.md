@@ -1,14 +1,14 @@
 ---
 id: account
-title: Account
-sidebar_label: Account
+title: 계정
+sidebar_label: 계정
 ---
 
-You can interact with, create or delete NEAR accounts.
+NEAR 계정과 상호 작용, 생성 또는 삭제할 수 있습니다.
 
-### Load Account {#load-account}
+### 계정 불러오기 {#load-account}
 
-This will return an Account object for you to interact with.
+다음과 같은 명령을 통해 상호작용할 계정 객체를 반환합니다.
 
 ```js
 const account = await nearConnection.account("example-account.testnet");
@@ -16,7 +16,7 @@ const account = await nearConnection.account("example-account.testnet");
 
 [<span className="typedoc-icon typedoc-icon-class"></span> Class `Account`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html)
 
-### Create Account {#create-account}
+### 계정 생성 {#create-account}
 
 Create a sub-account.
 
@@ -30,11 +30,11 @@ await account.createAccount(
 );
 ```
 
-[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.createAccount`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#createAccount)
+[<span className="typedoc-icon typedoc-icon-method"></span> `Account.createAccount` 메서드](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#createAccount)
 
 For creating .near or .testnet accounts please refer to the [cookbook](https://github.com/near/near-api-js/tree/master/packages/cookbook/accounts).
 
-### Delete Account {#delete-account}
+### 계정 삭제 {#delete-account}
 
 ```js
 // deletes account found in the `account` object
@@ -43,9 +43,9 @@ const account = await nearConnection.account("example-account.testnet");
 await account.deleteAccount("beneficiary-account.testnet");
 ```
 
-[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.deleteAccount`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#deleteAccount)
+[<span className="typedoc-icon typedoc-icon-method"></span> `Account.deleteAccount` 메서드](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#deleteAccount)
 
-### Get Account Balance {#get-account-balance}
+### 계정 잔고 가져오기 {#get-account-balance}
 
 ```js
 // gets account balance
@@ -53,11 +53,11 @@ const account = await nearConnection.account("example-account.testnet");
 await account.getAccountBalance();
 ```
 
-[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.getAccountBalance`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#getAccountBalance)
+[<span className="typedoc-icon typedoc-icon-method"></span> `Account.getAccountBalance` 메서드](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#getAccountBalance)
 
-### Get Account details {#get-account-details}
+### 계정 세부 정보 가져오기 {#get-account-details}
 
-Returns information about an account, such as authorized apps.
+승인된 앱과 같은 계정에 대한 정보를 반환합니다.
 
 ```js
 // gets account details in terms of authorized apps and transactions
@@ -65,11 +65,11 @@ const account = await nearConnection.account("example-account.testnet");
 await account.getAccountDetails();
 ```
 
-[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.getAccountDetails`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#getAccountDetails)
+[<span className="typedoc-icon typedoc-icon-method"></span> `Account.getAccountDetails` 메서드](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#getAccountDetails)
 
-### Deploy a Contract {#deploy-a-contract}
+### 컨트랙트 배포 {#deploy-a-contract}
 
-You can deploy a contract from a compiled WASM file. This returns an object with transaction and receipts outcomes and status.
+컴파일된 WASM 파일에서 컨트랙트를 배포할 수 있습니다. 트랜잭션 및 Receipt 결과와 상태가 있는 객체를 반환합니다.
 
 ```js
 const account = await nearConnection.account("example-account.testnet");
@@ -78,13 +78,11 @@ const transactionOutcome = await account.deployContract(
 );
 ```
 
-[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.deployContract`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#deployContract)
-&nbsp;&nbsp;&nbsp;
-[<span className="typedoc-icon typedoc-icon-interface"></span> Interface `FinalExecutionOutcome`](https://near.github.io/near-api-js/interfaces/_near_js_types.provider_response.FinalExecutionOutcome.html)
+[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.deployContract`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#deployContract) &nbsp;&nbsp;&nbsp; [<span className="typedoc-icon typedoc-icon-interface"></span> Interface `FinalExecutionOutcome`](https://near.github.io/near-api-js/interfaces/_near_js_types.provider_response.FinalExecutionOutcome.html)
 
-### Send Tokens {#send-tokens}
+### 토큰 전송 {#send-tokens}
 
-Transfer NEAR tokens between accounts. This returns an object with transaction and receipts outcomes and status.
+계정 간에 NEAR 토큰을 전송합니다. 트랜잭션 및 Receipt 결과와 상태가 있는 객체를 반환합니다.
 
 ```js
 const account = await nearConnection.account("sender-account.testnet");
@@ -94,28 +92,24 @@ await account.sendMoney(
 );
 ```
 
-[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.sendMoney`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#sendMoney)
-&nbsp;&nbsp;&nbsp;
-[<span className="typedoc-icon typedoc-icon-interface"></span> Interface `FinalExecutionOutcome`](https://near.github.io/near-api-js/interfaces/_near_js_types.provider_response.FinalExecutionOutcome.html)
+[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.sendMoney`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#sendMoney) &nbsp;&nbsp;&nbsp; [<span className="typedoc-icon typedoc-icon-interface"></span> Interface `FinalExecutionOutcome`](https://near.github.io/near-api-js/interfaces/_near_js_types.provider_response.FinalExecutionOutcome.html)
 
-### State {#state}
+### 상태 {#state}
 
-Get basic account information, such as amount of tokens the account has or the amount of storage it uses.
+계정이 보유한 토큰의 양 또는 사용하는 스토리지의 양과 같은 기본 계정 정보를 가져옵니다.
 
 ```js
 const account = await nearConnection.account("example-account.testnet");
 const accountState = await account.state();
 ```
 
-[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.state`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#state)
-&nbsp;&nbsp;&nbsp;
-[<span className="typedoc-icon typedoc-icon-interface"></span> Interface `AccountView`](https://near.github.io/near-api-js/interfaces/near_api_js.providers_provider.AccountView.html)
+[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.state`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#state) &nbsp;&nbsp;&nbsp; [<span className="typedoc-icon typedoc-icon-interface"></span> Interface `AccountView`](https://near.github.io/near-api-js/interfaces/near_api_js.providers_provider.AccountView.html)
 
-### Access Keys {#access-keys}
+### 액세스 키 {#access-keys}
 
-You can get and manage keys for an account.
+계정의 키를 가져오고 관리할 수 있습니다.
 
-#### Add Full Access Key {#add-full-access-key}
+#### 전체 액세스 키 {#add-full-access-key}
 
 ```js
 // takes public key as string for argument
@@ -123,9 +117,9 @@ const account = await nearConnection.account("example-account.testnet");
 await account.addKey("8hSHprDq2StXwMtNd43wDTXQYsjXcD4MJTXQYsjXcc");
 ```
 
-[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.addKey`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#addKey)
+[<span className="typedoc-icon typedoc-icon-method"></span> `Account.addKey` 메서드](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#addKey)
 
-#### Add Function Access Key {#add-function-access-key}
+#### 함수 액세스 키 {#add-function-access-key}
 
 ```js
 const account = await nearConnection.account("example-account.testnet");
@@ -137,24 +131,22 @@ await account.addKey(
 );
 ```
 
-[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.addKey`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#addKey)
+[<span className="typedoc-icon typedoc-icon-method"></span> `Account.addKey` 메서드](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#addKey)
 
-#### Get All Access Keys {#get-all-access-keys}
+#### 모든 액세스 키 가져오기 {#get-all-access-keys}
 
 ```js
 const account = await nearConnection.account("example-account.testnet");
 await account.getAccessKeys();
 ```
 
-[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.getAccessKeys`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#getAccessKeys)
-&nbsp;&nbsp;&nbsp;
-[<span className="typedoc-icon typedoc-icon-interface"></span> Interface `AccessKeyInfoView`](https://near.github.io/near-api-js/interfaces/near_api_js.providers_provider.AccessKeyInfoView.html)
+[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.getAccessKeys`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#getAccessKeys) &nbsp;&nbsp;&nbsp; [<span className="typedoc-icon typedoc-icon-interface"></span> Interface `AccessKeyInfoView`](https://near.github.io/near-api-js/interfaces/near_api_js.providers_provider.AccessKeyInfoView.html)
 
-#### Delete Access Key {#delete-access-key}
+#### 액세스 키 삭제 {#delete-access-key}
 
 ```js
 const account = await nearConnection.account("example-account.testnet");
 await account.deleteKey("8hSHprDq2StXwMtNd43wDTXQYsjXcD4MJTXQYsjXcc");
 ```
 
-[<span className="typedoc-icon typedoc-icon-method"></span> Method `Account.deleteKey`](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#deleteKey)
+[<span className="typedoc-icon typedoc-icon-method"></span> `Account.deleteKey` 메서드](https://near.github.io/near-api-js/classes/near_api_js.account.Account.html#deleteKey)

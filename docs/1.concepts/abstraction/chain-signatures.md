@@ -4,7 +4,6 @@ title: What are Chain Signatures?
 sidebar_label: What are Chain Signatures?
 ---
 
-
 Chain signatures enable NEAR accounts, including smart contracts, to sign and execute transactions across many blockchain protocols.
 
 This unlocks the next level of blockchain interoperability by giving ownership of diverse assets, cross-chain accounts, and data to every single NEAR account.
@@ -36,9 +35,9 @@ A `derivation path` is simply a string (e.g. `ethereum-1`, `ethereum-2`, etc) th
 
 For example, we can derive multiple Ethereum addresses from `example.near` by using different paths:
 
-  1. `example.near` + `ethereum-1` = `0x1b48b83a308ea4beb845db088180dc3389f8aa3b`
-  2. `example.near` + `ethereum-2` = `0x99c5d3025dc736541f2d97c3ef3c90de4d221315`
-  3. `example.near` + `...` = `0x...`
+1. `example.near` + `ethereum-1` = `0x1b48b83a308ea4beb845db088180dc3389f8aa3b`
+2. `example.near` + `ethereum-2` = `0x99c5d3025dc736541f2d97c3ef3c90de4d221315`
+3. `example.near` + `...` = `0x...`
 
 It is important to note that this allows us to discover the **public address** of the foreign account that we can control. To actually control the foreign account, we need to request signatures from the MPC service.
 
@@ -54,8 +53,8 @@ A deployed multichain smart contract is used to request signatures for transacti
 
 This contract has a `sign` method that takes two parameters:
 
-  1. The `payload` (transaction) to be signed for the target blockchain
-  2. The `path` that identifies the account you want to use to sign the transaction.
+1. The `payload` (transaction) to be signed for the target blockchain
+2. The `path` that identifies the account you want to use to sign the transaction.
 
 For example, a user could request a signature to `send 0.1 ETH to 0x060f1...` **(transaction)** using the `ethereum-1` account **(path)**.
 
@@ -82,11 +81,10 @@ NEAR's MPC service is comprised of several independent nodes, **none of which ca
 
 This service continuously listens for signature requests (i.e. users calling the `sign` method on the `multichain` smart contract) and when a call is detected the MPC service:
 
-  1. Asks its nodes to jointly derive a signature for the `payload` using the account identified by the `path`
-  2. Once complete, call the `multichain` contract to store the resulting `Signature`
+1. Asks its nodes to jointly derive a signature for the `payload` using the account identified by the `path`
+2. Once complete, call the `multichain` contract to store the resulting `Signature`
 
 :::info A Custom MPC Service
-Generally, MPC signing services work by sharing a master key, which needs to be re-created each time a node joins or leaves.
 
 NEAR's MPC service allows for nodes to safely join and leave, without needing to re-derive a master key
 :::

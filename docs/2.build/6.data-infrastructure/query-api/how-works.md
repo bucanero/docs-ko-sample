@@ -5,10 +5,9 @@ sidebar_label: How it works
 ---
 
 QueryApi is a streaming indexer implementation that executes custom indexing logic written by developers on the NEAR blockchain.
-QueryApi allows hosted execution of complex queries (ones that can’t be answered by a [simple RPC](../../../5.api/rpc/introduction.md) or [Enhanced API](https://docs.pagoda.co/api) call), data hosting, and its exposure via GraphQL endpoints.
+QueryApi allows hosted execution of complex queries (ones that can’t be answered by a [simple RPC](../../5.api/rpc/introduction.md) or [Enhanced API](https://docs.pagoda.co/api) call), data hosting, and its exposure via GraphQL endpoints.
 
-
-## Components involved 
+## Components involved
 
 The QueryApi implementation integrates many different components in a single and streamlined solution.
 In a high-level overview, the main components are:
@@ -17,13 +16,11 @@ In a high-level overview, the main components are:
 `NEAR Protocol` -> `NEAR Lake` -> `Coordinator` -> `Runner` -> `Database` -> `API`
 :::
 
-
 ### Detailed overview
 
 An in-depth, detailed overview of the QueryApi components:
 
 [![QueryAPI](/docs/qapi-components.png)](/docs/qapi-components.png)
-
 
 ### Description
 
@@ -77,7 +74,7 @@ The dynamic piece in this process is the user-provided `schema.sql` file, which 
 
 #### Hasura
 
-After creating the new schema, Hasura is configured to expose this schema via a GraphQL endpoint. First, the database is added as a data source to Hasura. By default, all tables are hidden, so to expose them they must be "tracked". 
+After creating the new schema, Hasura is configured to expose this schema via a GraphQL endpoint. First, the database is added as a data source to Hasura. By default, all tables are hidden, so to expose them they must be "tracked".
 
 Foreign keys in Postgres allow for nested queries via GraphQL, for example a `customer` table may have a foreign relationship to an `orders` table, this enables the user to query the orders from a customer within a single query. These are not enabled by default, so they must be "tracked" too.
 

@@ -1,29 +1,29 @@
 ---
 id: balance-changes
-title: Balance changes
-sidebar_label: Balance Changes
+title: 잔고 변경
+sidebar_label: 잔고 변경
 ---
 
 
-## Prerequisites {#prerequisites}
+## 전제 조건 {#prerequisites}
 
-- [NEAR Account](https://testnet.mynearwallet.com/create)
+- [NEAR 계정](https://testnet.mynearwallet.com/create)
 - [NEAR-CLI](/tools/near-cli)
-- Credentials for sender account stored locally by running [`near login`](/tools/near-cli#near-login)
+- [`near login`](/tools/near-cli#near-login)을 실행하여 로컬에 저장된 발신자 계정의 자격 증명
 
-### Native NEAR (Ⓝ) {#native-near}
+### 네이티브 NEAR (Ⓝ) {#native-near}
 
-> Balance changes on accounts can be tracked by using our [changes RPC endpoint](/api/rpc/setup#view-account-changes). You can test this out by sending tokens to an account using [NEAR-CLI](/tools/near-cli#near-send) and then viewing the changes made.
+> 계정의 잔고 변경은 [변경 RPC 엔드포인트](/api/rpc/setup#view-account-changes)를 사용하여 추적할 수 있습니다. NEAR-CLI를 사용하여 계정에 토큰을 보낸 다음, 변경 사항을 확인하여 이를 테스트할 수 있습니다.
 
-## Send Tokens {#send-tokens}
+## 토큰 전송 {#send-tokens}
 
-- Send tokens using [`near send`](/tools/near-cli#near-send)
+- [`near send`](/tools/near-cli#near-send)를 사용하여 토큰을 전송합니다.
 
 ```bash
 near send sender.testnet receiver.testnet 1
 ```
 
-- You should see a result in your terminal that looks something like this:
+- 다음과 같은 결과가 터미널에 표시되어야 합니다.
 
 ```bash
 Sending 1 NEAR to receiver.testnet from sender.testnet
@@ -32,12 +32,12 @@ To see the transaction in the transaction explorer, please open this url in your
 https://testnet.nearblocks.io/txns/4To336bYcoGc3LMucJPMk6fMk5suKfCrdNotrRtTxqDy
 ```
 
-## View Balance Changes {#view-balance-changes}
+## 잔고 변화 보기 {#view-balance-changes}
 
 - Open the transaction URL in [NearBlocks Explorer](https://testnet.nearblocks.io/) and copy the `BLOCK HASH`.
-- Using the `BLOCK HASH` and the accountId, query the [changes RPC endpoint](/api/rpc/setup#view-account-changes) to view changes.
+- `BLOCK HASH`와 accountId를 사용하여, [변경 RPC 엔드포인트](/api/rpc/setup#view-account-changes)를 쿼리하여 변화를 확인합니다.
 
-**Example Query using HTTPie:**
+**HTTPie를 사용한 쿼리 예시:**
 
 ```bash
 http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare \
@@ -50,7 +50,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare \
 ```
 
 <details>
-<summary>**Example Response:**</summary>
+<summary>응답 예시:</summary>
 
 ```json
 {
@@ -82,20 +82,20 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare \
 
 ---
 
-Alternatively, you can view account balances by [querying `view_account`](/api/rpc/setup#view-account) which only requires an accountId.
+또는 accountId만 필요한 [`view_account` 쿼리](/api/rpc/setup#view-account)를 통해 계정 잔액을 볼 수 있습니다.
 
-**Example HTTPie Request:**
+**HTTPie 요청 예시:**
 
   ```bash
   http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=query \
-  params:='{
-    "request_type": "view_account",
-    "finality": "final",
-    "account_id": "sender.testnet"
-  }'
+params:='{
+  "request_type": "view_account",
+  "finality": "final",
+  "account_id": "sender.testnet"
+}'
   ```
 
-**Example Response:**
+**응답 예시:**
 
 ```json
 {
@@ -113,10 +113,10 @@ Alternatively, you can view account balances by [querying `view_account`](/api/r
 }
 ```
 
-**Note:** Gas prices can change between blocks. Even for transactions with deterministic gas cost the cost in NEAR could also be different. You can query the gas price for recent blocks using the [`gas_price` RPC endpoint](https://docs.near.org/api/rpc/setup#gas-price).
+**참고:** 가스 가격은 블록 간에 변경될 수 있습니다. 결정론적 가스 비용이 있는 트랜잭션의 경우에도, 드는 NEAR의 비용이 다를 수 있습니다. [`gas_price` RPC 엔드포인트](https://docs.near.org/api/rpc/setup#gas-price)를 사용하여 최근 블록의 가스 가격을 쿼리할 수 있습니다.
 
 ---
 
-:::tip Got a question?
+:::tip 질문이 있으신가요?
 <a href="https://stackoverflow.com/questions/tagged/nearprotocol" target="_blank" rel="noopener noreferrer"> Ask it on StackOverflow! </a>
 :::

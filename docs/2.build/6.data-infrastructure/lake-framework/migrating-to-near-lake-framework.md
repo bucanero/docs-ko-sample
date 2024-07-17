@@ -1,9 +1,8 @@
 ---
-sidebar_label: Migrating to NEAR Lake framework
+sidebar_label: NEAR Lake 프레임워크로 마이그레이션
 ---
 
-# Migrating to NEAR Lake Framework
-
+# NEAR Lake 프레임워크로 마이그레이션
 
 We encourage everyone who don't have a hard requirement to use [NEAR Indexer Framework](/concepts/advanced/near-indexer-framework) consider the migration to [NEAR Lake Framework](/concepts/advanced/near-lake-framework).
 
@@ -21,7 +20,7 @@ We've [posted the diffs for the reference in the end](#diffs) of the article, yo
 
 :::
 
-## Changing the dependencies
+## 의존성(Dependency) 변경
 
 First of all we'll start from the dependencies in `Cargo.toml`
 
@@ -48,13 +47,13 @@ tracing-subscriber = "0.2.4"
 near-indexer = { git = "https://github.com/near/nearcore", rev = "25b000ae4dd9fe784695d07a3f2e99d82a6f10bd" }
 ```
 
-- Update `edition` to `2021`
-- Drop `actix` crates
-- Drop `openssl-probe` crate
-- Add `futures` and `itertools`
-- Add features to `tokio` as we will be using tokio runtime
-- Add `tokio-stream` crate
-- Replace `near-indexer` with `near-lake-framework`
+- `edition`을 `2021`로 업데이트
+- `actix` 크레이트 삭제
+- `openssl-probe` 크레이트 삭제
+- `itertools` 및 `futures` 추가
+- tokio 런타임을 사용하므로, `tokio` 기능 추가
+- `tokio-stream` 크레이트 추가
+- `near-indexer`를 `near-lake-framework`로 교체
 
 So in the end we'll have this after all:
 
@@ -81,7 +80,7 @@ near-lake-framework = "0.4.0"
 
 ```
 
-## Change the clap configs
+## clap config 변경
 
 Currently we have structure `Opts` that has a subcommand with `Run` and `Init` command. Since [NEAR Lake Framework](/concepts/advanced/near-lake-framework) doesn't need `data` and config files we don't need `Init` at all. So we need to combine some structures into `Opts` itself.
 
@@ -123,12 +122,12 @@ pub(crate) struct InitConfigArgs {
 
 We are going:
 
-- Drop `InitConfigArgs` completely
-- Move the content from `RunArgs` to `Opts` and then drop `RunArgs`
-- Drop `home_dir` from `Opts`
-- Add `block_height` to `Opts` to know from which block height to start indexing
-- Refactor `SubCommand` to have to variants: mainnet and testnet to define what chain to index
-- And add `Clone` detive to the structs for later
+- `InitConfigArgs`를 완전히 삭제
+- `RunArgs`에서 `Opts`로 내용물을 완전히 옮긴 뒤, `RunArgs` 삭제
+- `Opts`에서 `home_dir` 삭제
+- 인덱싱을 시작할 블록 높이를 알기 위해, `Opts`에 `block_height` 추가
+- 변수에 대한 `SubCommand` 리팩터링 : 인덱싱할 체인을 정의하기 위한 메인넷 및 테스트넷
+- 나중을 위해 구조체에 `Clone` 추가
 
 ```rust title=src/config.rs
 /// NEAR Indexer Example
@@ -223,7 +222,7 @@ Since we can use `tokio` runtime and make our `main` function asynchronous it's 
 
 Let's start from import section
 
-### Imports before
+### 수정 전 Import
 
 ```rust title=src/main.rs
 use std::str::FromStr;
@@ -239,7 +238,7 @@ use configs::{init_logging, Opts, SubCommand};
 mod configs;
 ```
 
-### Imports after
+### 수정 후 Import
 
 We're adding `near_lake_framework` imports and remove redundant import from `configs`.
 
@@ -258,7 +257,7 @@ use near_lake_framework::LakeConfig;
 use configs::{init_logging, Opts};
 ```
 
-### Creating `main()`
+### `main()` 생성
 
 Let's create an async `main()` function, call `init_logging` and read the `Opts`.
 
@@ -310,8 +309,8 @@ async fn main() -> Result<(), tokio::io::Error> {
 
 Now we can call `listen_blocks` function we have used before in our indexer while it was built on top of [NEAR Indexer Framework](/concepts/advanced/near-indexer-framework). And return `Ok(())` so our `main()` would be happy.
 
+### NEAR Lake 프레임워크 스트림 및 최종 main 함수
 
-### Final async main with NEAR Lake Framework stream
 ```rust title=src/main.rs
 #[tokio::main]
 async fn main() -> Result<(), tokio::io::Error> {
@@ -339,7 +338,7 @@ async fn main() -> Result<(), tokio::io::Error> {
 
 We're done. That's pretty much entire `main()` function. Drop the old one if you haven't yet.
 
-## Changes in other function related to data types
+## 자료형 관련 함수 내 변경 사항
 
 Along with [NEAR Lake Framework](/concepts/advanced/near-lake-framework) release we have extracted the structures created for indexers into a separate crate. This was done in order to avoid dependency on `nearcore` as now you can depend on a separate crate that is already [published on crates.io](https://crates.io/crates/near-indexer-primitives) or on NEAR Lake Framework that exposes that crate.
 
@@ -389,10 +388,11 @@ fn is_tx_receiver_watched(
 }
 ```
 
-## Credentials
-[Configure the Credentials](./running-near-lake/credentials.md) in order to access the data from NEAR Lake Framework
+## 자격 증명
 
-## Conclusion
+[Configure the Credentials](credentials.md) in order to access the data from NEAR Lake Framework
+
+## 결론
 
 And now we have a completely migrated to [NEAR Lake Framework](/concepts/advanced/near-lake-framework) indexer.
 
@@ -403,36 +403,63 @@ We are posting the complete diffs for the reference
 ```diff title=Cargo.toml
 --- a/Cargo.toml
 +++ b/Cargo.toml
+
 @@ -2,18 +2,18 @@
+
  name = "indexer-tx-watcher-example"
+
  version = "0.1.0"
+
  authors = ["Near Inc <hello@nearprotocol.com>"]
+
 -edition = "2018"
+
 +edition = "2021"
 
+
+
  [dependencies]
+
 -actix = "=0.11.0-beta.2"
+
 -actix-rt = "=2.2.0"  # remove it once actix is upgraded to 0.11+
+
  base64 = "0.11"
+
 -clap = "3.0.0-beta.1"
+
 -openssl-probe = { version = "0.1.2" }
+
 +clap = { version = "3.1.6", features = ["derive"] }
+
 +futures = "0.3.5"
+
  serde = { version = "1", features = ["derive"] }
+
  serde_json = "1.0.55"
+
 -tokio = { version = "1.1", features = ["sync"] }
+
 +itertools = "0.9.0"
+
 +tokio = { version = "1.1", features = ["sync", "time", "macros", "rt-multi-thread"] }
+
 +tokio-stream = { version = "0.1" }
+
  tracing = "0.1.13"
+
  tracing-subscriber = "0.2.4"
 
+
+
 -near-indexer = { git = "https://github.com/near/nearcore", rev = "25b000ae4dd9fe784695d07a3f2e99d82a6f10bd" }
+
 +near-lake-framework = "0.4.0"
 ```
 
 ```diff title=src/configs.rs
 --- a/src/configs.rs
+
 +++ b/src/configs.rs
 @@ -1,99 +1,50 @@
 -use clap::Clap;

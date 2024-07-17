@@ -1,41 +1,41 @@
 ---
 id: introduction
-title: Introduction
-sidebar_label: Introduction
+title: 소개
+sidebar_label: 소개
 ---
 
 <blockquote className="info">
-<strong>did you know?</strong><br /><br />
+<strong>알고 계셨나요?</strong><br /><br />
 
-The [NEAR Platform overview](/concepts/welcome) clarifies much of the language in this section.
+[NEAR 플랫폼 개요](/concepts/welcome)는 이 섹션의 언어 대부분을 명확하게 설명합니다.
 
 </blockquote>
 
-## The life of a transaction: {#the-life-of-a-transaction}
+## 트랜잭션 수명: {#the-life-of-a-transaction}
 
-- A client creates a transaction, computes the transaction hash and signs this hash to get a signed transaction. Now this signed transaction can be sent to a node.
-- The RPC interface receives the transaction and routes it to the correct physical node using `signer_id`.  Since the `signer_id` must be a NEAR Account ID which lives on a single shard, the account is mapped to a shard which is followed by at least one validator running at least one machine with an IP address.
-- When a node receives a new signed transaction, it validates the transaction for signer, receiver, account balance, cost overflow, signature, etc. ([see here](https://nomicon.io/RuntimeSpec/Scenarios/FinancialTransaction.html#transaction-to-receipt)) and gossips it to all peers following the same shard. If a transaction has an invalid signature or would be invalid on the latest state, it is rejected quickly and returns an error to the original RPC call. 
-- Valid transactions are added to the transaction pool (every validating node has its own independent copy of a transaction pool). The transaction pool maintains transactions that are not yet discarded and not yet included into the chain.
-- A pool iterator is used to pick transactions from the pool one at a time, ordered from the smallest nonce to largest, until the pool is drained or some chunk limit is reached (max number of transactions per chunk or max gas burnt per chunk to process transactions).  Please refer to articles on the [pool iterator](https://nomicon.io/ChainSpec/Transactions.html?highlight=pool#pool-iterator) and [gas](/concepts/protocol/gas) for more details.
-- To accommodate the distributed nature of a sharded blockchain, all transactions are subsequently returned to a segmented transaction pool having 3 distinct layers: accepted transactions (which will be processed on the next chunk), pending transactions (which exceeded the limits of the current chunk and will be included in a later round of processing) and invalid transactions (which will be rejected at the next available opportunity).
-- Before producing a chunk, transactions are ordered and validated again. This is done to produce chunks with only valid transactions across a distributed system.
-- While a transaction is being processed on to a chunk, any errors raised by the application of its actions are also returned via RPC.
+- 클라이언트는 트랜잭션을 생성하고, 트랜잭션 해시를 계산하며 이 해시에 서명하여 서명된 트랜잭션을 얻습니다. 이제 이 서명된 트랜잭션을 노드로 보낼 수 있습니다.
+- RPC 인터페이스는 트랜잭션을 수신하고, `signer_id`를 사용하여 올바른 물리적 노드로 라우팅합니다.  `signer_id`는 단일 샤드에 있는 NEAR 계정 ID이여야 하므로, 계정은 샤드에 매핑되며, 그 뒤에 IP 주소로 하나 이상의 시스템을 실행하는 하나 이상의 밸리데이터가 뒤따릅니다.
+- 노드가 서명된 새 트랜잭션을 수신하면, 서명자, 수신자, 계정 잔액, 비용 오버플로우, 서명 등에 대한 트랜잭션의 유효성을 검사하고([여기](https://nomicon.io/RuntimeSpec/Scenarios/FinancialTransaction.html#transaction-to-receipt) 참조), 동일한 샤드를 따르는 모든 피어 노드에 이를 전달합니다. 트랜잭션에 유효하지 않은 서명이 있거나, 최신 상태에서 유효하지 않을 경우, 트랜잭션은 신속하게 거부되고 원래 RPC 호출에 오류가 반환됩니다.
+- 유효한 트랜잭션이 트랜잭션 풀에 추가됩니다(모든 밸리데이터 노드에는 고유한 트랜잭션 풀의 독립적인 복사본이 있음). 트랜잭션 풀은 아직 폐기되지 않았지만 체인에 포함되지 않은 트랜잭션들을 유지 관리합니다.
+- 풀 반복자는 풀이 고갈되거나 일부 청크 제한(청크당 최대 트랜잭션 수 또는 처리할 청크당 최대 가스 소각)에 도달할 때까지, 가장 작은 논스에서 가장 큰 순서로 풀에서 트랜잭션을 한 번에 하나씩 선택하는 데 사용됩니다.  Please refer to articles on the [pool iterator](https://nomicon.io/ChainSpec/Transactions.html?highlight=pool#pool-iterator) and [gas](/concepts/protocol/gas) for more details.
+- 샤딩된 블록체인의 분산된 특성을 수용하기 위해, 모든 트랜잭션은 3개의 개별 레이어가 있는 분리된 트랜잭션 풀로 반환됩니다. 이는 수락된 트랜잭션(다음 청크에서 처리될 예정), 보류 중인 트랜잭션(현재 청크의 한도를 초과한 트랜잭션. 차후 처리 라운드에 포함될 예정) 및 유효하지 않은 트랜잭션(다음 번에 거부될 예정)으로 구성됩니다.
+- 청크가 생성되기 전에, 트랜잭션이 다시 정렬되고 유효성이 검사됩니다. 이는 분산 시스템 전체에서 유효한 트랜잭션만으로 구성된 청크를 생성하기 위함입니다.
+- 트랜잭션이 청크에서 처리되는 동안, 트랜잭션 내 Action 적용으로 인해 발생한 오류도 RPC를 통해 반환됩니다.
 
 
-## NEAR Platform Errors {#near-platform-errors}
+## NEAR 플랫폼 오류 {#near-platform-errors}
 
-Errors raised by the NEAR platform are implemented in the following locations in `nearcore`:
+NEAR 플랫폼에서 발생한 오류는 `nearcore` 내 다음 위치에서 구현됩니다.
 
 - [nearcore/core/primitives/src/errors.rs](https://github.com/near/nearcore/blob/master/core/primitives/src/errors.rs)
 - [nearcore/runtime/near-vm-errors/src/lib.rs](https://github.com/near/nearcore/blob/master/runtime/near-vm-errors/src/lib.rs)
 
-This page includes: 
-- **RuntimeError and subtypes**: errors raised when a transaction is first received by the destination node and again before it's processed and applied to a chunk
-- **TxExecutionError and subtypes**: errors raised while a transaction and its component action(s) are being validated and applied to a chunk
-- **VMerror and subtypes**: errors raised during the execution of a Wasm contract by the NEAR VM
+이 페이지는 다음을 포함합니다.
+- **RuntimeError 및 하위 유형**: 트랜잭션이 대상 노드에서 처음 수신되고 처리되어 청크에 적용되기 전에 다시 발생하는 오류입니다.
+- **TxExecutionError 및 하위 유형**: 트랜잭션 및 포함된 Action의 유효성을 검사하고 청크에 적용하는 동안 발생하는 오류입니다.
+- **VMerror 및 하위 유형**: NEAR VM이 Wasm 컨트랙트를 실행하는 동안 발생하는 오류입니다.
 
-### RuntimeError and subtypes {#runtimeerror-and-subtypes}
+### RuntimeError 및 하위 유형 {#runtimeerror-and-subtypes}
 
 ```text
 RuntimeError                                              Error returned from `Runtime::apply  
@@ -55,7 +55,7 @@ RuntimeError                                              Error returned from `R
       FunctionCallArgumentsLengthExceeded                 The length of the arguments exceeded the limit in a Function Call action.
 ```
 
-### TxExecutionError and subtypes {#txexecutionerror-and-subtypes}
+### TxExecutionError 및 하위 유형 {#txexecutionerror-and-subtypes}
 
 ```text
 TxExecutionError                                          Error returned in the ExecutionOutcome in case of failure
@@ -88,7 +88,7 @@ TxExecutionError                                          Error returned in the 
 ```
 
 
-### VMerror and subtypes {#vmerror-and-subtypes}
+### VMerror 및 하위 유형 {#vmerror-and-subtypes}
 
 ```text
 VMerror                                                   An error that occurs in the NEAR virtual machine
@@ -146,6 +146,6 @@ VMerror                                                   An error that occurs i
         Memory                                            Error creating memory
 ```
 
-:::tip Got a question?
+:::tip 질문이 있으신가요?
 <a href="https://stackoverflow.com/questions/tagged/nearprotocol" target="_blank" rel="noopener noreferrer"> Ask it on StackOverflow! </a>
 :::

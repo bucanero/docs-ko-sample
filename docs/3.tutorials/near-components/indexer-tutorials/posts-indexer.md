@@ -1,7 +1,7 @@
 ---
 id: posts-indexer
-title: Posts Indexer
-sidebar_label: Posts Indexer
+title: Posts 인덱서
+sidebar_label: Posts 인덱서
 ---
 
 :::tip
@@ -10,9 +10,9 @@ This tutorial creates a blockchain indexer using [NEAR QueryAPI](../../../2.buil
 
 :::
 
-## Overview
+## 개요
 
-This indexer creates a new row in a pre-defined `posts` table created by the user in the GraphQL database for every new post found on the blockchain. This is a simple example that shows how to specify a single table, filter blockchain transaction data for a specific type of transaction, and save the data to the database.
+이 인덱서는 사용자가 GraphQL 데이터베이스에서 생성한 사전 정의된 `posts` 테이블에 블록체인에서 발견된 모든 새 게시물에 대해 새 행을 만듭니다. 이는 테이블을 지정하고, 특정 트랜잭션 유형에 대한 블록체인 트랜잭션 데이터를 필터링하며, 데이터를 데이터베이스에 저장하는 방법을 보여주는 간단한 예입니다.
 
 :::tip
 
@@ -20,9 +20,9 @@ This indexer can be found by [following this link](https://dev.near.org/dataplat
 
 :::
 
-## Defining the Database Schema
+## 데이터베이스 스키마 정의
 
-The first step to creating an indexer is to define the database schema. This is done by editing the `schema.sql` file in the code editor. The schema for this indexer looks like this:
+인덱서를 만드는 첫 번째 단계는 데이터베이스 스키마를 정의하는 것입니다. 이 작업은 코드 에디터에서 `schema.sql` 파일을 편집하여 수행합니다. 이 인덱서의 스키마는 다음과 같습니다:
 
 ```sql
 CREATE TABLE
@@ -37,7 +37,7 @@ CREATE TABLE
   );
 ```
 
-This schema defines a table called `posts` with columns:
+이 스키마는 열이 있는 `posts`라는 테이블을 정의합니다:
 
 - `id`: a unique identifier for each row in the table
 - `account_id`: the account ID of the user who created the post
@@ -46,18 +46,18 @@ This schema defines a table called `posts` with columns:
 - `content`: the content of the post
 - `block_timestamp`: the timestamp of the block in which the post was created
 
-## Defining the Indexing Logic
+## 인덱싱 로직 정의
 
-The next step is to define the indexing logic. This is done by editing the `indexingLogic.js` file in the code editor. The logic for this indexer can be divided into two parts:
+다음은 인덱싱 로직을 정의할 차례입니다. 이 작업은 코드 에디터에서 `indexingLogic.js` 파일을 편집하여 수행합니다. 이 인덱서의 로직은 두 부분으로 나눌 수 있습니다:
 
-1. Filtering blockchain transactions for a specific type of transaction
-2. Saving the data from the filtered transactions to the database
+1. 특정 트랜잭션 유형에 대한 블록체인 트랜잭션 필터링
+2. 필터링된 트랜잭션의 데이터를 데이터베이스에 저장
 
-### Filtering Blockchain Transactions
+### 블록체인 트랜잭션 필터링
 
-The first part of the logic is to filter blockchain transactions for a specific type of transaction. This is done by using the `getBlock` function. This function takes in a block and a context and returns a promise. The block is a Near Protocol block, and the context is a set of helper methods to retrieve and commit state. The `getBlock` function is called for every block on the blockchain.
+로직의 첫 번째 부분은 특정 유형의 트랜잭션에 대한 블록체인 트랜잭션을 필터링하는 것입니다. 이 작업은 `getBlock` 함수를 사용하여 수행됩니다. 이 함수는 블록과 컨텍스트를 사용하여 Promise를 반환합니다. 블록은 Near 프로토콜 블록이고, 컨텍스트는 상태를 검색하고 커밋하는 헬퍼 메서드 집합입니다. `getBlock` 함수는 블록체인의 모든 블록에 대해 호출됩니다.
 
-The `getBlock` function for this indexer looks like this:
+이 인덱서의 `getBlock` 함수는 다음과 같습니다:
 
 ```js
 import { Block } from "@near-lake/primitives";
@@ -95,19 +95,19 @@ async function getBlock(block: Block, context) {
 }
 ```
 
-This function first defines a helper function called `base64decode` that decodes base64 encoded data. It then defines a constant called `SOCIAL_DB` that is the name of the smart contract that stores the posts in NEAR. It then filters the blockchain transactions for a specific type of transaction. This is done by:
+이 함수는 먼저 base64 인코딩 데이터를 디코딩하는 `base64decode`라는 헬퍼 함수를 정의합니다. It then defines a constant called `SOCIAL_DB` that is the name of the smart contract that stores the posts in NEAR. 그런 다음 특정 유형의 트랜잭션에 대한 블록체인 트랜잭션을 필터링합니다. 이것은 다음과 같이 수행됩니다:
 
-1. Filtering the blockchain transactions for transactions where the `receiverId` is the `SOCIAL_DB` database
-2. Mapping the operations of the filtered transactions to the `FunctionCall` operation
-3. Filtering the `FunctionCall` operations for operations where the `method_name` is `set`
-4. Mapping the filtered `FunctionCall` operations to an object that contains the `FunctionCall` operation, the decoded `args` of the `FunctionCall` operation, and the `receiptId` of the transaction
-5. Filtering the mapped objects for objects where the `args` contain a `post` or `index` key
+1. `receiverId`가 `SOCIAL_DB` 데이터베이스인 트랜잭션에 대한 블록체인 트랜잭션 필터링
+2. 필터링된 트랜잭션의 작업을 `FunctionCall` 작업에 맵핑
+3. `FunctionCall` 작업을 `method_name`이 `set`인 작업에 대해 필터링
+4. 필터링된 `FunctionCall` 작업을 `FunctionCall` 작업, `FunctionCall` 작업의 디코딩된 `args`, 트랜잭션의 `receiptId`를 포함하는 객체와 맵핑
+5. 맵핑된 객체를 `args`가 `post` 또는 `index` 키를 포함하는 객체에 대해 필터링
 
-This function returns an array of objects that contain the `FunctionCall` operation, the decoded `args` of the `FunctionCall` operation, and the `receiptId` of the transaction. This array is called `nearSocialPosts`.
+이 함수는 `FunctionCall` 작업, `FunctionCall` 작업의 디코딩된 `args`, 트랜잭션의 `receiptId`를 포함하는 객체를 반환합니다. 이 배열은 `nearSocialPosts`라고 불립니다.
 
-### Saving the Data to the Database
+### 데이터베이스에 데이터 저장
 
-The second part of the logic is to save the data from the filtered transactions to the database. This is done by using the [`context.db.Posts.insert()`](../../../2.build/6.data-infrastructure/query-api/context.md#insert) function. The `context.db.Posts.insert()` function will be called for every filtered transaction as defined by the `.map()` function called on the array of `nearSocialPosts`.
+로직의 두 번째 부분은 필터링된 트랜잭션의 데이터를 데이터베이스에 저장하는 것입니다. This is done by using the [`context.db.Posts.insert()`](../../queryapi/context.md#insert) function. The `context.db.Posts.insert()` function will be called for every filtered transaction as defined by the `.map()` function called on the array of `nearSocialPosts`.
 
 The function for this indexer looks like this:
 
@@ -226,7 +226,6 @@ return (
   {renderedData}
 );
 ```
-
 
 :::tip
 

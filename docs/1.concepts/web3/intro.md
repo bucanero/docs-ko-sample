@@ -1,23 +1,22 @@
 ---
 id: intro
-title: Moving from Web 2 to Web 3
-sidebar_label: Introduction
+title: Web2에서 Web3로
+sidebar_label: 소개
 ---
 
 by Sigma Software
+> DISCLAIMER. NEAR 생태계의 특정 제품, 프레임워크, 솔루션, 라이브러리 및 기타 소프트웨어에 대한 모든 참조는 교육 목적으로만 제공됩니다. 모든 제품 이름, 로고, 브랜드, 상표 및 등록 상표는 해당 소유자의 자산입니다. 문서 전체에서 이러한 이름, 상표 및 브랜드를 사용한다고 해서 이를 보증하지는 않습니다.
 
->DISCLAIMER. All references to particular products, frameworks, solutions, libraries and other software of NEAR ecosystem are provided for educational purposes only. All product names, logos, brands, trademarks and registered trademarks are property of their respective owners. Use of these names, trademarks and brands throughout the document does not imply endorsement.
+## 소개
 
-## Introduction
+이 가이드라인에서는 NEAR 프로토콜을 사용하여 기존의 Web2 애플리케이션을 Web3 세계로 가져오는 방법을 살펴보겠습니다.
 
-In this guideline we’ll see how to bring a traditional Web 2 application into a Web 3 world using NEAR Protocol.
+이 가이드는 Web3 및 블록체인 세계로의 여정을 막 시작하는 개발자를 위해 작성되었으므로, Web3와 블록체인이 무엇인지 설명하는 것으로 시작하겠습니다. 그런 다음 NEAR 프로토콜을 사용하여 탈중앙화 애플리케이션(dApp)을 구축하는 방법에 대해 살펴보겠습니다. 기본 사항을 학습한 뒤에는 클라이언트 애플리케이션, 기존 웹 서버 및 NEAR 블록체인 융합의 복잡성에 대해 알아보겠습니다.
 
-It’s written for developers who are just starting their journey into the world of Web 3 and Blockchain, so we’ll start by explaining what Web 3 and blockchain are. Then, we’ll explore how to build decentralized applications (dApps) using NEAR Protocol. And after we’ve learned the basics, we’ll guide you through the intricacies of fusing client applications, traditional web servers and the NEAR blockchain.
+이 가이드에서 우리는 높은 수준의 의사 결정, 아키텍처에 초점을 맞추고 어떤 작업을 수행하는 방법뿐만 아니라 왜 이런 방식으로 수행되는지 알아볼 예정입니다. 모든 것과 마찬가지로 정답은 없으므로, 다양한 대안을 살펴보고 올바른 방법을 선택하도록 도와드리겠습니다.
 
-During our journey we’ll focus on high-level decisions, architecture, and explore not just HOW to do something, but also WHY it’s done this way. And as with anything, there’s no single right way, so we’ll explore different alternatives and help you to choose the right one. 
+물론 실제 애플리케이션은 단어로 작성되지 않고 코드로 작성되므로 수많은 코드 예제에 대한 링크가 제공됩니다. 그러나 가능한 한 유용하게 만들기 위해, 이 가이드 자체는 가능할 때마다 구현 및 기술에 구애받지 않는 상태로 유지될 예정입니다.
 
-Of course, real world applications aren’t built with words, but with code, so links to numerous code examples will be provided. But to make it as useful as possible, this guideline itself will be kept implementation and technology agnostic whenever possible.
+Web 3 및 블록체인에 이미 익숙하다면 [NEAR 프로토콜 섹션](near.md)으로 건너뛰셔도 됩니다. 이미 NEAR에 익숙하다면 [Web2 애플리케이션용 NFT](nfts.md) 장으로 바로 이동할 수 있습니다. 여기에서 웹 2와 NEAR 블록체인을 활용하여 NFT의 모든 기능을 당신의 앱에 활용하는 방법을 안내해 드립니다.
 
-If you are already familiar with Web 3 and blockchains, feel free to skip to the [NEAR Protocol section](near.md). And if you are already quite comfortable with NEAR, you can jump straight ahead into the [NFTs for Web 2 Applications](nfts.md) chapter, where we’ll guide you on how to connect Web 2 and the NEAR blockchain together to bring the full power of NFTs into your app.
-
-Without further ado, let’s begin our journey!
+더 이상 고민 말고 여행을 시작해 보세요!

@@ -13,17 +13,17 @@ The Multichain Gas Relayer is a mechanism designed to enable gas fee payments an
 ### Benefits
 
 1. **Interoperability**: Enables seamless interaction and transactions between different blockchains without the need for users to hold native tokens of each blockchain for gas fees.
-  
+
 2. **Cost Efficiency**: Reduces the overall cost of cross-chain transactions by optimizing gas fee management and leveraging economies of scale.
-  
+
 3. **User Experience**: Improves the user experience by abstracting the complexity of managing gas fees across multiple blockchains.
 
 ### Use Cases
 
 1. **Cross-Chain Asset Transfers**: Facilitates the transfer of assets (tokens, NFTs, etc.) between different blockchains.
-  
+
 2. **Interoperable Applications**: Supports the development of decentralized applications (DApps) that operate seamlessly across multiple blockchains.
-  
+
 3. **Arbitrage and Trading**: Enables arbitrage opportunities and trading strategies across decentralized finance (DeFi) protocols on different blockchains.
 
 ## System Design
@@ -42,7 +42,7 @@ This section provides an overview of the system design, including the main compo
 
 Below is a design diagram of the entire Multichain Relayer system:
 
-[![multichain_relayer_technical_design.png](/docs/multichain_relayer_technical_design.png)](/docs/multichain_relayer_technical_design.png)
+[![multichain\_relayer\_technical\_design.png](/docs/multichain_relayer_technical_design.png)](/docs/multichain_relayer_technical_design.png)
 
 :::note
 

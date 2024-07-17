@@ -2,6 +2,7 @@
 id: access-keys
 title: Access Keys
 ---
+
 In all blockchains, users control their accounts by holding a `private key` (a secret only they know) and using it to sign [transactions](./transactions.md).
 
 ![img](@site/static/docs/assets/welcome-pages/access-keys.png)
@@ -14,6 +15,7 @@ NEAR accounts present the **unique** feature of being able to hold multiple [Acc
 ---
 
 ## Full-Access Keys {#full-access-keys}
+
 As the name suggests, `Full-Access` keys have full control of an account, meaning they can be used to sign [transactions](transactions.md) doing any action in your account's behalf:
 
 1. Transfer NEAR Ⓝ
@@ -33,13 +35,14 @@ The **first** Full-Access Key of an account is added when the account is **creat
 ## Function-Call Keys {#function-call-keys}
 
 `Function-Call` keys can only sign transactions calling a **specific contract**, and do **not allow** to **attach NEAR tokens** to the call. They are defined by three attributes:
+
 1. `receiver_id`: The **contract** which the key allows to call. No other contract can be called using this key
 2. `method_names` (Optional): The contract's **methods** the key allows to call. If omitted, all methods can be called
 3. `allowance` (Optional): The **amount of NEAR** allowed to be spent on [gas](gas.md). If omitted, the key can consume **unlimited** as gas
 
 Function-Call keys have the main purpose of being shared, so third-parties can make contract calls in your name. This is useful in [multiple scenarios as we will see below](#benefits-of-function-call-keys).
 
-:::tip 
+:::tip
 `Function-Call` keys are secure to share, as they only permit calls to a specific contract and prohibit NEAR token transfers.
 :::
 
@@ -50,6 +53,7 @@ Function-Call keys have the main purpose of being shared, so third-parties can m
 `Function Call Keys` allows you to provide **restricted access** to third parties. This key type, unique to NEAR, enables several use-cases worth discussing.
 
 ### Enhancing User Experience
+
 The most common use case for `Function-Call` keys is to allow an application to sign transactions on the user's behalf.
 
 Imagine you are developing a game that records the user's score on a smart contract. On other chains, you would have to disrupt the user's experience to request transaction signatures each time the game needs to update the score.
@@ -85,6 +89,7 @@ In case of necessity, the trusted party can trigger the recovery process, assist
 ---
 
 ## Locked Accounts
+
 If you remove all keys from an account, then the account will become **locked**, meaning that no external actor can perform transactions in the
 account's name.
 

@@ -1,11 +1,10 @@
 ---
 id: js-lake-indexer
-title: JS basic tutorial
-sidebar_label: JS basic tutorial
+title: JS 기본 튜토리얼
+sidebar_label: 비동기식
 ---
 
-# NEAR Lake indexer basic tutorial
-
+# NEAR Lake 인덱서 기본 튜토리얼
 
 :::info Source code for the tutorial
 
@@ -17,14 +16,13 @@ Recently we have [published a JavaScript version of the NEAR Lake Framework](htt
 
 We want to empower you with a basic tutorial on how to use the JavaScript Library. Let's get started!
 
-
-## Requirements
+## 요구 사항
 
 Before we get started, please, ensure you have:
 
-- [nodejs](https://nodejs.org/en/download/) installed
+- [nodejs](https://nodejs.org/en/download/) 설치
 
-## Create a project
+## 프로젝트 생성
 
 Create an indexer project:
 
@@ -33,6 +31,7 @@ mkdir near-lake-raw-printer-js && cd near-lake-raw-printer-js
 ```
 
 Now we're going to call `npm init`, we can continue with the default values pressing Enter on every question in the interactive mode:
+
 ```bash
 npm init
 ```
@@ -66,7 +65,7 @@ Is this OK? (yes)
 
 `package.json` is ready. Let's install `near-lake-framework`
 
-## Install dependencies
+## 의존성(dependency) 설치
 
 Install `near-lake-framework`
 
@@ -80,7 +79,7 @@ Install `typescript` as dev dependency
 npm install typescript --save-dev
 ```
 
-## Setup TypeScript
+## TypeScript 설정
 
 Now we can create `tsconfig.json` for TypeScript settings:
 
@@ -137,7 +136,7 @@ touch index.ts
 
 Open `index.ts` in your favorite editor to start coding.
 
-## Import `near-lake-framework`
+## `near-lake-framework` 가져오기
 
 In the `index.ts` file let's import the necessary dependencies:
 
@@ -147,7 +146,7 @@ import { startStream, types } from 'near-lake-framework';
 
 We've imported the main function `startStream`, which will be called to actually run the indexer, and `types`, which hold the `LakeConfig` type we need to construct.
 
-## Create a config
+## 구성(config) 생성
 
 To get indexer running we need to start it with a config. We need to create an instance of `LakeConfig`
 
@@ -159,14 +158,15 @@ const lakeConfig: types.LakeConfig = {
 };
 ```
 
-## Create indexer handler
+## 인덱서 핸들러 생성
 
 Indexer will be streaming the [`StreamerMessage`](/build/data-infrastructure/lake-data-structures/toc) instances we need to handle according to our needs.
 
 In `near-lake-framework` JS library the handler have to be presented as a callback function. This function have to:
+
 - be asynchronous
 - accept an argument of type [`StreamerMessage`](/build/data-infrastructure/lake-data-structures/toc)
-- return nothing (`void`)
+- 아무것도 반환하지 않음(`void`)
 
 Creating the callback:
 
@@ -187,7 +187,7 @@ async function handleStreamerMessage(streamerMessage: types.StreamerMessage): Pr
 }
 ```
 
-## Starting the stream
+## 스트림 시작
 
 And the last thing to write is the call to `startStream` with the config and pass the callback function.
 
@@ -199,11 +199,11 @@ And the last thing to write is the call to `startStream` with the config and pas
 
 That's it. Now we can compile the code and run it
 
-## Compile and run
+## 컴파일 및 실행
 
 :::danger Credentials
 
-To be able to access the data from [NEAR Lake](/build/data-infrastructure/lake-framework/near-lake) you need to provide credentials. Please, see the [Credentials](../running-near-lake/credentials.md) article
+To be able to access the data from [NEAR Lake](/build/data-infrastructure/lake-framework/near-lake) you need to provide credentials. Please, see the [Credentials](credentials.md) article
 
 :::
 
@@ -230,7 +230,7 @@ Block #63804060 Shards: 4
 
 You can stop the indexer by pressing CTRL+C
 
-## What's next?
+## 다음은 무엇인가요?
 
 You can play around and change the content of the callback function [`handleStreamerMessage`](#create-indexer-handler) to handle the data differently.
 

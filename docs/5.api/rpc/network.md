@@ -1,23 +1,23 @@
 ---
 id: network
-title: Network
+title: 네트워크
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The RPC API enables you to query status information for nodes and validators.
+RPC API를 사용하면 노드 및 밸리데이터에 대한 상태 정보를 쿼리할 수 있습니다.
 
 ---
 
-## Node Status {#node-status}
+## 노드 상태 {#node-status}
 
-> Returns general status of a given node (sync status, nearcore node version, protocol version, etc), and the current set of validators.
+> 주어진 노드의 일반 상태(동기화 상태, nearcore 노드 버전, 프로토콜 버전 등)와 현재 밸리데이터 집합을 반환합니다.
 
-- method: `status`
-- params: `[]`
+- 메서드: `status`
+- 매개변수: `[]`
 
-Example:
+예시:
 
 <Tabs>
 <TabItem value="json" label="JSON" default>
@@ -32,7 +32,7 @@ Example:
 ```
 
 </TabItem>
-<TabItem value="js" label="🌐 JavaScript" label="JavaScript">
+<TabItem value="js" label="JavaScript">
 
 ```js
 const response = await near.connection.provider.status();
@@ -49,7 +49,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=status params:='[]' id
 </Tabs>
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -246,9 +246,9 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=status params:='[]' id
 </p>
 </details>
 
-#### What could go wrong? {#what-could-go-wrong}
+#### 무엇이 잘못될 수 있나요? {#what-could-go-wrong}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -268,11 +268,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `status` method:
+다음은 `status` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다.
 
 <table>
   <thead>
@@ -282,20 +282,20 @@ Here is the exhaustive list of the error variants that can be returned by `statu
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>INTERNAL_ERROR</td>
       <td>INTERNAL_ERROR</td>
-      <td>Something went wrong with the node itself or overloaded</td>
+      <td>노드 자체에 문제가 있거나 과부하가 걸렸습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
-          <li>Send a request to a different node</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>나중에 다시 시도하세요.</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
@@ -304,14 +304,14 @@ Here is the exhaustive list of the error variants that can be returned by `statu
 
 ---
 
-## Network Info {#network-info}
+## 네트워크 정보 {#network-info}
 
-> Returns the current state of node network connections (active peers, transmitted data, etc.)
+> 노드 네트워크 연결의 현재 상태(활성 피어, 전송된 데이터 등)를 반환합니다.
 
-- method: `network_info`
-- params: _none_
+- 메서드: `network_info`
+- 매개변수: _none_
 
-Example:
+예시:
 
 <Tabs>
 <TabItem value="json" label="JSON" default>
@@ -336,7 +336,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=network_info params:='
 </Tabs>
 
 <details>
-<summary>Example response:</summary>
+<summary>응답 예시:</summary>
 <p>
 
 ```json
@@ -369,9 +369,9 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=network_info params:='
 </p>
 </details>
 
-#### What could go wrong? {#what-could-go-wrong-1}
+#### 무엇이 잘못될 수 있나요? {#what-could-go-wrong-1}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -391,11 +391,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `network_info` method:
+다음은 `network_info` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다
 
 <table>
   <thead>
@@ -405,20 +405,20 @@ Here is the exhaustive list of the error variants that can be returned by `netwo
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>INTERNAL_ERROR</td>
       <td>INTERNAL_ERROR</td>
-      <td>Something went wrong with the node itself or overloaded</td>
+      <td>노드 자체에 문제가 있거나 과부하가 걸렸습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
-          <li>Send a request to a different node</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>나중에 다시 시도하세요.</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
@@ -427,20 +427,14 @@ Here is the exhaustive list of the error variants that can be returned by `netwo
 
 ---
 
-## Validation Status {#validation-status}
+## 검증 상태 {#validation-status}
 
-> Queries active validators on the network returning details and the state of 
-validation on the blockchain.
+> Queries active validators on the network returning details and the state of validation on the blockchain.
 
-- method: `validators`
-- params: `["block hash"]`, `[block number]`, `{"epoch_id": "epoch id"}`, 
-`{"block_id": block number}`, `{"block_id": "block hash"}`, or 
-`[null]` for the latest block
+- 메서드: `validators`
+- params: `["block hash"]`, `[block number]`, `{"epoch_id": "epoch id"}`, `{"block_id": block number}`, `{"block_id": "block hash"}`, or `[null]` for the latest block
 
-**Note:** If you want the latest `block hash`, `block number` and `epoch id`, 
-you will need to query from the last block in an epoch. You can also query 
-validators endpoint for past epochs if you input `block hash`, `block number` 
-or `epoch id` of the past epoch that you want.
+**Note:** If you want the latest `block hash`, `block number` and `epoch id`, you will need to query from the last block in an epoch. You can also query validators endpoint for past epochs if you input `block hash`, `block number` or `epoch id` of the past epoch that you want.
 
 Example:
 
@@ -459,7 +453,7 @@ input: `[block number]`
 ```
 
 </TabItem>
-<TabItem value="js" label="🌐 JavaScript" label="JavaScript">
+<TabItem value="js" label="JavaScript">
 
 </TabItem>
 <TabItem value="http" label="HTTPie">
@@ -470,7 +464,6 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=validators params:='[1
 
 </TabItem>
 </Tabs>
-
 
 input: `["block hash"]`
 
@@ -495,7 +488,6 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=validators params:='["
 
 </TabItem>
 </Tabs>
-
 
 input: `{"block_id": "block hash"}`
 
@@ -526,7 +518,6 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=validators
 </TabItem>
 </Tabs>
 
-
 input: `{"block_id": block number}`
 
 <Tabs>
@@ -555,7 +546,6 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=validators
 
 </TabItem>
 </Tabs>
-
 
 input: `{"epoch_id": "epoch id"}`
 
@@ -586,7 +576,6 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=validators
 </TabItem>
 </Tabs>
 
-
 input: `[null]`
 
 <Tabs>
@@ -612,7 +601,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=validators params:='[n
 </Tabs>
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -1320,9 +1309,9 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 method=validators params:='[n
 </p>
 </details>
 
-#### What could go wrong? {#what-could-go-wrong-2}
+#### 무엇이 잘못될 수 있나요? {#what-could-go-wrong-2}
 
-When API request fails, RPC server returns a structured error response with a limited number of well-defined error variants, so client code can exhaustively handle all the possible error cases. Our JSON-RPC errors follow [verror](https://github.com/joyent/node-verror) convention for structuring the error response:
+API 요청이 실패하면 RPC 서버는 제한된 수의 잘 정의된 오류 변형과 함께 구조화된 오류 응답을 반환하므로, 클라이언트 코드는 가능한 모든 오류 사례를 철저하게 처리할 수 있습니다. JSON-RPC 오류는 오류 응답을 구조화하기 위해 [verror](https://github.com/joyent/node-verror) 규칙을 따릅니다.
 
 
 ```json
@@ -1342,11 +1331,11 @@ When API request fails, RPC server returns a structured error response with a li
 }
 ```
 
-> **Heads up**
->
-> The fields `code`, `data`, and `message` in the structure above are considered legacy ones and might be deprecated in the future. Please, don't rely on them.
+> **주의**
+> 
+> 위 구조의 `code`, `data`, 및 `message` 필드는 레거시 항목으로 간주되며, 향후 사용되지 않을 수 있습니다. 이에 의존하지 마세요.
 
-Here is the exhaustive list of the error variants that can be returned by `validators` method:
+다음은 `validators` 메서드에 의해 반환될 수 있는 오류 변형의 전체 목록입니다.
 
 <table>
   <thead>
@@ -1356,43 +1345,43 @@ Here is the exhaustive list of the error variants that can be returned by `valid
         <code>error.name</code>
       </th>
       <th>ERROR_CAUSE<br /><code>error.cause.name</code></th>
-      <th>Reason</th>
-      <th>Solution</th>
+      <th>이유</th>
+      <th>해결책</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>HANDLER_ERROR</td>
       <td>UNKNOWN_EPOCH</td>
-      <td>An epoch for the provided block can't be found in a database</td>
+      <td>제공된 블록의 에포크를 데이터베이스에서 찾을 수 없습니다.</td>
       <td>
         <ul>
-          <li>Check that the requested block is legit</li>
-          <li>If the block had been produced more than 5 epochs ago, try to send your request to an archival node</li>
-          <li>Check that the requested block is the last block of some epoch</li>
+          <li>요청한 블록이 올바른지 확인하세요.</li>
+          <li>블록이 5 이상 에포크 전에 생성된 경우 아카이브 노드로 요청을 보내세요.</li>
+          <li>요청된 블록이 일부 에포크의 마지막 블록인지 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>REQUEST_VALIDATION_ERROR</td>
       <td>PARSE_ERROR</td>
-      <td>Passed arguments can't be parsed by JSON RPC server (missing arguments, wrong format, etc.)</td>
+      <td>전달된 인자는 JSON RPC 서버에서 파싱할 수 없습니다(인자 누락, 잘못된 형식 등).</td>
       <td>
         <ul>
-          <li>Check the arguments passed and pass the correct ones</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>전달된 인자를 확인하고 올바른 인수를 전달하세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td>INTERNAL_ERROR</td>
       <td>INTERNAL_ERROR</td>
-      <td>Something went wrong with the node itself or overloaded</td>
+      <td>노드 자체에 문제가 있거나 과부하가 걸렸습니다.</td>
       <td>
         <ul>
-          <li>Try again later</li>
-          <li>Send a request to a different node</li>
-          <li>Check <code>error.cause.info</code> for more details</li>
+          <li>나중에 다시 시도하세요.</li>
+          <li>다른 노드에 요청을 보내세요.</li>
+          <li><code>error.cause.info</code>에서 자세한 내용을 확인하세요.</li>
         </ul>
       </td>
     </tr>

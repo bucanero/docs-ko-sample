@@ -2,6 +2,7 @@
 id: collections
 title: Collections
 ---
+
 import {CodeTabs, Language, Github} from "@site/src/components/codetabs"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -16,7 +17,6 @@ You can choose between two types of collections:
 2. SDK collections (e.g. `UnorderedMap`, `Vector`), provided by the NEAR SDK
 
 Since the SDK reads all the contract's attributes when a function is executed - and writes them back when it finishes - understanding how the SDK stores and loads both types of collections is crucial to decide which one to use.
-
 
 :::tip
 
@@ -35,6 +35,7 @@ Contracts store all their data in a `key-value` database. The SDK handles this d
 ## Native Collections
 
 Native collections are those provided by the language:
+
 - JS: `Array`, `Set`, `Map`
 - Rust: `Vector`, `HashMap`, `Set`
 
@@ -76,7 +77,6 @@ The sdk array `[1,2,3,4]` with prefix `"p"` will be stored as the string `"p"` i
 
 </details>
 
-
 :::tip when to use them
 
 SDK collections are useful when you are planning to store large amounts of data that do not need to be accessed all together
@@ -90,13 +90,13 @@ SDK collections are useful when you are planning to store large amounts of data 
 <Tabs groupId="code-tabs">
   <TabItem value="js" label="🌐 JavaScript">
 
-| SDK Collection | Native Equivalent | Description                                                                                                                                                                                      |
-|----------------|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SDK Collection | Native Equivalent | Description                                                                                                                                                                                                                      |
+| -------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Vector`       | `Array`           | A growable array type. The values are sharded in memory and can be used for iterable and indexable values that are dynamically sized.                                                            |
 | `LookupMap`    | `Map`             | This structure behaves as a thin wrapper around the key-value storage available to contracts. This structure does not contain any metadata about the elements in the map, so it is not iterable. |
-| `UnorderedMap` | `Map`             | Similar to `LookupMap`, except that it stores additional data to be able to iterate through elements in the data structure.                                                                      |
+| `UnorderedMap` | `Map`             | Similar to `LookupMap`, except that it stores additional data to be able to iterate through elements in the data structure.                                                                                      |
 | `LookupSet`    | `Set`             | A set, which is similar to `LookupMap` but without storing values, can be used for checking the unique existence of values. This structure is not iterable and can only be used for lookups.     |
-| `UnorderedSet` | `Set`             | An iterable equivalent of `LookupSet` which stores additional metadata for the elements contained in the set.                                                                                    |
+| `UnorderedSet` | `Set`             | An iterable equivalent of `LookupSet` which stores additional metadata for the elements contained in the set.                                                                                                    |
 
 </TabItem>
 
@@ -108,16 +108,15 @@ The `near_sdk::collections` will be moving to `near_sdk::store` and have updated
 
 :::
 
-
-| SDK collection                         | `std`&nbsp;equivalent              | Description                                                                                                                                                                                                                                        |
-|----------------------------------------|------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `LazyOption<T>`                        | `Option<T>`                        | Optional value in storage. This value will only be read from storage when interacted with. This value will be `Some<T>` when the value is saved in storage, and `None` if the value at the prefix does not exist.                                  |
-| `Vector<T>`                            | `Vec<T>`                           | A growable array type. The values are sharded in memory and can be used for iterable and indexable values that are dynamically sized.                                                                                                              |
-| <code>LookupMap`<K,&nbsp;V>`</code>    | <code>HashMap`<K,&nbsp;V>`</code>  | This structure behaves as a thin wrapper around the key-value storage available to contracts. This structure does not contain any metadata about the elements in the map, so it is not iterable.                                                   |
-| <code>UnorderedMap`<K,&nbsp;V>`</code> | <code>HashMap`<K,&nbsp;V>`</code>  | Similar to `LookupMap`, except that it stores additional data to be able to iterate through elements in the data structure.                                                                                                                        |
-| <code>TreeMap`<K,&nbsp;V>`</code>      | <code>BTreeMap`<K,&nbsp;V>`</code> | An ordered equivalent of `UnorderedMap`. The underlying implementation is based on an [AVL tree](https://en.wikipedia.org/wiki/AVL_tree). This structure should be used when a consistent order is needed or accessing the min/max keys is needed. |
-| `LookupSet<T>`                         | `HashSet<T>`                       | A set, which is similar to `LookupMap` but without storing values, can be used for checking the unique existence of values. This structure is not iterable and can only be used for lookups.                                                       |
-| `UnorderedSet<T>`                      | `HashSet<T>`                       | An iterable equivalent of `LookupSet` which stores additional metadata for the elements contained in the set.                                                                                                                                      |
+| SDK collection                                 | `std`&amp;nbsp;equivalent | Description                                                                                                                                                                                                                                                                                        |
+| ---------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `LazyOption<T>`                                | `Option<T>`                                   | Optional value in storage. This value will only be read from storage when interacted with. This value will be `Some<T>` when the value is saved in storage, and `None` if the value at the prefix does not exist.                                  |
+| `Vector<T>`                                    | `Vec<T>`                                      | A growable array type. The values are sharded in memory and can be used for iterable and indexable values that are dynamically sized.                                                                                                                              |
+| <code>LookupMap`<K,&amp;nbsp;V>`</code>    | <code>HashMap`<K,&amp;nbsp;V>`</code>     | This structure behaves as a thin wrapper around the key-value storage available to contracts. This structure does not contain any metadata about the elements in the map, so it is not iterable.                                                                   |
+| <code>UnorderedMap`<K,&amp;nbsp;V>`</code> | <code>HashMap`<K,&amp;nbsp;V>`</code>     | Similar to `LookupMap`, except that it stores additional data to be able to iterate through elements in the data structure.                                                                                                                                                        |
+| <code>TreeMap`<K,&amp;nbsp;V>`</code>      | <code>BTreeMap`<K,&amp;nbsp;V>`</code>    | An ordered equivalent of `UnorderedMap`. The underlying implementation is based on an [AVL tree](https://en.wikipedia.org/wiki/AVL_tree). This structure should be used when a consistent order is needed or accessing the min/max keys is needed. |
+| `LookupSet<T>`                                 | `HashSet<T>`                                  | A set, which is similar to `LookupMap` but without storing values, can be used for checking the unique existence of values. This structure is not iterable and can only be used for lookups.                                                                       |
+| `UnorderedSet<T>`                              | `HashSet<T>`                                  | An iterable equivalent of `LookupSet` which stores additional metadata for the elements contained in the set.                                                                                                                                                                      |
 
 </TabItem>
 
@@ -126,26 +125,27 @@ The `near_sdk::collections` will be moving to `near_sdk::store` and have updated
 <hr class="subsection" />
 
 ### Features
+
 | Type           | Iterable | Clear All Values | Preserves Insertion Order | Range Selection |
-|----------------|:--------:|:----------------:|:-------------------------:|:---------------:|
-| `Vector`       |    ✅     |        ✅         |             ✅             |        ✅        |
+| -------------- | :------: | :--------------: | :-----------------------: | :-------------: |
+| `Vector`       |     ✅    |         ✅        |             ✅             |        ✅        |
 | `LookupSet`    |          |                  |                           |                 |
-| `UnorderedSet` |    ✅     |        ✅         |                           |        ✅        |
+| `UnorderedSet` |     ✅    |         ✅        |                           |        ✅        |
 | `LookupMap`    |          |                  |                           |                 |
-| `UnorderedMap` |    ✅     |        ✅         |                           |        ✅        |
+| `UnorderedMap` |     ✅    |         ✅        |                           |        ✅        |
 
 <hr class="subsection" />
 
 ### Complexity
 
-| Type           | Access |  Insert  |  Delete  |  Search  | Traverse | Clear |
-|----------------|:------:|:--------:|:--------:|:--------:|:--------:|:-----:|
-| `Vector`       |  O(1)  |  O(1)\*  | O(1)\*\* |   O(n)   |   O(n)   | O(n)  |
-| `LookupSet`    |  O(1)  |   O(1)   |   O(1)   |   O(1)   |   N/A    |  N/A  |
-| `UnorderedSet` |  O(1)  |   O(1)   |   O(1)   |   O(1)   |   O(n)   | O(n)  |
-| `LookupMap`    |  O(1)  |   O(1)   |   O(1)   |   O(1)   |   N/A    |  N/A  |
-| `UnorderedMap` |  O(1)  |   O(1)   |   O(1)   |   O(1)   |   O(n)   | O(n)  |
-| `TreeMap`      |  O(1)  | O(log n) | O(log n) | O(log n) |   O(n)   | O(n)  |
+| Type           |          Access         |            Insert           |            Delete           |            Search           |         Traverse        |          Clear          |
+| -------------- | :---------------------: | :-------------------------: | :-------------------------: | :-------------------------: | :---------------------: | :---------------------: |
+| `Vector`       | O(1) |  O(1)\*  | O(1)\*\* |   O(n)   | O(n) | O(n) |
+| `LookupSet`    | O(1) |   O(1)   |   O(1)   |   O(1)   |           N/A           |           N/A           |
+| `UnorderedSet` | O(1) |   O(1)   |   O(1)   |   O(1)   | O(n) | O(n) |
+| `LookupMap`    | O(1) |   O(1)   |   O(1)   |   O(1)   |           N/A           |           N/A           |
+| `UnorderedMap` | O(1) |   O(1)   |   O(1)   |   O(1)   | O(n) | O(n) |
+| `TreeMap`      | O(1) | O(log n) | O(log n) | O(log n) | O(n) | O(n) |
 
 _\* - to insert at the end of the vector using `push_back` (or `push_front` for deque)_
 _\*\* - to delete from the end of the vector using `pop` (or `pop_front` for deque), or delete using `swap_remove` which swaps the element with the last element of the vector and then removes it._
@@ -162,19 +162,18 @@ All structures need to be initialized using a **unique `prefix`**, which will be
   <TabItem value="js" label="🌐 JavaScript">
     <Github fname="index.js" language="js"
           url="https://github.com/near-examples/docs-examples/blob/main/storage-js/src/index.ts"
-          start="8" end="11" />
-  </TabItem>
+          start="8" end="11" /></TabItem>
 
   <TabItem value="rust" label="🦀 Rust">
     <Github fname="lib.rs" language="rust" 
           url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/lib.rs"
           start="33" end="38"/>
 
-  :::tip
+:::tip
 
-  Notice how we use `enums` to ensure all collections have a different prefix. Moreover, `enums` are very efficient since they get serialized into a single `byte` prefix. 
+Notice how we use `enums` to ensure all collections have a different prefix. Moreover, `enums` are very efficient since they get serialized into a single `byte` prefix.
 
-  :::
+:::
 
   </TabItem>
 
@@ -185,7 +184,6 @@ All structures need to be initialized using a **unique `prefix`**, which will be
 Because the values are not kept in memory and are lazily loaded from storage, it's important to make sure if a collection is replaced or removed, that the storage is cleared. In addition, it is important that if the collection is modified, the collection itself is updated in state because most collections will store some metadata.
 
 :::
-
 
 :::danger
 
@@ -203,14 +201,12 @@ Implements a [vector/array](https://en.wikipedia.org/wiki/Array_data_structure) 
   <Language value="js" language="js">
     <Github fname="index.js"
           url="https://github.com/near-examples/docs-examples/blob/main/storage-js/src/index.ts"
-          start="25" end="28" />
-  </Language>
+          start="25" end="28" /></Language>
   <Language value="rust" language="rust">
     <Github fname="vector.rs"
           url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/vector.rs" start="12" end="30"/>
     <Github fname="lib.rs"
-          url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/lib.rs" start="7" end="24"/>
-  </Language>
+          url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/lib.rs" start="7" end="24"/></Language>
 </CodeTabs>
 
 <hr className="subsection" />
@@ -223,34 +219,30 @@ Implements a [map/dictionary](https://en.wikipedia.org/wiki/Associative_array) w
   <Language value="js" language="js">
     <Github fname="index.js"
           url="https://github.com/near-examples/docs-examples/blob/main/storage-js/src/index.ts"
-          start="33" end="37" />
-  </Language>
+          start="33" end="37" /></Language>
   <Language value="rust" language="rust">
     <Github fname="map.rs"
           url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/map.rs" start="9" end="24"/>
     <Github fname="lib.rs"
-          url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/lib.rs" start="7" end="24"/>
-  </Language>
+          url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/lib.rs" start="7" end="24"/></Language>
 </CodeTabs>
 
 <hr className="subsection" />
 
 ### Set
 
-Implements a [set](https://en.wikipedia.org/wiki/Set_(abstract_data_type)) which persists in the contract's storage. Please refer to the Rust and JS SDK's for a full reference on their interfaces.
+Implements a [set](https://en.wikipedia.org/wiki/Set_\(abstract_data_type\)) which persists in the contract's storage. Please refer to the Rust and JS SDK's for a full reference on their interfaces.
 
 <CodeTabs>
   <Language value="js" language="js">
     <Github fname="index.js"
           url="https://github.com/near-examples/docs-examples/blob/main/storage-js/src/index.ts"
-          start="42" end="46" />
-  </Language>
+          start="42" end="46" /></Language>
   <Language value="rust" language="rust">
       <Github fname="set.rs"
             url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/set.rs" start="9" end="16"/>
       <Github fname="lib.rs"
-            url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/lib.rs" start="7" end="24"/>
-  </Language>
+            url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/lib.rs" start="7" end="24"/></Language>
 
 </CodeTabs>
 
@@ -265,8 +257,7 @@ An ordered equivalent of Map. The underlying implementation is based on an [AVL]
     <Github fname="tree.rs"
           url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/tree.rs" start="9" end="24"/>
     <Github fname="lib.rs"
-          url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/lib.rs" start="7" end="24"/>
-  </Language>
+          url="https://github.com/near-examples/docs-examples/blob/main/storage-rs/contract/src/lib.rs" start="7" end="24"/></Language>
 </CodeTabs>
 
 <hr class="subsection" />
@@ -292,89 +283,92 @@ It is possible to nest collections. When nesting SDK collections, remember to **
 <Tabs groupId="code-tabs">
   <TabItem value="js" label="🌐 JavaScript">
 
-    While you can create nested maps, you first need to construct or deconstruct the structure from state. This is a temporary solution that will soon be automatically handled by the SDK.
-  
-    ```ts 
-    import { NearBindgen, call, view, near, UnorderedMap } from "near-sdk-js";
+````
+While you can create nested maps, you first need to construct or deconstruct the structure from state. This is a temporary solution that will soon be automatically handled by the SDK.
 
-    @NearBindgen({})
-    class StatusMessage {
-      records: UnorderedMap;
-      constructor() {
-        this.records = new UnorderedMap("a");
-      }
+```ts 
+import { NearBindgen, call, view, near, UnorderedMap } from "near-sdk-js";
 
-      @call({})
-      set_status({ message, prefix }: { message: string; prefix: string }) {
-        let account_id = near.signerAccountId();
+@NearBindgen({})
+class StatusMessage {
+  records: UnorderedMap;
+  constructor() {
+    this.records = new UnorderedMap("a");
+  }
 
-        const inner: any = this.records.get("b" + prefix);
-        const inner_map: UnorderedMap = inner
-          ? UnorderedMap.deserialize(inner)
-          : new UnorderedMap("b" + prefix);
+  @call({})
+  set_status({ message, prefix }: { message: string; prefix: string }) {
+    let account_id = near.signerAccountId();
 
-        inner_map.set(account_id, message);
+    const inner: any = this.records.get("b" + prefix);
+    const inner_map: UnorderedMap = inner
+      ? UnorderedMap.deserialize(inner)
+      : new UnorderedMap("b" + prefix);
 
-        this.records.set("b" + prefix, inner_map);
-      }
+    inner_map.set(account_id, message);
 
-      @view({})
-      get_status({ account_id, prefix }: { account_id: string; prefix: string }) {
-        const inner: any = this.records.get("b" + prefix);
-        const inner_map: UnorderedMap = inner
-          ? UnorderedMap.deserialize(inner)
-          : new UnorderedMap("b" + prefix);
-        return inner_map.get(account_id);
-      }
-    }
-    ```
+    this.records.set("b" + prefix, inner_map);
+  }
+
+  @view({})
+  get_status({ account_id, prefix }: { account_id: string; prefix: string }) {
+    const inner: any = this.records.get("b" + prefix);
+    const inner_map: UnorderedMap = inner
+      ? UnorderedMap.deserialize(inner)
+      : new UnorderedMap("b" + prefix);
+    return inner_map.get(account_id);
+  }
+}
+```
+````
 
   </TabItem>
 
   <TabItem value="rust" label="🦀 Rust">
 
-    In Rust the simplest way to avoid collisions between nested collections is by using `enums`
+````
+In Rust the simplest way to avoid collisions between nested collections is by using `enums`
 
-    ```rust
-    use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-    use near_sdk::collections::{UnorderedMap, UnorderedSet};
-    use near_sdk::{env, near, AccountId, BorshStorageKey, CryptoHash};
+```rust
+use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
+use near_sdk::collections::{UnorderedMap, UnorderedSet};
+use near_sdk::{env, near, AccountId, BorshStorageKey, CryptoHash};
 
-    #[near(contract_state)]
-    pub struct Contract {
-        pub accounts: UnorderedMap<AccountId, UnorderedSet<String>>,
-    }
+#[near(contract_state)]
+pub struct Contract {
+    pub accounts: UnorderedMap<AccountId, UnorderedSet<String>>,
+}
 
-    impl Default for Contract {
-        fn default() -> Self {
-            Self {
-                accounts: UnorderedMap::new(StorageKeys::Accounts),
-            }
+impl Default for Contract {
+    fn default() -> Self {
+        Self {
+            accounts: UnorderedMap::new(StorageKeys::Accounts),
         }
     }
+}
 
-    #[near(serializers = [borsh])]
-    pub enum StorageKeys {
-        Accounts,
-        SubAccount { account_hash: CryptoHash },
-    }
+#[near(serializers = [borsh])]
+pub enum StorageKeys {
+    Accounts,
+    SubAccount { account_hash: CryptoHash },
+}
 
-    #[near]
-    impl Contract {
-        pub fn get_tokens(&self, account_id: &AccountId) -> Vec<String> {
-            let tokens = self.accounts.get(account_id).unwrap_or_else(|| {
-                UnorderedSet::new(StorageKeys::SubAccount {
-                    account_hash: env::sha256_array(account_id.as_bytes()),
-                })
-            });
-            tokens.to_vec()
-        }
+#[near]
+impl Contract {
+    pub fn get_tokens(&self, account_id: &AccountId) -> Vec<String> {
+        let tokens = self.accounts.get(account_id).unwrap_or_else(|| {
+            UnorderedSet::new(StorageKeys::SubAccount {
+                account_hash: env::sha256_array(account_id.as_bytes()),
+            })
+        });
+        tokens.to_vec()
     }
-    ```
+}
+```
+````
 
   </TabItem>
 </Tabs>
-
 
 ---
 
@@ -467,6 +461,7 @@ assert!(!m.contains(&1));
 By extension of the error-prone patterns to avoid mentioned in the [collections section](./collections.md#error-prone-patterns), it is important to keep in mind how these bugs can easily be introduced into a contract when using nested collections.
 
 Some issues for more context:
+
 - https://github.com/near/near-sdk-rs/issues/560
 - https://github.com/near/near-sdk-rs/issues/703
 
@@ -560,15 +555,17 @@ impl Contract {
 ---
 
 ## Storage Cost
+
 Your contract needs to lock a portion of their balance proportional to the amount of data they stored in the blockchain. This means that:
+
 - If more data is added and the **storage increases ↑**, then your contract's **balance decreases ↓**.
-- If data is deleted and the **storage decreases ↓**, then your contract's **balance increases ↑**. 
+- If data is deleted and the **storage decreases ↓**, then your contract's **balance increases ↑**.
 
 Currently, it cost approximately **1 Ⓝ** to store **100kb** of data.
 
 :::info
 
-You can save on smart contract storage if using NEAR Account IDs by encoding them using base32. Since they consist of `[a-z.-_]` characters with a maximum length of 64 characters, they can be encoded using 5 bits per character, with terminal `\0`. Going to a size of 65 * 5 = 325 bits from the original (64 + 4) * 8 = 544 bits. This is a 40% reduction in storage costs
+You can save on smart contract storage if using NEAR Account IDs by encoding them using base32. Since they consist of `[a-z.-_]` characters with a maximum length of 64 characters, they can be encoded using 5 bits per character, with terminal `\0`. Going to a size of 65 \* 5 = 325 bits from the original (64 + 4) \* 8 = 544 bits. This is a 40% reduction in storage costs
 
 :::
 

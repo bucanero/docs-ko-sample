@@ -4,7 +4,7 @@ Near.call(
   "add_proposal",
   {
     proposal: {
-      description: "My first proposal",
+      description: "My first proposal$$$$https://docs.near.org/",
       kind: {
         Transfer: {
           token_id: "",

@@ -1,7 +1,8 @@
 ---
 id: update-contract-migrate-state
-title: Self Upgrade & State Migration
+title: 자체 업그레이드 및 상태 마이그레이션
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {CodeTabs, Language, Github} from "@site/src/components/codetabs"
@@ -13,13 +14,12 @@ Three examples on how to handle updates and [state migration](../../2.build/2.sm
 
 ---
 
-## State Migration
-The [State Migration example](https://github.com/near-examples/update-migrate-rust/tree/main/basic-updates) shows how to handle state-breaking changes
-between contract updates.
+## 상태 마이그레이션
+The [State Migration example](https://github.com/near-examples/update-migrate-rust/tree/main/basic-updates) shows how to handle state-breaking changes between contract updates.
 
-It is composed by 2 contracts:
+이는 두 가지 컨트랙트로 구성됩니다.
 1. Base: A Guest Book where people can write messages.
-2. Update: An update in which we remove a parameter and change the internal structure.
+2. 업데이트: 매개변수를 제거하고 내부 구조를 변경하는 업데이트입니다.
 
 <CodeTabs>
   <Language value="rust" language="rust">
@@ -29,9 +29,8 @@ It is composed by 2 contracts:
   </Language>
 </CodeTabs>
 
-#### The Migration Method
-The migration method deserializes the current state (`OldState`) and iterates through the messages, updating them
-to the new `PostedMessage` that includes the `payment` field.
+#### 마이그레이션 메서드
+마이그레이션 메서드는 현재 상태(`OldState`)를 역직렬화하고 메시지를 반복하여, `payment` 필드를 포함하는 새 `PostedMessage` 메시지로 업데이트합니다.
 
 :::tip
 Notice that migrate is actually an [initialization method](../../2.build/2.smart-contracts/anatomy/anatomy.md#initialization-method) that ignores the existing state (`[#init(ignore_state)]`), thus being able to execute and rewrite the state.
@@ -39,16 +38,14 @@ Notice that migrate is actually an [initialization method](../../2.build/2.smart
 
 ---
 
-## State Versioning
-The [State Versioning example](https://github.com/near-examples/update-migrate-rust/tree/main/enum-updates) shows how to use
-[Enums](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html) to implement state versioning on a contract.
+## 상태 버전 관리
+The [State Versioning example](https://github.com/near-examples/update-migrate-rust/tree/main/enum-updates) shows how to use [Enums](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html) to implement state versioning on a contract.
 
-Versioning simplifies updating the contract since you only need to add a new version of the structure.
-All versions can coexist, thus you will not need to change previously existing structures. 
+Versioning simplifies updating the contract since you only need to add a new version of the structure. 모든 버전이 공존할 수 있으므로, 기존 구조를 변경할 필요가 없습니다.
 
-The example is composed by 2 contracts:
-1. Base: The Guest Book contract using versioned `PostedMessages` (`PostedMessagesV1`).
-2. Update: An update that adds a new version of `PostedMessages` (`PostedMessagesV2`).
+이는 두 컨트랙트로 구성됩니다.
+1. 기본: 버전 관리된 `PostedMessages`(`PostedMessagesV1`)를 사용하는 방명록 컨트랙트
+2. 업데이트: 새로운 버전의 `PostedMessages`(`PostedMessagesV2`)를 추가하는 업데이트
 
 <CodeTabs>
   <Language value="rust" language="rust">
@@ -61,12 +58,11 @@ The example is composed by 2 contracts:
 ---
 
 ## Self Update
-The [Self Update example](https://github.com/near-examples/update-migrate-rust/tree/main/self-updates) shows how to implement a contract
-that can update itself.
+The [Self Update example](https://github.com/near-examples/update-migrate-rust/tree/main/self-updates) shows how to implement a contract that can update itself.
 
 It is composed by 2 contracts:
 1. Base: A Guest Book were people can write messages, implementing a `update_contract` method.
-2. Update: An update in which we remove a parameter and change the internal structure.
+2. 업데이트: 매개변수를 제거하고 내부 구조를 변경하는 업데이트입니다.
 
 <CodeTabs>
   <Language value="rust" language="rust">

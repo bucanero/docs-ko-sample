@@ -8,10 +8,11 @@ import {WidgetEditor} from "@site/src/components/widget-editor"
 In this example, we will create an Ethereum dApp on NEAR that functions as a portfolio manager, displaying the current balances for a list of tokens. Additionally, we will display current market value of each asset in the portfolio.
 
 We will be using several technologies:
+
 - NEAR Components for the user interface (UI).
 - [Ethers.js](bos-ethersjs.md) for retrieving balance data from the blockchain.
 - CoinGecko API for fetching static content with information about tokens and their current prices.
-- [Social-DB](https://github.com/NearSocial/social-db) for storing the list of tokens to be tracked.
+- [Social-DB](../../social/contract.md) for storing the list of tokens to be tracked.
 - GitHub Actions for caching static content, speeding up loading, and circumventing rate limits.
 
 ## Step 1: Load balances from chain
@@ -104,7 +105,7 @@ if (state.sender) {
 }
 ```
 
-You can see how it works here: [step_1](https://near.org/near/widget/ComponentDetailsPage?src=zavodil.near/widget/token-balances-step-1&tab=source).
+You can see how it works here: [step_1](https://near.org/near/widget/ComponentDetailsPage?src=zavodil.near/widget/token-balances-step-1\\\&tab=source).
 
 Once the web3 connection is enabled, the output will appear as follows:
 
@@ -119,7 +120,6 @@ When developing NEAR components, it's recommended to always present some content
 :::
 
 ## Step 2: Load static data
-
 
 To format the list, we must determine the decimal precision for each asset. While it's possible to retrieve this information from the ERC-20 contract for each token, it's important to note that the ERC-20 contract lacks certain valuable data such as the token icon and description. As a solution, we can leverage the CoinGecko API to retrieve token details, including the current market price.
 
@@ -165,7 +165,7 @@ const loadTokensData = () => {
 
 And lets update the `renderToken` function to display data we just got:
 
-```js 
+```js
 const renderToken = (tokenId) => {
   const tokenBalance = Big(state[tokenId].balance ?? 0)
     .div(new Big(10).pow(state[tokenId].decimals ?? 1))
@@ -181,9 +181,10 @@ const renderToken = (tokenId) => {
 };
 ```
 
-You can see how it works here: [step_2](https://near.org/near/widget/ComponentDetailsPage?src=zavodil.near/widget/token-balances-step-2&tab=source).
+You can see how it works here: [step_2](https://near.org/near/widget/ComponentDetailsPage?src=zavodil.near/widget/token-balances-step-2\\\&tab=source).
 
 Output will be like this:
+
 ```
 Wrapped Bitcoin: 0.0073 wbtc (247.64 USD)
 Dai: 140.3250 dai (140.21 USD)
@@ -204,7 +205,7 @@ Now, instead of hardcoding the list of tokens directly within the application co
 
 Learn more about how [key-value storage social-db works](https://github.com/NearSocial/social-db/blob/master/README.md).
 
-Here is an example of a simple application for [setting tokens list in social-db](https://near.org/near/widget/ComponentDetailsPage?src=zavodil.near/widget/tokens-db&tab=source). 
+Here is an example of a simple application for [setting tokens list in social-db](https://near.org/near/widget/ComponentDetailsPage?src=zavodil.near/widget/tokens-db\\\&tab=source).
 
 In this format, the data from the example will be stored in social-db.
 
@@ -215,7 +216,6 @@ In this format, the data from the example will be stored in social-db.
 "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": ""
 }
 ```
-
 
 Viewing this data from the blockchain is accessible for every NEAR app or, for example, through an [Explorer app](https://dev.near.org/zavodil.near/widget/Explorer?path=zavodil.near/tokens-db/**).
 
@@ -237,14 +237,15 @@ if (!state.tokensLoaded) {
 
 const tokens = Object.keys(state.tokens ?? {});
 ```
+
 :::info
 In this case, `zavodil.near` is the NEAR account of the user who created this list of tokens. Any other user can create their own list, and it will also be available in `social-db`.
 :::
 
-You can see how it works here: [step_3](https://near.org/near/widget/ComponentDetailsPage?src=zavodil.near/widget/token-balances-step-3&tab=source). The output of the data in the application remains unchanged, but now it no longer contains hardcoded values.
+You can see how it works here: [step_3](https://near.org/near/widget/ComponentDetailsPage?src=zavodil.near/widget/token-balances-step-3\\\&tab=source). The output of the data in the application remains unchanged, but now it no longer contains hardcoded values.
 
 :::tip
-Use social-db, an on-chain data storage, to decouple the data and the application. 
+Use social-db, an on-chain data storage, to decouple the data and the application.
 :::
 
 ## Step 4. Caching Data Through GitHub Actions
@@ -405,9 +406,8 @@ const loadTokensData = () => {
 
 ```
 
-You can see how it works here: [step_4](https://near.org/near/widget/ComponentDetailsPage?src=zavodil.near/widget/token-balances-step-4&tab=source). The output of the data in the application remains the same, but now it operates more efficiently.
+You can see how it works here: [step_4](https://near.org/near/widget/ComponentDetailsPage?src=zavodil.near/widget/token-balances-step-4\\\&tab=source). The output of the data in the application remains the same, but now it operates more efficiently.
 
 :::tip
-Use GitHub Actions as a serverless backend for securing API keys, caching data etc. 
+Use GitHub Actions as a serverless backend for securing API keys, caching data etc.
 :::
-

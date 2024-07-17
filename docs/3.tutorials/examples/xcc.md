@@ -1,18 +1,15 @@
 ---
 id: xcc
-title: Cross Contract Call
+title: 교차 컨트랙트 호출(Cross Contract Call)
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {CodeTabs, Language, Github} from "@site/src/components/codetabs"
 
-This example performs the simplest cross-contract call possible: it calls our [Hello NEAR](https://github.com/near-examples/hello-near-examples) example to set and retrieve a greeting.
-It is one of the simplest examples on making a cross-contract call, and the perfect gateway to the world of interoperative contracts.
+This example performs the simplest cross-contract call possible: it calls our [Hello NEAR](https://github.com/near-examples/hello-near-examples) example to set and retrieve a greeting. 이는 교차 컨트랙트 호출에 대한 가장 간단한 예 중 하나이며, 상호 작용 컨트랙트의 세계로 들어가는 완벽한 관문입니다.
 
-:::info Advanced Cross-Contract Calls
-Check the tutorial on how to perform cross-contract calls [in batches and in parallel](./advanced-xcc)
-:::
+:::info Advanced Cross-Contract Calls Check the tutorial on how to perform cross-contract calls [in batches and in parallel](./advanced-xcc) :::
 
 ---
 
@@ -23,8 +20,8 @@ You have two options to start the project:
 1. You can use the app through `Github Codespaces`, which will open a web-based interactive environment.
 2. Clone the repository locally and use it from your computer.
 
-| Codespaces                                                                                                                                      | Clone locally                                              |
-| ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Codespaces                                                                                                                                      | Clone locally                                             |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/near-examples/cross-contract-calls?quickstart=1) | 🌐 `https://github.com/near-examples/cross-contract-calls` |
 
 ---
@@ -75,8 +72,7 @@ The smart contract is available in two flavors: Rust and JavaScript
 ## Smart Contract
 
 ### Contract
-The contract exposes methods to query the greeting and change it. These methods do nothing but calling `get_greeting` and
-`set_greeting` in the `hello-near` example.
+컨트랙트는 인사말을 쿼리하고 변경하는 메서드를 공개합니다. 이러한 메서드는 `hello-near` 예제에서 `get_greeting` 및 `set_greeting` 호출만 수행합니다.
 
 <CodeTabs>
 <Language value="js" language="ts">
@@ -119,13 +115,9 @@ yarn test
 
 </Tabs>
 
-:::tip
-The `integration tests` use a sandbox to create NEAR users and simulate interactions with the contract.
-:::
+:::tip The `integration tests` use a sandbox to create NEAR users and simulate interactions with the contract. :::
 
-In this project in particular, the integration tests first deploy the `hello-near` contract. Then,
-they test that the cross-contract call correctly sets and retrieves the message. You will find the integration tests
-in `sandbox-ts/` for the JavaScript version and in `tests/` for the Rust version.
+In this project in particular, the integration tests first deploy the `hello-near` contract. Then, they test that the cross-contract call correctly sets and retrieves the message. You will find the integration tests in `sandbox-ts/` for the JavaScript version and in `tests/` for the Rust version.
 
 <CodeTabs>
   <Language value="js" language="js">
@@ -139,7 +131,6 @@ in `sandbox-ts/` for the JavaScript version and in `tests/` for the Rust version
             start="4" end="77" />
   </Language>
 </CodeTabs>
-
 
 <hr class="subsection" />
 
@@ -196,16 +187,13 @@ near call <accountId> change_greeting '{"new_greeting":"XCC Hi"}' --accountId <a
 
 ---
 
-## Moving Forward
+## 더 알아보기
 
-A nice way to learn is by trying to expand a contract. Modify the cross contract example to use the [guest-book](guest-book.md)
-contract!. In this way, you can try to make a cross-contract call that attaches money. Remember to correctly [handle the callback](../../2.build/2.smart-contracts/anatomy/crosscontract.md#callback-method),
-and to return the money to the user in case of error.
+배울 수 있는 좋은 방법은 컨트랙트를 확장하는 것입니다. [방명록](guest-book.md) 컨트랙트를 사용하도록 교차 컨트랙트 예제를 수정합니다! 이런 식으로 돈을 붙이는 교차 컨트랙트 호출을 시도할 수 있습니다. Remember to correctly [handle the callback](../../2.build/2.smart-contracts/anatomy/crosscontract.md#callback-method), and to return the money to the user in case of error.
 
-### Advanced Cross Contract Calls
+### 고급 교차 컨트랙트 호출
 
-Your contract can perform multiple cross-contract calls in simultaneous, creating promises that execute in parallel, or as a batch transaction. Check the [advanced cross contract calls
-tutorial](./advanced-xcc) to learn more.
+컨트랙트 여러 교차 컨트랙트 호출을 동시에 수행할 수 있고, 이를 병렬로 실행되는 Promise 생성 혹은 배치(Batch) 트랜잭션으로 수행할 수 있습니다. Check the [advanced cross contract calls tutorial](./advanced-xcc) to learn more.
 
 :::note Versioning for this article
 

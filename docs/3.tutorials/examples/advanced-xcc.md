@@ -1,12 +1,13 @@
 ---
 id: advanced-xcc
-title: Complex Cross Contract Call
+title: 복잡한 교차 컨트랙트 호출(Cross Contract Call)
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {CodeTabs, Language, Github} from "@site/src/components/codetabs"
 
-This example presents 3 instances of complex cross-contract calls. Particularly, it shows:
+이 예제는 복잡한 교차 컨트랙트 호출의 3가지 인스턴스를 나타냅니다. 특히 다음과 같은 것들을 보여줍니다.
 
 1. How to batch multiple function calls to a same contract.
 2. How to call multiple contracts in parallel, each returning a different type.
@@ -27,8 +28,8 @@ You have two options to start the Donation Example:
 1. You can use the app through `Github Codespaces`, which will open a web-based interactive environment.
 2. Clone the repository locally and use it from your computer.
 
-| Codespaces                                                                                                                      | Clone locally                                               |
-| ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Codespaces                                                                                                                                      | Clone locally                                             |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/near-examples/cross-contract-calls?quickstart=1) | 🌐 `https://github.com/near-examples/cross-contract-calls` |
 
 ---
@@ -90,11 +91,9 @@ The smart contract is available in two flavors: Rust and JavaScript
 
 ## Smart Contract
 
-### Batch Actions
+### 일괄 Action
 
-You can aggregate multiple actions directed towards one same contract into a batched transaction.
-Methods called this way are executed sequentially, with the added benefit that, if one fails then
-they **all get reverted**.
+동일한 컨트랙트에 대한 여러 작업을 하나의 트랜잭션으로 모을 수 있습니다. 일괄 Action은 순차적으로 실행되며, 하나가 실패 하면 **모두** 되돌려진다는 추가 이점이 있습니다.
 
 <CodeTabs>
   <Language value="js" language="js">
@@ -114,8 +113,7 @@ they **all get reverted**.
 
 #### Getting the Last Response
 
-In this case, the callback has access to the value returned by the **last
-action** from the chain.
+In this case, the callback has access to the value returned by the **last action** from the chain.
 
 <CodeTabs>
   <Language value="js" language="js">
@@ -140,8 +138,7 @@ action** from the chain.
 
 ### Calling Multiple Contracts
 
-A contract can call multiple other contracts. This creates multiple transactions that execute
-all in parallel. If one of them fails the rest **ARE NOT REVERTED**.
+A contract can call multiple other contracts. 이렇게 하면 모두 병렬로 실행되는 여러 트랜잭션이 생성됩니다. If one of them fails the rest **ARE NOT REVERTED**.
 
 <CodeTabs>
   <Language value="js" language="js">
@@ -161,8 +158,7 @@ all in parallel. If one of them fails the rest **ARE NOT REVERTED**.
 
 #### Getting All Responses
 
-In this case, the callback has access to an **array of responses**, which have either the
-value returned by each call, or an error message.
+In this case, the callback has access to an **array of responses**, which have either the value returned by each call, or an error message.
 
 <CodeTabs>
   <Language value="js" language="js">
@@ -187,10 +183,9 @@ value returned by each call, or an error message.
 
 ### Multiple Calls - Same Result Type
 
-This example is a particular case of the previous one ([Calling Multiple Contracts](#2-calling-multiple-contracts)).
-It simply showcases a different way to check the results by directly accessing the `promise_result` array.
+This example is a particular case of the previous one ([Calling Multiple Contracts](#2-calling-multiple-contracts)). 이는 단순히 `promise_result` 어레이에 직접 액세스하여 결과를 확인하는 다른 방법을 보여줍니다.
 
-In this case, we call multiple contracts that will return the same type:
+이 경우, 동일한 자료형을 반환하는 여러 컨트랙트를 호출합니다.
 
 <CodeTabs>
   <Language value="js" language="js">
@@ -210,8 +205,7 @@ In this case, we call multiple contracts that will return the same type:
 
 #### Getting All Responses
 
-In this case, the callback again has access to an **array of responses**, which we can iterate checking the
-results.
+In this case, the callback again has access to an **array of responses**, which we can iterate checking the results.
 
 <CodeTabs>
   <Language value="js" language="js">

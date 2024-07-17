@@ -58,7 +58,7 @@ In the example visualized above, the payment is done using $FT. Together with
 the transfer to John, Alice also adds an action to pay 0.1 $FT to the relayer.
 The relayer checks the content of the `SignedDelegateAction` and only processes
 it if this payment is included as the first action. In this way, the relayer
-will be paid in the same transaction as John. 
+will be paid in the same transaction as John.
 
 :::warning Keep in mind
 The payment to the relayer is still not guaranteed. It could be that
@@ -84,12 +84,12 @@ atomicity guarantee and no roll-back mechanism.
 
 <hr class="subsection" />
 
-### Accounts must be initialized 
+### Accounts must be initialized
 
 Any transaction, including meta transactions, must use NONCEs to avoid replay
 attacks. The NONCE must be chosen by Alice and compared to a NONCE stored on
 chain. This NONCE is stored on the access key information that gets initialized
-when creating an account. 
+when creating an account.
 
 ---
 
@@ -110,8 +110,7 @@ execute actions with Bob as the receiver.
 1. The relayer purchases the gas for all inner actions, plus the gas for the
    delegate action wrapping them.
 2. The cost of sending the inner actions and the delegate action from the
-   relayer to Alice's shard will be burned immediately. The condition `relayer
-   == Alice` determines which action `SEND` cost is taken (`sir` or `not_sir`).
+   relayer to Alice's shard will be burned immediately. The condition `relayer    == Alice` determines which action `SEND` cost is taken (`sir` or `not_sir`).
    Let's call this `SEND(1)`.
 3. On Alice's shard, the delegate action is executed, thus the `EXEC` gas cost
    for it is burned. Alice sends the inner actions to Bob's shard. Therefore, we

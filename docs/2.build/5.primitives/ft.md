@@ -5,6 +5,7 @@ hide_table_of_contents: false
 ---
 
 import {FeatureList, Column, Feature} from "@site/src/components/featurelist"
+import ContactUs from '@site/src/components/ContactUs.mdx';
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -44,18 +45,16 @@ In order for a contract to be considered a FT-contract it has to follow the [**N
 ---
 
 ## Token Factory
+
 You can create an FT using the community tool [Token Farm](https://tkn.farm/). Token farm is a token factory, you can interact with it through its graphical interface, or by making calls to its contract.
 
 <Tabs groupId="code-tabs">
   <TabItem value="⚛️ Component" label="⚛️ Component" default>
-    <BOSCreateToken />
-  </TabItem>
+    <BOSCreateToken /></TabItem>
   <TabItem value="🌐 WebApp" label="🌐 WebApp">
-    <WebAppCreateToken />
-  </TabItem>
+    <WebAppCreateToken /></TabItem>
   <TabItem value="🖥️ CLI" label="🖥️ CLI">
-    <CLICreateToken />
-  </TabItem>
+    <CLICreateToken /></TabItem>
 </Tabs>
 
 The FT you create will live in the account `<your_token_symbol>.tkn.near` (e.g. `test.tkn.near`).
@@ -83,54 +82,48 @@ Check the [Contract Wizard](https://dev.near.org/contractwizard.near/widget/Cont
 ---
 
 ## Querying Metadata
+
 You can query the FT's metadata by calling the `ft_metadata`.
 
 <Tabs groupId="code-tabs">
   <TabItem value="⚛️ Component" label="⚛️ Component" default>
-    <BOSGetMetadata />
-  </TabItem>
+    <BOSGetMetadata /></TabItem>
   <TabItem value="🌐 WebApp" label="🌐 WebApp">
-    <WebAppGetMetadata />
-  </TabItem>
+    <WebAppGetMetadata /></TabItem>
   <TabItem value="🖥️ CLI" label="🖥️ CLI">
-    <CLIGetMetadata />
-  </TabItem>
+    <CLIGetMetadata /></TabItem>
 </Tabs>
 
 ---
 
 ## Checking Balance
+
 To know how many coins a user has you will need to query the method `ft_balance_of`.
 
 <Tabs groupId="code-tabs">
   <TabItem value="⚛️ Component" label="⚛️ Component" default>
-    <BOSCheckBalance />
-  </TabItem>
+    <BOSCheckBalance /></TabItem>
   <TabItem value="🌐 WebApp" label="🌐 WebApp">
-    <WebAppCheckBalance />
-  </TabItem>
+    <WebAppCheckBalance /></TabItem>
   <TabItem value="🖥️ CLI" label="🖥️ CLI">
-    <CLICheckBalance />
-  </TabItem>
+    <CLICheckBalance /></TabItem>
 </Tabs>
 
 ---
 
 ## Registering a User
+
 In order for an user to own and transfer tokens they need to first **register** in the contract. This is done by calling `storage_deposit` and attaching 0.00125Ⓝ.
 
 By calling this `storage_deposit` the user can register themselves or **register other users**.
 
 <Tabs groupId="code-tabs">
   <TabItem value="⚛️ Component" label="⚛️ Component" default>
-    <BOSRegister />
-  </TabItem>
+    <BOSRegister /></TabItem>
   <TabItem value="🌐 WebApp" label="🌐 WebApp">
-    <WebAppRegister />
-  </TabItem>
+    <WebAppRegister /></TabItem>
   <TabItem value="🖥️ CLI" label="🖥️ CLI">
-    <CLIRegister />
-  </TabItem>
+    <CLIRegister /></TabItem>
 </Tabs>
 
 :::info
@@ -138,49 +131,43 @@ You can make sure a user is registered by calling `storage_balance_of`.
 :::
 
 :::tip
-After a user calls the `storage_deposit` the FT will appear in their Wallets. 
+After a user calls the `storage_deposit` the FT will appear in their Wallets.
 :::
 
 ---
 
 ## Transferring Tokens
+
 To send FT to another account you will use the `ft_transfer` method, indicating the receiver and the amount of FT you want to send.
 
 <Tabs groupId="code-tabs">
   <TabItem value="⚛️ Component" label="⚛️ Component" default>
-    <BOSSendToken />
-  </TabItem>
+    <BOSSendToken /></TabItem>
   <TabItem value="🌐 WebApp" label="🌐 WebApp">
-    <WebAppSendToken />
-  </TabItem>
+    <WebAppSendToken /></TabItem>
   <TabItem value="🖥️ CLI" label="🖥️ CLI">
-    <CLISendToken />
-  </TabItem>
+    <CLISendToken /></TabItem>
   <TabItem value="📄 Contract"  label="📄 Contract"  default>
-    <SmartContractSendToken />
-  </TabItem>
+    <SmartContractSendToken /></TabItem>
 </Tabs>
 
 ---
 
 ## Attaching FTs to a Call
+
 Natively, only NEAR tokens (Ⓝ) can be attached to a function calls. However, the FT standard enables to attach fungible tokens in a call by using the FT-contract as intermediary. This means that, instead of you attaching tokens directly to the call, you ask the FT-contract to do both a transfer and a function call in your name.
 
 Let's assume that you need to deposit FTs on Ref Finance.
 
 <Tabs groupId="code-tabs">
   <TabItem value="⚛️ Component" label="⚛️ Component" default>
-    <BOSAttachTokenToCall />
-  </TabItem>
+    <BOSAttachTokenToCall /></TabItem>
   <TabItem value="🌐 WebApp" label="🌐 WebApp">
-    <WebAppAttachTokenToCall />
-  </TabItem>
+    <WebAppAttachTokenToCall /></TabItem>
   <TabItem value="🖥️ CLI" label="🖥️ CLI">
-    <CLIAttachTokenToCall />
-  </TabItem>
+    <CLIAttachTokenToCall /></TabItem>
   <TabItem value="📄 Contract"  label="📄 Contract"  default>
-    <SmartContractAttachTokenToCall />
-  </TabItem>
+    <SmartContractAttachTokenToCall /></TabItem>
 </Tabs>
 
 How it works:
@@ -254,4 +241,4 @@ impl FungibleTokenReceiver for Contract {
 1. [NEP-141 and NEP-148 standards](https://nomicon.io/Standards/Tokens/FungibleToken/)
 2. [FT Event Standards](https://nomicon.io/Standards/Tokens/FungibleToken/Event)
 3. [FT reference implementation](https://github.com/near-examples/FT)
-4. [Fungible Tokens 101](../../3.tutorials/fts/0-intro.md) - a set of tutorials that cover how to create a FT contract using Rust.
+4. [Fungible Tokens 101](../3.tutorials/fts/0-intro.md) - a set of tutorials that cover how to create a FT contract using Rust.

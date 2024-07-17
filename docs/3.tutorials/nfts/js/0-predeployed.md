@@ -1,65 +1,63 @@
 ---
 id: predeployed-contract
-title: Pre-deployed Contract
-sidebar_label: Pre-deployed Contract
+title: 사전 배포된 컨트랙트
+sidebar_label: 사전 배포된 컨트랙트
 ---
 
-> Learn how to easily create your own non-fungible tokens without doing any software development by using a readily-available NFT smart contract.
+> 쉽게 사용할 수 있는 NFT 스마트 컨트랙트를 사용하여 소프트웨어 개발을 하지 않고도 대체 불가능 토큰(NFT)을 쉽게 만드는 방법을 알아보세요.
 
 
 
 
-## Prerequisites
+## 전제 조건
 
-To complete this tutorial successfully, you'll need:
+이 튜토리얼을 성공적으로 완료하려면 다음이 필요합니다.
 
-- [A NEAR Wallet](https://testnet.mynearwallet.com/create)
+- [NEAR 지갑](https://testnet.mynearwallet.com/create)
 - [NEAR-CLI](/tools/near-cli#setup)
 
-## Using the NFT contract
+## NFT 컨트랙트 사용
 
-### Setup
+### 설정
 
-- Log in to your newly created account with `near-cli` by running the following command in your terminal:
+- 터미널에서 다음 명령을 실행하여 새로 만든 계정에 `near-cli`로 로그인합니다.
 
 ```bash
 near login
 ```
 
- - Set an environment variable for your account ID to make it easy to copy and paste commands from this tutorial:
+ - 이 튜토리얼에서 명령을 쉽게 복사하고 붙여넣을 수 있도록 계정 ID에 대한 환경 변수를 설정합니다.
 
 ```bash
 export NEARID=YOUR_ACCOUNT_NAME
 ```
 :::note
 
-Be sure to replace `YOUR_ACCOUNT_NAME` with the account name you just logged in with including the `.testnet` (or `.near` for `mainnet`).
+`.testnet`(또는 `mainnet`에 대해서는 `.near`)을 포함하여, `YOUR_ACCOUNT_NAME`를 방금 로그인한 계정 이름으로 바꾸세요.
 
 :::
 
-- Test that the environment variable is set correctly by running:
+- 다음을 실행하여 환경 변수가 올바르게 설정되었는지 테스트합니다.
 
 ```bash
 echo $NEARID
 ```
 
-### Minting your NFTs
+### NFT 발행
 
-NEAR has deployed an NFT contract to the account `nft.examples.testnet` which allows users to freely mint tokens. Using this pre-deployed contract, let's mint our first token! 
+NEAR는 사용자가 토큰을 자유롭게 발행할 수 있도록 `nft.examples.testnet` 계정에 NFT 컨트랙트를 배포했습니다. 이 사전 배포된 컨트랙트를 사용하여 첫 번째 토큰을 발행해 봅시다!
 
 
-- Run this command in your terminal, however you **must replace the `token_id` value with an UNIQUE string**.
+- 터미널에서 이 명령을 실행합니다. **아래 `token_id` 값을 고유한 문자열로 바꿔야 합니다**.
 
 ```bash
 near call nft.examples.testnet nft_mint '{"token_id": "TYPE_A_UNIQUE_VALUE_HERE", "receiver_id": "'$NEARID'", "metadata": { "title": "GO TEAM", "description": "The Team Goes", "media": "https://bafybeidl4hjbpdr6u6xvlrizwxbrfcyqurzvcnn5xoilmcqbxfbdwrmp5m.ipfs.dweb.link/", "copies": 1}}' --accountId $NEARID --deposit 0.1
 ```
 
-:::tip
-You can also replace the `media` URL with a link to any image file hosted on your web server.
-:::
+:::tip `media` URL을 웹 서버에서 호스팅되는 이미지 파일에 대한 링크로 바꿀 수도 있습니다. :::
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -73,14 +71,14 @@ https://testnet.nearblocks.io/txns/8RFWrQvAsm2grEsd1UTASKpfvHKrjtBdEyXu7WqGBPUr
 </p>
 </details>
 
-- To view tokens owned by an account you can call the NFT contract with the following `near-cli` command:
+- 계정이 소유한 토큰을 보려면 다음 `near-cli` 명령을 사용하여 NFT 컨트랙트를 호출할 수 있습니다.
 
 ```bash
 near view nft.examples.testnet nft_tokens_for_owner '{"account_id": "'$NEARID'"}'
 ```
 
 <details>
-<summary>Example response: </summary>
+<summary>응답 예시: </summary>
 <p>
 
 ```json
@@ -110,25 +108,25 @@ near view nft.examples.testnet nft_tokens_for_owner '{"account_id": "'$NEARID'"}
 </p>
 </details>
 
-***Congratulations! You just minted your first NFT token on the NEAR blockchain!*** 🎉
+***축하합니다! NEAR 블록체인에서 첫 번째 NFT 토큰을 발행했습니다!*** 🎉
 
-👉 Now try going to your [NEAR Wallet](https://testnet.mynearwallet.com) and view your NFT in the "Collectibles" tab. 👈 
+👉 Now try going to your [NEAR Wallet](https://testnet.mynearwallet.com) and view your NFT in the "Collectibles" tab. 👈
 
 ---
 
-## Final remarks
+## 끝맺는 말
 
-This basic example illustrates all the required steps to call an NFT smart contract on NEAR and start minting your own non-fungible tokens.
+이 기본 예제는 NEAR에서 NFT 스마트 컨트랙트를 호출하고 대체 불가능 토큰을 만들기 시작하는 데 필요한 모든 단계를 보여줍니다.
 
-Now that you're familiar with the process, you can jump to [Contract Architecture](/tutorials/nfts/js/skeleton) and learn more about the smart contract structure and how you can build your own NFT contract from the ground up.
+이제 프로세스에 익숙해졌으므로 [컨트랙트 아키텍처](/tutorials/nfts/js/skeleton)로 이동하여 스마트 컨트랙트 구조와 처음부터 자체 NFT 컨트랙트를 구축하는 방법에 대해 자세히 알아볼 수 있습니다.
 
-***Happy minting!*** 🪙
+***즐거운 민팅되세요!*** 🪙
 
-:::note Versioning for this article
+:::note 문서 버전 관리
 
-At the time of this writing, this example works with the following versions:
+이 글을 쓰는 시점에서 이 예제는 다음 버전에서 작동합니다.
 
 - near-cli: `3.0.0`
-- NFT standard: [NEP171](https://nomicon.io/Standards/Tokens/NonFungibleToken/Core), version `1.0.0`
+- NFT 표준: [NEP171](https://nomicon.io/Standards/Tokens/NonFungibleToken/Core), `1.0.0` 버전
 
 :::

@@ -4,7 +4,7 @@ title: FastAuth SDK
 sidebar_label: FastAuth (Email Login)
 ---
 
-FastAuth is a key management system that allows users to **recover or sign-up for** a NEAR account using their **email address**. Furthermore, it allows to subsidize gas for a certain smart contract, so users can interact with it without having to fund their account. 
+FastAuth is a key management system that allows users to **recover or sign-up for** a NEAR account using their **email address**. Furthermore, it allows to subsidize gas for a certain smart contract, so users can interact with it without having to fund their account.
 
 ---
 
@@ -76,6 +76,7 @@ service cloud.firestore {
 - Under "Your apps", click on the `</>` button
 - Set the app nickname as `issuer-gcp` and hit "Register app"
 - You should see the code needed for initilization and authentication of Firestore, such as:
+
 ```js
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -128,7 +129,6 @@ To generate an additional key, run the following command:
 ```bash
 near account add-key $FUNDED_ACCOUNT grant-full-access autogenerate-new-keypair save-to-keychain network-config mainnet sign-with-access-key-file ~/.near-credentials/implicit/$FUNDED_ACCOUNT.json send
 ```
-
 
 #### Deploying the relayer
 

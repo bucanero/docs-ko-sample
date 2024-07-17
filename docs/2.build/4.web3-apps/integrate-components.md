@@ -2,18 +2,21 @@
 id: integrate-components
 title: Integrating Components
 ---
+
 import {CodeTabs, Language, Github} from "@site/src/components/codetabs"
 import {WidgetEditor} from "@site/src/components/widget-editor"
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-To integrate [Components](../3.near-components/what-is.md) to your frontend, you will leverage two tools:
+To integrate [Components](../../bos/tutorial/quickstart.md) to your frontend, you will leverage two tools:
+
 1. `Wallet Selector`: Enables the user to select their preferred NEAR wallet in your dApp.
-2. `NEAR VM`: A package that can retrieve the component's code from the blockchain and execute it in the browser. 
+2. `NEAR VM`: A package that can retrieve the component's code from the blockchain and execute it in the browser.
 
 <br/>
 
 Using those tools you will implement the following flow:
+
 1. **Setup** the VM.
 2. Render components using the `Widget` component in the VM.
 3. **Setup** a wallet selector so users can interact with the Menu.
@@ -21,6 +24,7 @@ Using those tools you will implement the following flow:
 ---
 
 ## Adding the VM & Wallet Selector
+
 To use the `VM` and the `wallet-selector`, you must add them to your project first.
 
 The wallet selector has multiple wallet packages to select from. [Check their website](https://github.com/near/wallet-selector#installation-and-usage) for more information.
@@ -49,6 +53,7 @@ Check the latest released version for the VM [here](https://github.com/NearSocia
 ---
 
 ## Setup the VM
+
 To render components, you need to import the `useInitNear` hook from the `near-social-vm` package, as well as the `Widget` component.
 
 ```js
@@ -75,6 +80,7 @@ Notice that the VM is inherently linked to `React`, so you will need to use a re
 ---
 
 ## Setup the Wallet Selector
+
 While the VM allows you to render components, you need to set up a wallet selector to allow users to interact with the components.
 
 To instantiate a `Wallet Selector`, simply import all the wallets you want your users to have access to, and the setup method from the `near-wallet-selector` package.
@@ -100,5 +106,5 @@ Then use it during the call to `initNear`:
 ```
 
 :::tip
-To learn more about the wallet selector and how it can be used, please see the [integrating NEAR to your WebApp tutorial](./integrate-contracts.md)
+To learn more about the wallet selector and how it can be used, please see the [integrating NEAR to your WebApp tutorial](./frontend.md)
 :::

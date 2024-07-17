@@ -1,29 +1,29 @@
 ---
 id: fungible-tokens
-title: Fungible tokens
-sidebar_label: Fungible Tokens
+title: 대체 가능한 토큰
+sidebar_label: 대체 가능한 토큰
 ---
 
-## Introduction {#introduction}
+## 소개 {#introduction}
 
-Please see the [spec for the fungible token standard](https://nomicon.io/Standards/FungibleToken/) and an [example implementation](https://github.com/near-examples/FT) for reference details.
+세부 사항은 [대체 가능한 토큰(FT) 표준](https://nomicon.io/Standards/FungibleToken/) 및 [예제 구현](https://github.com/near-examples/FT)에 대한 사양을 참고하세요.
 
-One notable aspect of the standard is that method names are prefixed with `ft_`. This will be a helpful convention when querying for transactions related to fungible tokens.
+표준에서 한 가지 주목할만한 측면은, 메서드 이름에 `ft_`라는 접두사가 붙는다는 것입니다. 이것은 대체 가능한 토큰과 관련된 트랜잭션을 쿼리할 때 유용한 규칙이 될 것입니다.
 
-## Get balance {#get-balance}
+## 잔고 가져오기 {#get-balance}
 
-Using the abstraction of the [NEAR CLI](/tools/near-cli) tool, we can check the balance of a user's account with [`near view`](/tools/near-cli#near-view):
+[NEAR CLI](/tools/near-cli) 도구의 추상화를 이용하여, [`near view`](/tools/near-cli#near-view)를 통해 사용자 계정의 잔고를 확인할 수 있습니다.
 
 `near view ft.demo.testnet ft_balance_of '{"account_id": "mike.testnet"}'`
 
-Returns:
+다음을 반환합니다.
 
 ```
 View call: ft.demo.testnet.ft_balance_of({"account_id": "mike.testnet"})
 '1000000'
 ```
 
-Alternatively, you can [call a contract function](/api/rpc/setup#call-a-contract-function) using the `query` RPC endpoint. Below is an example using HTTPie:
+또는, `query` RPC 엔드포인트를 사용하여 [컨트랙트 함수를 호출](/api/rpc/setup#call-a-contract-function)할 수 있습니다. 다음은 HTTPie를 사용한 예시입니다.
 
 ```bash
 http post https://rpc.testnet.near.org jsonrpc=2.0 id=ftbalance method=query \
@@ -36,7 +36,7 @@ params:='{
 }'
 ```
 
-Returns:
+다음을 반환합니다.
 
 ```bash
 HTTP/1.1 200 OK
@@ -59,19 +59,19 @@ date: Thu, 27 May 2021 12:53:38 GMT
 }
 ```
 
-As mentioned earlier, the `result` is an array of bytes. There are various ways to convert bytes into a more human-readable form such as the [dtool CLI](https://github.com/guoxbin/dtool#installation).
+앞에서 언급했듯이, `result`는 바이트 배열입니다. [dtool CLI](https://github.com/guoxbin/dtool#installation)와 같이, 바이트를 사람이 읽을 수 있는 형식으로 변환하는 다양한 방법이 있습니다.
 
 `dtool a2h '[34,49,48,48,48,48,48,48,34]' | dtool h2s`
 
-Returns:
+다음을 반환합니다.
 
 `"1000000"`
 
-**Note:** The fungible token balance of the account `mike.testnet` is `1000000` wrapped in double-quotes. This is because of an issue with JSON serialization. Amounts given in arguments and results must be serialized as Base-10 strings, e.g. "100". This is done to avoid JSON limitation of max integer value of 2**53, which can certainly happen with fungible tokens.
+**참고:** `mike.testnet` 계정의 대체 가능한 토큰 잔액은 큰 따옴표로 묶인 `1000000`입니다. 큰 따옴표로 묶인 이유는, JSON 직렬화 문제 때문입니다. 인자 및 결과에 주어진 양은 "100"과 같이 Base-10 문자열로 직렬화되어야 합니다. 이는 JSON에 있는 최대 정수 값 제한 2\*\*53을 피하기 위함입니다.
 
-## Get info about the FT {#get-info-about-the-ft}
+## FT에 대한 정보 얻기 {#get-info-about-the-ft}
 
-You can get `name`, `decimals`, `icon` and other parameters by calling the next function:
+다음과 같은 함수를 호출하여 `name`, `decimals`, `icon` 및 기타 매개변수를 가져올 수 있습니다.
   - using NEAR CLI:
 
 ```bash
@@ -143,7 +143,7 @@ Decoded result in this case is:
 }
 ```
 
-## Simple transfer {#simple-transfer}
+## 간단한 전송 {#simple-transfer}
 
 To follow this guide, please check the [step by step instructions](/integrations/create-transactions#low-level----create-a-transaction) on how to create a transaction first.
 
@@ -155,6 +155,7 @@ Get storage balance of the account. `storage_balance_of` function returns the am
 ```bash
 near view <contract_account_id> storage_balance_of '{"account_id": "<user_account_id>"}'
 ```
+
 
     Result:
 
@@ -285,21 +286,21 @@ https://testnet.nearblocks.io/txns/9CMrMMt3UzeU63FFrUyFb1gNGuHXxvKfHqYJzyFTAk6z
 
 ```yaml
 Transaction: {
-	block_hash: `456…abc`,
-	signer_id: "serhii.testnet",
-	public_key: "ed25519:789…def",
-	nonce: 123,
-	receiver_id: "ft.demo.testnet",
-	actions: [
-		FunctionCall(
-			FunctionCallAction {
-				method_name: storage_deposit,
-				args: `{"account_id": "robertyan.near"}`,
-				gas: 300000000000000,
-				deposit: 1250000000000000000000,
-			},
-		),
-	]
+    block_hash: `456…abc`,
+    signer_id: "serhii.testnet",
+    public_key: "ed25519:789…def",
+    nonce: 123,
+    receiver_id: "ft.demo.testnet",
+    actions: [
+        FunctionCall(
+            FunctionCallAction {
+                method_name: storage_deposit,
+                args: `{"account_id": "robertyan.near"}`,
+                gas: 300000000000000,
+                deposit: 1250000000000000000000,
+            },
+        ),
+    ]
 }
 ```
 
@@ -539,7 +540,7 @@ Result example:
 ```bash
 Scheduling a call: berryclub.ek.near.ft_transfer({"receiver_id": "volovyk.near", "amount": "1"}) with attached 0.000000000000000000000001 NEAR
 Receipt: GDeE3Kv1JHgs71A22NEUbgq55r2Hvcnis8gCMyJtQ2mx
-	Log [berryclub.ek.near]: Transfer 1 from serhii.near to volovyk.near
+    Log [berryclub.ek.near]: Transfer 1 from serhii.near to volovyk.near
 Transaction Id 3MkWKbXVP8wyy4pBofELqiE1pwx7ie2v3SKCwaobNcEe
 To see the transaction in the transaction explorer, please open this url in your browser
 https://nearblocks.io/txns/3MkWKbXVP8wyy4pBofELqiE1pwx7ie2v3SKCwaobNcEe
@@ -552,21 +553,21 @@ Transaction representation:
 
 ```yaml
 Transaction: {
-	block_hash: `456…abc`,
-	signer_id: "serhii.near",
-	public_key: "ed25519:789…def",
-	nonce: 123,
-	receiver_id: "berryclub.ek.near",
-	actions: [
-		FunctionCall(
-			FunctionCallAction {
-				method_name: ft_transfer,
-				args: `{"receiver_id": "volovyk.near", "amount": "1"}`,
-				gas: 300000000000000,
-				deposit: 1,
-			},
-		),
-	]
+    block_hash: `456…abc`,
+    signer_id: "serhii.near",
+    public_key: "ed25519:789…def",
+    nonce: 123,
+    receiver_id: "berryclub.ek.near",
+    actions: [
+        FunctionCall(
+            FunctionCallAction {
+                method_name: ft_transfer,
+                args: `{"receiver_id": "volovyk.near", "amount": "1"}`,
+                gas: 300000000000000,
+                deposit: 1,
+            },
+        ),
+    ]
 }
 ```
 
@@ -761,6 +762,7 @@ You can get the same info later by the transaction hash from the previous call:
 
   - using NEAR Explorer: https://nearblocks.io
 
+
 <!--
 - using NEAR CLI:
 near tx-status <transaction_hash> --accountId <transaction_signer>
@@ -782,25 +784,25 @@ near call <contract_account_id> ft_transfer '{"receiver_id": "<user_account_id>"
 
   - with JSON RPC call:
 
-Transaction representation:
+트랜잭션 표현:
 
 ```yaml
 Transaction: {
-	block_hash: `456…abc`,
-	signer_id: "serhii.near",
-	public_key: "ed25519:789…def",
-	nonce: 123,
-	receiver_id: "berryclub.ek.near",
-	actions: [
-		FunctionCall(
-			FunctionCallAction {
-				method_name: ft_transfer,
-				args: `{"receiver_id":"volovyk.near","amount":"10000000000000000000"}`,
-				gas: 300000000000000,
-				deposit: 1,
-			},
-		),
-	]
+    block_hash: `456…abc`,
+    signer_id: "serhii.near",
+    public_key: "ed25519:789…def",
+    nonce: 123,
+    receiver_id: "berryclub.ek.near",
+    actions: [
+        FunctionCall(
+            FunctionCallAction {
+                method_name: ft_transfer,
+                args: `{"receiver_id":"volovyk.near","amount":"10000000000000000000"}`,
+                gas: 300000000000000,
+                deposit: 1,
+            },
+        ),
+    ]
 }
 ```
 
@@ -809,7 +811,7 @@ Transaction: {
   params:='["DgAAAHNlcmhpaS50ZXN0bmV0AEKEp54fyVkp8dJE2l/m1ErjdhDGodBK8ZF6JLeHFMeZofqoVEgrAAAgAAAAZGV2LTE2MjMzMzM3OTU2MjMtMjEzOTk5NTk3NzgxNTm8Xq8BTIi6utG0424Gg7CknYzLH8RH/A409jq5o0zi7gEAAAACCwAAAGZ0X3RyYW5zZmVyPwAAAHsicmVjZWl2ZXJfaWQiOiJkZXYtMTYyMzMzMzkxNjM2OC01ODcwNzQzNDg3ODUzMyIsImFtb3VudCI6IjEifQBAehDzWgAAAQAAAAAAAAAAAAAAAAAAAABCwjqayKdpWgM6PE0ixzm/Gy0EtdpxVn0xehMTBReVfVAKIBTDPoPSaOdT8fAhk343F5uOMfSijhTqU2mWV3oD"]'
 ```
 
-To get details of this transaction:
+이 트랜잭션의 세부 사항을 얻으려면, 다음과 같이 할 수 있습니다.
 
 ```bash
 http post https://archival-rpc.mainnet.near.org jsonrpc=2.0 method=EXPERIMENTAL_tx_status \
@@ -1058,7 +1060,7 @@ To determine how many fungible tokens were transferred, look at:
   - then take the args and `base64` decode it, that will give you a JSON payload and look for the `amount` key
   - It will contain a stringified number that represents the number of fungible tokens that were successfully transferred
 
-## Transfer and call {#transfer-and-call}
+## 전송 및 호출 {#transfer-and-call}
 
 If the idea of a fungible token using "transfer and call" is new, please review the comments above the function in [the Nomicon spec](https://nomicon.io/Standards/Tokens/FungibleToken/Core#reference-level-explanation). Also, see a similar idea [from EIP-677](https://github.com/ethereum/EIPs/issues/677).
 
@@ -1066,7 +1068,7 @@ For this example we will build and deploy FT contracts from [near-sdk-rs/example
 
 Let's call `ft_transfer_call` function on `ft` contract (receiver) and examine successful and unsuccessful scenarios.
 
-### Successful transfer and call {#successful-transfer-and-call}
+### 성공적인 전송 및 호출 {#successful-transfer-and-call}
   Let's send 10 N to `DEFI` contract that requires only 9 N.
 
   - using NEAR CLI
@@ -1080,21 +1082,21 @@ Transaction representation:
 
 ```yaml
 Transaction: {
-	block_hash: `456…abc`,
-	signer_id: "serhii.testnet",
-	public_key: "ed25519:789…def",
-	nonce: 123,
-	receiver_id: "dev-1623333795623-21399959778159",
-	actions: [
-		FunctionCall(
-			FunctionCallAction {
-				method_name: ft_transfer_call,
-				args: `{"receiver_id":"dev-1623693121955-71667632531176","amount":"10","msg":"take-my-money"}`,
-				gas: 300000000000000,
-				deposit: 1,
-			},
-		),
-	]
+    block_hash: `456…abc`,
+    signer_id: "serhii.testnet",
+    public_key: "ed25519:789…def",
+    nonce: 123,
+    receiver_id: "dev-1623333795623-21399959778159",
+    actions: [
+        FunctionCall(
+            FunctionCallAction {
+                method_name: ft_transfer_call,
+                args: `{"receiver_id":"dev-1623693121955-71667632531176","amount":"10","msg":"take-my-money"}`,
+                gas: 300000000000000,
+                deposit: 1,
+            },
+        ),
+    ]
 }
 ```
 
@@ -1435,25 +1437,25 @@ http post https://archival-rpc.testnet.near.org jsonrpc=2.0 method=EXPERIMENTAL_
 
 Now, let's try to follow the steps described in the previous section and determine if these transactions was successful. In addition to being successful, let's analyze the various receipts in the series of cross-contract calls to determine how many fungible tokens were transferred. This will be the most complex case we'll look at.
 
-  1. Check that `result` » `transaction_outcome` » `outcome` » `status` has `SuccessReceiptId` as a key. If not, no fungible tokens were transferred.
-  2. Take the value of the `SuccessReceiptId` key. In the case above it's `Hw6z8kJ7CSaC6SgyQzcmXzNX9gq1gaAnLS169qgyZ2Vk`.
-  3. Now, under `result` » `receipts` loop through the array until you find a receipt where the `receipt_id` matches the value from step 2. (Note that in the receipt, under `Actions` there's an element mentioning calling the `method_name: "ft_transfer_call"`.) On the same level of JSON, there's an `args` key. That's a base64-encoded value of the arguments passed to the method. When decoded it is:
+  1. `result` » `transaction_outcome` » `outcome` » `status`로 가서 `SuccessReceiptId`가 키인지 확인합니다. 만약 아니라면, 토큰은 전송되지 않습니다.
+  2. `SuccessReceiptId` 키의 값을 가져옵니다. 위 경우, 이는 `Hw6z8kJ7CSaC6SgyQzcmXzNX9gq1gaAnLS169qgyZ2Vk`입니다.
+  3. 이제, `result` » `receipts`에서 `receipt_id`가 2단계의 값과 일치하는 receipt를 찾을 때까지 배열을 반복합니다. (receipt 내에서, `method_name: "ft_transfer_call"` 호출을 언급하는 요소가 `Actions` 아래에 있음을 주의하세요) 동일한 디렉토리의 JSON 내에는 `args` 키가 있습니다. JSON과 같은 수준에 `args` 키가 있습니다. 이는 메서드에 전달되는 인자의 base64 인코딩된 값입니다. 디코딩하면 다음과 같습니다.
 
 ```json
 {"receiver_id":"dev-1623693121955-71667632531176","amount":"10","msg":"take-my-money"}
 ```
 
-  4. Loop through `result` » `receipts_outcome` until finding the object where `id` is equal to the value from step 2. Similar to step 1, this object will also contain a `status` field that should contain the key `SuccessReceiptId`. Again, if this isn't there no fungible tokens were transferred, otherwise get the value of the `SuccessReceiptId`. In the above example, this value is `4Tc8MsrJZSMpNZx7u4jSqxr3WhRzqxaNHxLJFqz8tUPR`.
-  5. Similar to the previous step, loop through the `result` » `receipts_outcome` until you find the object where the `id` matches the value from step 4. In that object check that `outcome` » `status` has the `SuccessValue` field. This `SuccessValue` represents how many fungible tokens the receiving contract is "returning" to the fungible token contract. Note that in the example above the value is `Ijki`, which is the base64-encoded version of `"9"`. At this point, we know that 10 fungible tokens were sent (from step 3) and 9 were taken.
+  4. `id`가 2단계의 값과 같은 객체를 찾을 때까지 `result` » `receipts_outcome`을 반복합니다. 1단계와 유사하게, 이 객체는 `SuccessReceiptId` 키를 담고 있는 `status` 필드도 포함할 것입니다. 다시, 만약 토큰이 전송된 것이라면, `SuccessReceiptId`의 값을 가져옵니다. 위 예시에서, 이 값은 `4Tc8MsrJZSMpNZx7u4jSqxr3WhRzqxaNHxLJFqz8tUPR`입니다.
+  5. 이전 단계와 유사하게, `id`가 4단계의 값과 같은 객체를 찾을 때까지 `result` » `receipts_outcome`을 반복합니다. 해당 객체에서 `outcome` » `status`가 `SuccessValue`를 가지고 있는지 확인합니다. 이 `SuccessValue`는 수령 컨트랙트가 얼마나 많은 토큰을 토큰 컨트랙트로 "반환하고 있는지"을 나타냅니다. 위 예시에서 이 값은 `Ijki`로, 이는 `"9"`의 base64 인코딩된 버전입니다. 이 시점에서 우리는 10개의 대체 가능한 토큰이 전송되었고(3단계에서), 9개가 사용되었다는 것을 알 수 있습니다.
 
 For additional clarity, let's take a look at one more optional aspect. In step 4 we isolated an obeject in `result` » `receipts_outcome`. There's an array of `receipt_ids` that's particularly interesting. The first element in the array is the receipt ID `EB69xtJiLRh9RNzAHgBGmom8551hrK2xSRreqbjvJgu5`. If we loop through the `result` » `receipts_outcome` and find this as the value for the `id` key, we'll see what happened in the function `ft_on_transfer` which takes place in the contract receiving the fungible tokens. In this object the `status` » `SuccessValue` is `IjEi` which is the base64-encoded value of `"1"`.
 
 In summary:
-1. A user called the fungible token contract with the method `ft_transfer_call` specifying the receiver account, how many tokens to send, and custom info.
-2. The receiver account implemented `ft_on_transfer`, returning `"1"` to the callback function on the fungible token contract.
-3. The fungible token contract's callback is `ft_resolve_transfer` and receives this value of `"1"`. It knows that 1 token was returned, so subtracts that from the 10 it intended to send. It then returns to the user how many tokens were used in this back-and-forth series of cross-contract calls: `"9"`.
+1. 사용자는 대체 가능한 토큰 컨트랙트를 `ft_transfer_call` 메서드로 호출하여, 수신자 계정, 보낼 토큰 수 및 사용자 정의 정보를 지정하였습니다.
+2. 수신자 계정은 `ft_on_transfer`를 구현하여, 대체 가능한 토큰 컨트랙트의 콜백 함수로 `"1"`을 반환합니다.
+3. 대체 가능한 토큰 컨트랙트의 콜백은 `ft_resolve_transfer`이며, `"1"`을 반환합니다. 이는 1개의 토큰이 반환되었다는 의미이므로, 보내려는 10개에서 이를 뺍니다. 그런 다음 일련의 교차 컨트랙트 호출에서 사용된 토큰 수 `"9"`를 사용자에게 반환합니다.
 
-### Failed transfer and call {#failed-transfer-and-call}
+### 실패한 전송 및 호출 {#failed-transfer-and-call}
 Let's try to send more tokens than the account has:
 
   - using NEAR CLI
@@ -1466,21 +1468,21 @@ Transaction representation:
 
 ```yaml
 Transaction: {
-	block_hash: `456…abc`,
-	signer_id: "serhii.testnet",
-	public_key: "ed25519:789…def",
-	nonce: 123,
-	receiver_id: "dev-1623333795623-21399959778159",
-	actions: [
-		FunctionCall(
-			FunctionCallAction {
-				method_name: ft_transfer_call,
-				args: `{"receiver_id":"dev-1623333916368-58707434878533","amount":"1000000000","msg":"take-my-money"}`,
-				gas: 300000000000000,
-				deposit: 1,
-			},
-		),
-	]
+    block_hash: `456…abc`,
+    signer_id: "serhii.testnet",
+    public_key: "ed25519:789…def",
+    nonce: 123,
+    receiver_id: "dev-1623333795623-21399959778159",
+    actions: [
+        FunctionCall(
+            FunctionCallAction {
+                method_name: ft_transfer_call,
+                args: `{"receiver_id":"dev-1623333916368-58707434878533","amount":"1000000000","msg":"take-my-money"}`,
+                gas: 300000000000000,
+                deposit: 1,
+            },
+        ),
+    ]
 }
 ```
 

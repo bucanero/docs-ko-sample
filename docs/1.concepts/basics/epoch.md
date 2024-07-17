@@ -1,20 +1,20 @@
 ---
 id: epoch
-title: Epoch
+title: 에포크
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-An **epoch** is a unit of time when validators of the network remain constant. It is measured in blocks:
+**에포크**는 네트워크의 밸리데이터가 일정하게 유지하는 시간 단위입니다. 이는 블록 단위로 측정됩니다.
 
-- Both `testnet` and `mainnet` have an epoch duration of 43,200 blocks. Ideally epochs last about 12 hours, since blocks are created every second (in reality, they take slightly longer to be created).
-- You can view this setting by querying the **[`protocol_config`](/api/rpc/setup#protocol-config)** RPC endpoint and searching for `epoch_length`.
+- `testnet`과 `mainnet` 둘 다 43,200 블록의 에포크 기간을 갖습니다. 이상적으로는 블록이 1초마다 생성되기 때문에, 에포크는 약 12시간 동안 지속됩니다(실제로 생성하는 데 약간 더 오래 걸림).
+- **[`protocol_config`](/api/rpc/setup#protocol-config)** RPC 엔드포인트를 쿼리하고 `epoch_length`를 검색하여 이 설정을 볼 수 있습니다.
 
-**Note:** Nodes garbage collect blocks after 5 epochs (~2.5 days) unless they are [archival nodes](https://near-nodes.io/intro/node-types#archival-node).
+**참고:** [아카이브 노드](https://near-nodes.io/intro/node-types#archival-node)가 아닌 노드는 5 에포크(~2.5일) 후에 블록을 가비지 수집합니다.
 
-**Example:**
+**예시:**
 
 <Tabs>
 
@@ -46,7 +46,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=EXPERIMENT
 
 </Tabs>
 
-**Example Response:**
+**응답 예시:**
 
 ```json
 {
@@ -79,7 +79,7 @@ http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=EXPERIMENT
 }
 ```
 
-You can learn more about how epochs are used to manage network validation in the [Validator FAQ](https://github.com/near/wiki/blob/master/Archive/validators/faq.md#what-is-an-epoch).
+[밸리데이터 FAQ](https://github.com/near/wiki/blob/master/Archive/validators/faq.md#what-is-an-epoch)에서 에포크를 사용하여 네트워크 유효성 검사를 관리하는 방법에 대해 자세히 알아볼 수 있습니다.
 
 :::tip Got a question?
 

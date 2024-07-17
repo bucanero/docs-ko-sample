@@ -1,50 +1,51 @@
 ---
 sidebar_position: 1
-sidebar_label: "Overview"
-title: "Highlights of some beginner topics covered."
+sidebar_label: "개요"
+title: "몇 가지 초보자용 주제들의 핵심"
 ---
 
 import chapter2Correct from '/docs/assets/crosswords/chapter-2-solve.gif';
 import multipleCrosswords from '/docs/assets/crosswords/puzzle-piggy-bank--r3v.near--rev_rodrigueza.png';
 
-# Diving deeper
+# 딥다이브
 
-In the last chapter we installed Rust and got up and running with a simple smart contract. The contract has a few issues, however, and isn't as powerful as we'd like it to be. For instance, we can only store one crossword puzzle in the smart contract, the frontend is  hardcoded, and we don't offer any incentives to the person who wins.
+지난 챕터에서 우리는 Rust를 설치하고 간단한 스마트 컨트랙트를 실행했습니다. 그러나 컨트랙트에는 몇 가지 문제가 있으며, 원하는 만큼 강력하지 않습니다. 예를 들어, 우리는 스마트 컨트랙트에 하나의 십자말풀이 퍼즐만 저장할 수 있고, 프론트엔드는 하드코딩되어 있으며, 승리한 사람에게 어떠한 인센티브도 제공하지 않습니다.
 
-Let's give the smart contract the ability to store multiple crosswords and offer the winner a prize, paid in NEAR.
+스마트 컨트랙트에 여러 십자말풀이를 저장할 수 있는 기능을 부여하고, 당첨자에게 NEAR로 지급되는 상금을 제공합시다.
 
 <figure>
-    <img src={multipleCrosswords} alt="Man holding a book full of crossword puzzles, in his other hand he's holding a piggy bank. Art created by r3v.near"/>
+    <img src={multipleCrosswords} alt="십자말풀이 퍼즐로 가득 찬 책을 들고 있는 남자, 다른 한 손에는 돼지 저금통을 들고 있습니다. r3v.near 그림"/>
     <figcaption className="full-width">Art by <a href="https://twitter.com/rev_rodrigueza" target="_blank" rel="noopener noreferrer">r3v.near</a></figcaption>
 </figure>
+
 <br/>
 
-In this chapter we'll:
+이 챕터에서는 다음과 같은 것들을 수행합니다.
 
-- Allow the contract to store multiple crossword puzzles
-- Store the positions of the clues in the contract
-- Allow users to log in with a NEAR account
-- Give a prize (in NEAR tokens) to the first person to solve the puzzle
-- Explore using Rust structs and enums
-- more…
+- 컨트랙트가 여러 십자말풀이 퍼즐을 저장하도록 허용
+- 단서의 위치를 컨트랙트에 저장
+- 사용자가 NEAR 계정으로 로그인하도록 허용
+- 퍼즐을 가장 먼저 푸는 사람에게 (NEAR 토큰으로) 상금을 지급
+- Rust 구조체 및 열거형(Enumeration)을 사용하여 탐
+- 기타 등등
 
 <figure>
-    <img src={chapter2Correct} width="600" alt="A user fills in the last clue in a crossword puzzle and an overlay appears saying that a transaction is pending" />
-    <figcaption>A user solves the crossword puzzle, interacts with the blockchain, and gets a prize</figcaption>
+    <img src={chapter2Correct} width="600" alt="사용자가 십자말풀이 퍼즐의 마지막 단서를 채우면 트랜잭션이 보류 중이라는 오버레이가 나타납니다" />
+    <figcaption>사용자가 십자말풀이 퍼즐을 풀고, 블록체인과 상호 작용하며, 상금을 받습니다.</figcaption>
 </figure>
 
-As we implement the list above, we'll learn key concepts about NEAR:
+위의 목록을 구현하면서, 다음과 같이 NEAR에 대한 주요 개념을 배우게 됩니다.
 
-- [Actions](https://nomicon.io/RuntimeSpec/Actions.html)
-- Full and function-call [access keys](https://docs.near.org/concepts/basics/account#access-keys)
-- NEAR's specialized [Collections](../../../2.build/2.smart-contracts/anatomy/collections.md) that are generally preferable to, say, Rust's standard HashMap 
-- The flow of logging in to a decentralized app (dApp)
-- more…
+- [[Action](https://nomicon. io/RuntimeSpec/Actions. html)](https://nomicon.io/RuntimeSpec/Actions.html)
+- 전체 / 함수 호출 [액세스 키](https://docs.near.org/concepts/basics/account#access-keys)
+- NEAR's specialized [Collections](../../../2.build/2.smart-contracts/anatomy/collections.md) that are generally preferable to, say, Rust's standard HashMap
+- 탈중앙화 앱(dApp) 로그인 흐름
+- 기타 등등
 
-Let's jump right in!
+바로 시작해 봅시다!
 
-## Completed project
+## 완료된 프로젝트
 
-Here's the final code for this chapter:
+이 챕터의 최종 코드는 다음과 같습니다.
 
 https://github.com/near-examples/crossword-tutorial-chapter-2
